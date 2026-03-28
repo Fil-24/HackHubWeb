@@ -1,0 +1,45 @@
+@use "../../../../../colors";
+
+.register-container{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.frm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+#card-signup{
+    padding: 3rem;
+}
+
+#logo{
+    width: 90px;
+    margin-bottom: -2.5rem;
+    z-index: 1;
+}
+
+#btn-signup{
+    margin-top: 0.6rem;
+}
+
+#signup-title{
+  margin-top: 1rem !important;
+  margin-bottom: 2rem !important;
+  text-align: center;
+}
+
+.btn{
+    max-width: none;
+}
+
+.alert-error{
+    width: 18rem;
+}

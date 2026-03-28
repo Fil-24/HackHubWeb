@@ -1,0 +1,18 @@
+<div class="login-container">
+  <img src="assets/img/logo.svg" alt="Logo" id="logo">
+  <div class="card" id="card-login">
+    <h2 id="login-title">Login</h2>
+    <form (ngSubmit)="login()" class="frm" ngNativeValidate>
+      <input type="email" class="input" [(ngModel)]="email" name="email" placeholder="Email" required />
+      <input type="password" class="input" [(ngModel)]="password" name="password" placeholder="Password" required />
+      @if (errorMessage()) {
+        <div class="alert alert-error">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+      <button type="submit" class="btn btn-primary" id="btn-login">Sign In</button>
+      <button type="button" class="btn btn-secondary" [routerLink]="['/register']"> Register</button>
+    </form>
+  </div>
+</div>

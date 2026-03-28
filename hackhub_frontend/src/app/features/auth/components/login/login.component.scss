@@ -1,0 +1,41 @@
+@use "../../../../../colors";
+
+.login-container{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.frm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+#card-login{
+    padding: 3rem;
+}
+
+#btn-login{
+    margin-top: 0.6rem;
+}
+
+#login-title{
+  margin-top: 1rem !important;
+  margin-bottom: 2rem !important;
+  text-align: center;
+}
+
+#logo{
+    width: 90px;
+    margin-bottom: -2.5rem;
+    z-index: 1;
+}
+
+.btn{
+    max-width: none;
+}
