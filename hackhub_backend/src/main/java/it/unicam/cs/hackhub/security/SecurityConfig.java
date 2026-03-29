@@ -21,6 +21,7 @@
  */
 package it.unicam.cs.hackhub.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -87,6 +88,7 @@ public class SecurityConfig {
         return new AuthTokenFilter();
     }
 
+
     /**
      * Creates and returns the password encoder used for hashing user passwords.
      *
@@ -101,13 +103,16 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Value("${app.cors.allowed-origins}")
+    private String allowedOrigins;
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:4200"));
+        config.setAllowedOrigins(List.of(allowedOrigins));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowedMethods(List.of(
                 "GET",
