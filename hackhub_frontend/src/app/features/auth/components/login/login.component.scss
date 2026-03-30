@@ -1,41 +1,111 @@
-@use "../../../../../colors";
+@use "../../../../../colors" as *;
 
-.login-container{
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: $bg-main; // Usa il tuo grigio/blu chiarissimo
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-.frm{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 0.9rem;
+#card-login {
+  background-color: $bg-surface; // Usa il tuo bianco 99%
+  border: 1px solid $border-color; // Usa il tuo bordo morbido
+  border-radius: 8px;
+  box-shadow: $shadow-card; // Usa la tua ombra "fredda"
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
 }
 
-#card-login{
-    padding: 3rem;
+.frm {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-#btn-login{
-    margin-top: 0.6rem;
+#login-title {
+  margin-top: 0 !important;
+  margin-bottom: 1.5rem !important;
+  text-align: left;
+  color: $text-primary; // Usa il tuo grigio antracite
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
-#login-title{
-  margin-top: 1rem !important;
-  margin-bottom: 2rem !important;
-  text-align: center;
+#logo {
+  width: 60px;
+  margin-bottom: 1rem;
+  align-self: flex-start; 
 }
 
-#logo{
-    width: 90px;
-    margin-bottom: -2.5rem;
-    z-index: 1;
+/* Stile per gli input */
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #ffffff; // Sfondo input bianco puro per staccare dal bg-surface
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: $text-primary;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: $color-accent; // Usa il tuo blu tech al focus
+    box-shadow: 0 0 0 1px $color-accent;
+  }
+  
+  &::placeholder {
+    color: $text-secondary; // Usa il tuo grigio medio
+  }
 }
 
-.btn{
-    max-width: none;
+/* Stile per i bottoni */
+.btn {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: $color-primary; // Slate scuro per azione principale
+  color: #ffffff;
+
+  &:hover {
+    background-color: $color-primary-hover;
+  }
+}
+
+.btn-secondary {
+  background-color: $bg-surface;
+  color: $text-primary;
+  border: 1px solid $border-color;
+
+  &:hover {
+    background-color: $bg-surface-hover; // Feedback delicato al passaggio del mouse
+  }
+}
+
+/* Stile per l'errore basato sui tuoi stati semantici */
+.alert-error {
+  background-color: $status-closed-bg; // Rosso pastello desaturato
+  border: 1px solid #fca5a5; // Bordo leggermente più scuro dello sfondo per definire la card
+  color: $status-closed-text; // Rosso scuro testuale
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }

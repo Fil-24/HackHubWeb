@@ -1,45 +1,118 @@
-@use "../../../../../colors";
+@use "../../../../../colors" as *; // Risolve l'errore "Undefined variable"
 
-.register-container{
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: $bg-main; // Sfondo morbido
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-.frm{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 0.9rem;
+#card-signup {
+  background-color: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  box-shadow: $shadow-card;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px; // Mantiene la card proporzionata
 }
 
-#card-signup{
-    padding: 3rem;
+.frm {
+  display: flex;
+  justify-content: center;
+  align-items: stretch; // Espande gli input a tutta larghezza
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-#logo{
-    width: 90px;
-    margin-bottom: -2.5rem;
-    z-index: 1;
+#signup-title {
+  margin-top: 0 !important;
+  margin-bottom: 1.5rem !important;
+  text-align: left;
+  color: $text-primary;
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
-#btn-signup{
-    margin-top: 0.6rem;
+#logo {
+  width: 60px;
+  margin-bottom: 1rem;
+  align-self: flex-start;
+  // Ho rimosso z-index e margin-bottom negativo: il logo starà benissimo dentro la card
 }
 
-#signup-title{
-  margin-top: 1rem !important;
-  margin-bottom: 2rem !important;
-  text-align: center;
+/* Stile per gli input */
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #ffffff;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: $text-primary;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: $color-accent;
+    box-shadow: 0 0 0 1px $color-accent;
+  }
+  
+  &::placeholder {
+    color: $text-secondary;
+  }
 }
 
-.btn{
-    max-width: none;
+/* Stile per i bottoni */
+.btn {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.alert-error{
-    width: 18rem;
+.btn-primary {
+  background-color: $color-primary;
+  color: #ffffff;
+
+  &:hover {
+    background-color: $color-primary-hover;
+  }
+}
+
+.btn-secondary {
+  background-color: $bg-surface;
+  color: $text-primary;
+  border: 1px solid $border-color;
+
+  &:hover {
+    background-color: $bg-surface-hover;
+  }
+}
+
+#btn-signup {
+  margin-top: 0.5rem;
+}
+
+/* Stile per l'errore */
+.alert-error {
+  background-color: $status-closed-bg;
+  border: 1px solid #fca5a5;
+  color: $status-closed-text;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%; // Si adatta alla card in modo molto più pulito
+  box-sizing: border-box;
 }

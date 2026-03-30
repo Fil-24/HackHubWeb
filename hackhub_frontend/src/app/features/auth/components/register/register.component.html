@@ -1,6 +1,7 @@
 <div class="register-container">
-  <img src="assets/img/logo.svg" alt="Logo" id="logo">
+  
   <div class="card" id="card-signup">
+    <img src="assets/img/logo.svg" alt="Logo" id="logo">
     <h2 id="signup-title">Registration</h2>
     <form class="frm" (ngSubmit)="register()" ngNativeValidate>
       <input type="text" class="input" [(ngModel)]="name" name="name" placeholder="Name" required />
