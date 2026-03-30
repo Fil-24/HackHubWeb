@@ -1,0 +1,99 @@
+@if (errorMessage()) {
+<div class="alert alert-error">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <span>{{ errorMessage() }}</span>
+</div>
+}
+<section class="home-first-section">
+    <div class="banner-content row">
+        <div class="banner__stripes" aria-hidden="true"></div>
+        <h1 class="hh-title" data-text="HackHub">
+            Hack<span class="accent">Hub</span><span class="hh-cursor"></span>
+        </h1>
+    </div>
+</section>
+
+<section class="search-section">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <!-- COLONNA SINISTRA: testo -->
+            <div class="col-12 col-md-5 col-left pe-md-5">
+                <div class="search-label">Ricerca</div>
+                <h2 class="search-title">
+                    Trova il tuo<br>
+                    prossimo<em> Hackathon</em>
+                </h2>
+                <p class="search-desc">
+                    Esplora centinaia di hackathon in tutta italia.<br>
+                </p>
+            </div>
+            <!-- COLONNA DESTRA: search bar -->
+            <div class="col-12 col-md-7 ps-md-5">
+
+                <div class="search-bar">
+                    <div class="search-icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="7" />
+                            <line x1="16.5" y1="16.5" x2="22" y2="22" />
+                        </svg>
+                    </div>
+                    <form (ngSubmit)="cerca()" method="get">
+                        <input class="search-input" type="text" placeholder="Es: hackathon AI, blockchain, web3...">
+                        <button type="submit" class="search-btn">→ Cerca</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="sh-divider"></div>
+<section class="hc-wrap">
+    <div class="hc-inner">
+        <div class="hc-header">
+            <div>
+                <div class="hc-label">Hackathon</div>
+                <h2 class="hc-title">Tutti gli eventi</h2>
+            </div>
+            <div class="hc-count">// {{ hackathon.length }} risultati trovati</div>
+        </div>
+        @if(hackathon.length > 0) {
+        <div class="hc-grid">
+            @for (h of hackathon; track $index) {
+            <div class="hc-card" >
+                <div class="hc-card-bar"></div>
+                <div class="hc-card-body">
+                    <h3 class="hc-card-name">{{ h.name }}</h3>
+                    <p class="hc-card-desc">{{ h.location }}</p>
+                </div>
+                <div class="hc-card-footer">
+                    <div class="hc-dates">
+                        <div class="hc-date-item">
+                            <span class="hc-date-label">Inizio</span>
+                            <span class="hc-date-value">{{ h.startDate }}</span>
+                        </div>
+                        <div class="hc-date-item">
+                            <span class="hc-date-label">Fine</span>
+                            <span class="hc-date-value">{{ h.endDate }}</span>
+                        </div>
+                        <div class="hc-date-item">
+                            <span class="hc-date-label">Max numero partecipanti</span>
+                            <span class="hc-date-value">{{ h.maxNumberTeams }}</span>
+                        </div>
+                    </div>
+                    <div class="hc-divider"></div>
+                    <button class="hc-btn">Visualizza info →</button>
+                </div>
+            </div>
+            }
+        </div>
+        }
+        @if(hackathon.length === 0) {
+            <!-- Nessun risultato -->
+            <div class="state-box">
+                <p class="state-box__title">Nessun hackathon trovato</p>
+                <p class="state-box__sub">Prova con un altro termine di ricerca.</p>
+            </div>
+        }
+    </div>
+</section>

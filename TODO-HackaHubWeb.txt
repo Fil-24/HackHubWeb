@@ -1,1 +1,3 @@
 -aggiungere salt
+
+-sistemare i model all'interno del home

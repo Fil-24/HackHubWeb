@@ -1,0 +1,448 @@
+@use "../../../../colors" as *;
+
+$font-display: 'Syne', sans-serif;
+$font-mono: 'DM Mono', monospace;
+
+
+// ════════════════════════════════════════════════════
+//  SECTION 1 — BANNER
+// ════════════════════════════════════════════════════
+.home-first-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    background: $color-primary;
+}
+
+// ── Pattern diagonale sottile
+.banner__stripes {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(-54deg,
+            transparent,
+            transparent 44px,
+            $color-primary-hover 45px,
+            $color-primary-hover 46px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+
+/* Titolo principale */
+.hh-title {
+    font-family: 'Syne', sans-serif;
+    z-index: 1;
+    font-size: clamp(52px, 10vw, 96px);
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-align: center;
+    position: relative;
+    animation: fadeUp 0.7s ease 0.1s both;
+}
+
+.hh-title span.accent {
+    color: $color-green;
+}
+
+.hh-title::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #ff3b6b;
+    clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+    transform: translate(-2px, 0);
+    opacity: 0;
+    animation: glitch 4s infinite 1s;
+}
+
+.hh-cursor {
+    display: inline-block;
+    width: 4px;
+    height: 0.85em;
+    background: $color-green;
+    vertical-align: middle;
+    margin-left: 6px;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glitch {
+
+    0%,
+    90%,
+    100% {
+        opacity: 0;
+    }
+
+    91% {
+        opacity: 0.7;
+        transform: translate(-2px, 0);
+    }
+
+    93% {
+        opacity: 0.7;
+        transform: translate(2px, 0);
+    }
+
+    95% {
+        opacity: 0;
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+
+// ════════════════════════════════════════════════════
+//  SECTION 2 —  Ricerca
+// ════════════════════════════════════════════════════
+.search-section {
+    background: $bg-main;
+    padding: 72px 0;
+    position: relative;
+    overflow: hidden;
+
+    // Colonne sopra le decorazioni
+    .row {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+
+.search-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-green;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 2px;
+        background: $color-green;
+    }
+}
+
+.search-title {
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 800;
+    color: $color-primary;
+    line-height: 1.1;
+    margin-bottom: 16px;
+
+    em {
+        font-style: italic;
+        color: $color-green;
+    }
+}
+
+.search-desc {
+    font-size: 12px;
+    color: $text-secondary;
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+}
+
+// ── COLONNA DESTRA ──
+.search-bar {
+    display: flex;
+    align-items: stretch;
+    background: #ffffff;
+    border: 1.5px solid $color-primary;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: border-color 0.2s, outline 0.2s;
+
+    &:focus-within {
+        border-color: $color-green;
+        outline: 3px solid rgba($color-green, 0.15);
+    }
+}
+.search-bar form {
+    display: flex;
+    flex: 1;
+    align-items: stretch;
+}
+
+.search-icon {
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+
+    svg {
+        width: 16px;
+        height: 16px;
+        stroke: $color-primary;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+    }
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 13px;
+    color: $color-primary;
+    background: transparent;
+    padding: 14px 8px 14px 0;
+}
+
+.search-btn {
+    background: $color-primary;
+    color: #ffffff;
+    border: none;
+    padding: 0 22px;
+    font-family: $font-mono;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+
+    &:hover {
+        background: $color-green;
+        color: $color-primary;
+    }
+}
+// ════════════════════════════════════════════════════
+.sh-divider {
+    width: 100%;
+    height: 1px;
+    background: $border-color;
+}
+
+// ════════════════════════════════════════════════════
+//  SECTION 3 — GRIGLIA CARDS
+// ════════════════════════════════════════════════════
+.hc-wrap {
+    background: #f6f8fa;
+    padding: 48px 0;}
+
+.hc-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.hc-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 36px;
+}
+
+.hc-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-green;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hc-label::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 2px;
+    background: $color-green;
+}
+
+.hc-title {
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 800;
+    color: $text-primary;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.hc-count {
+    font-size: 12px;
+    color: $text-secondary;
+    letter-spacing: 0.05em;
+    padding-bottom: 4px;
+}
+
+.hc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.hc-card {
+    background: #fdfdfd;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.hc-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px -4px rgba(15, 23, 42, 0.1);
+    border-color: $color-green;
+}
+
+.hc-card-bar {
+    height: 3px;
+    background: $color-green;
+    width: 100%;
+}
+
+.hc-card-body {
+    padding: 20px 20px 0;
+    flex: 1;
+}
+
+.hc-card-category {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: $color-green;
+    margin-bottom: 8px;
+}
+
+.hc-card-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: $text-primary;
+    margin: 0 0 10px;
+    line-height: 1.25;
+}
+
+.hc-card-desc {
+    font-size: 11px;
+    color: $text-secondary;
+    line-height: 1.8;
+    margin: 0 0 18px;
+}
+
+.hc-badge {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.hc-badge-new {
+    background: $bg-surface-hover;
+    color: #166534; //TODO
+}
+
+.hc-badge-expiring {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.hc-card-footer {
+    border-top: 1px solid #e2e8f0;
+    padding: 14px 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hc-dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 16px;
+}
+
+.hc-date-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.hc-date-label {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $text-secondary;
+}
+
+.hc-date-value {
+    font-size: 12px;
+    font-weight: 700;
+    color: $text-primary;
+}
+
+.hc-date-value.expiring {
+    color: #991b1b;
+}
+
+.hc-divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 0 -20px;
+}
+
+.hc-btn {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 0;
+    border-radius: 4px;
+    border: 1.5px solid #0f172a;
+    color: #0f172a;
+    background: transparent;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.15s, color 0.15s;
+}
+
+.hc-btn:hover {
+    background: #0f172a;
+    color: #fff;
+}
