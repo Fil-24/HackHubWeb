@@ -109,3 +109,31 @@
   align-items: center;
   gap: 0.5rem;
 }
+// Assicurati che questo codice sia FUORI dalle altre regole (non annidato dentro .frm a meno che non lo desideri)
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+  display: block; // Meglio block di flex per gestire figli in absolute
+
+  .password-input {
+    width: 100%;
+    padding-right: 2.8rem; // Lascia lo spazio a destra per non far finire il testo sotto l'icona
+  }
+
+  .password-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%); // Centra verticalmente l'icona al millimetro
+    z-index: 10; // Forza l'icona a stare IN PRIMO PIANO, sopra l'input
+    color: $text-secondary; 
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $color-primary; 
+    }
+  }
+}

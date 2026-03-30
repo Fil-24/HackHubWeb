@@ -116,3 +116,65 @@
   width: 100%; // Si adatta alla card in modo molto più pulito
   box-sizing: border-box;
 }
+/* --- Stili Password --- */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+  display: block; 
+
+  .password-input {
+    width: 100%;
+    padding-right: 2.8rem; // Spazio per l'icona
+  }
+
+  .password-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    color: $text-secondary; 
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $color-primary; 
+    }
+  }
+}
+
+/* --- Stili Select Custom --- */
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  display: block;
+
+  .select {
+    appearance: none; // Rimuove la freccia standard di Windows/Mac
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding-right: 2.8rem; // Spazio per il tuo SVG
+    cursor: pointer;
+    background-color: #ffffff;
+    
+    &:invalid {
+      color: $text-secondary; // Mantiene il placeholder grigio finché non si seleziona un'opzione
+    }
+    
+    option {
+      color: $text-primary; // Le opzioni nel menù a tendina saranno scure
+    }
+  }
+
+  .select-arrow {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem; // Regola se la tua freccia è troppo grande o piccola
+    pointer-events: none; // Cruciale: permette di cliccare la select anche se si clicca esattamente sopra l'immagine
+    z-index: 10;
+  }
+}

@@ -29,6 +29,16 @@ export class RegisterComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  isPasswordVisible: boolean = false;
+  isConfirmPasswordVisible: boolean = false;
+
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.isConfirmPasswordVisible = !this.isConfirmPasswordVisible;
+  }
   register() {
     this.errorMessage.set(null);
 

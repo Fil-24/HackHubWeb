@@ -4,8 +4,20 @@
     <h2 id="login-title">Login</h2>
     <form (ngSubmit)="login()" class="frm" ngNativeValidate>
       <input type="email" class="input" [(ngModel)]="email" name="email" placeholder="Email" required />
-      <input type="password" class="input" [(ngModel)]="password" name="password" placeholder="Password" required />
-      @if (errorMessage()) {
+    <div class="password-wrapper">
+    <input 
+      [type]="isPasswordVisible ? 'text' : 'password'" 
+      class="input password-input" 
+      [(ngModel)]="password" 
+      name="password" 
+      placeholder="Password" 
+      required 
+    />
+    <i [class]="isPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" 
+      (click)="togglePasswordVisibility()">
+    </i>
+  </div>
+    @if (errorMessage()) {
         <div class="alert alert-error">
           <i class="fa-solid fa-triangle-exclamation"></i>
           <span>{{ errorMessage() }}</span>

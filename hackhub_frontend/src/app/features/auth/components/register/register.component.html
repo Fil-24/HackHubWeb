@@ -1,5 +1,4 @@
 <div class="register-container">
-  
   <div class="card" id="card-signup">
     <img src="assets/img/logo.svg" alt="Logo" id="logo">
     <h2 id="signup-title">Registration</h2>
@@ -8,11 +7,20 @@
       <input type="text" class="input" [(ngModel)]="surname" name="surname" placeholder="Surname" required />
       <input type="text" class="input" [(ngModel)]="nickname" name="nickname" placeholder="Nickname" required />
       <input type="email" class="input" [(ngModel)]="email" name="email" placeholder="Email" required />
-      <input type="password" class="input" [(ngModel)]="password" name="password" placeholder="Password" required/>
-      <input type="password" class="input" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required/>
+      
+      <div class="password-wrapper">
+        <input [type]="isPasswordVisible ? 'text' : 'password'" class="input password-input" [(ngModel)]="password" name="password" placeholder="Password" required/>
+        <i [class]="isPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" (click)="togglePasswordVisibility()"></i>
+      </div>
+
+      <div class="password-wrapper">
+        <input [type]="isConfirmPasswordVisible ? 'text' : 'password'" class="input password-input" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required/>
+        <i [class]="isConfirmPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" (click)="toggleConfirmPasswordVisibility()"></i>
+      </div>
       
       <div class="select-wrapper">
-        <select [(ngModel)]="role" class="input select" name="role">
+        <select [(ngModel)]="role" class="input select" name="role" required>
+          <option value="" disabled selected hidden>Select Role</option>
           <option value="USER">User</option>
           <option value="STAFF">Staff</option>
         </select>

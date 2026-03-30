@@ -18,11 +18,15 @@ import { RouterModule } from '@angular/router';
 export class LoginComponent {
   email = '';
   password = '';
+  isPasswordVisible: boolean = false;
 
+  
   errorMessage = signal<string | null>(null);
 
   constructor(private authService: AuthService, private router: Router) {}
-
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
   login() {
     this.errorMessage.set(null);
     const req: LoginRequest = { email: this.email, password: this.password };
@@ -34,7 +38,9 @@ export class LoginComponent {
       error: err => {
         this.errorMessage.set(err.message);
       }
+      
 
     });
+    
   }
 }
