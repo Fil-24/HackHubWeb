@@ -1,0 +1,83 @@
+@use "../colors" as *; 
+
+.custom-navbar {
+  background-color: $bg-surface; 
+  border-bottom: 1px solid $border-color; 
+  padding: 0.75rem 1.5rem;
+
+  .brand-text {
+    color: $color-primary;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.5px; 
+  }
+
+  .nav-link {
+    color: $text-secondary;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    padding: 0.5rem 1rem;
+
+    &:hover, &.active {
+      color: $color-accent; 
+    }
+  }
+
+  // Stile per il menu a tendina
+  .dropdown-menu {
+    background-color: $bg-surface;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    box-shadow: $shadow-card;
+    margin-top: 0.5rem;
+    
+    .dropdown-item {
+      color: $text-primary;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 1rem;
+
+      &:hover {
+        background-color: $bg-surface-hover;
+        color: $color-accent;
+      }
+    }
+    
+    .dropdown-divider {
+      border-top-color: $border-color;
+    }
+  }
+}
+
+.custom-search-input {
+  background-color: #ffffff;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: $text-primary;
+  box-shadow: none; // Rimuove l'ombra base di Bootstrap
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    border-color: $color-accent;
+    box-shadow: 0 0 0 1px $color-accent;
+  }
+  
+  &::placeholder {
+    color: $text-secondary;
+  }
+}
+
+.btn-primary {
+  background-color: $color-primary;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  padding: 0.375rem 1rem; 
+
+  &:hover {
+    background-color: $color-primary-hover;
+  }
+}
