@@ -6,60 +6,73 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: $bg-main; // Sfondo morbido
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: $bg-main;
 }
 
 #card-signup {
   background-color: $bg-surface;
   border: 1px solid $border-color;
-  border-radius: 8px;
-  box-shadow: $shadow-card;
-  padding: 2.5rem;
+  border-radius: 6px; // Aggiornato per riprendere la spigolosità di .hc-card
+  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05); // Ombra più netta
+  padding: 3rem 2.5rem;
   width: 100%;
-  max-width: 400px; // Mantiene la card proporzionata
+  max-width: 400px;
+  position: relative;
+  overflow: hidden;
+
+  // Barra verde in cima stile .hc-card-bar
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: $color-green;
+  }
 }
 
 .frm {
   display: flex;
   justify-content: center;
-  align-items: stretch; // Espande gli input a tutta larghezza
+  align-items: stretch;
   flex-direction: column;
   gap: 1.25rem;
 }
 
 #signup-title {
+  font-family: $font-display;
   margin-top: 0 !important;
   margin-bottom: 1.5rem !important;
   text-align: left;
   color: $text-primary;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 800;
+  line-height: 1.1;
 }
 
 #logo {
   width: 60px;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   align-self: flex-start;
-  // Ho rimosso z-index e margin-bottom negativo: il logo starà benissimo dentro la card
 }
 
 /* Stile per gli input */
 .input {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 12px 14px;
   background-color: #ffffff;
-  border: 1px solid $border-color;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  color: $text-primary;
+  border: 1.5px solid $border-color; // Bordo ispessito
+  border-radius: 4px; // Raggio ridotto
+  font-size: 13px;
+  color: $color-primary;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s, outline 0.2s;
   box-sizing: border-box;
 
   &:focus {
-    border-color: $color-accent;
-    box-shadow: 0 0 0 1px $color-accent;
+    border-color: $color-green;
+    outline: 3px solid rgba($color-green, 0.15); // Outline semi-trasparente al focus
   }
   
   &::placeholder {
@@ -70,31 +83,37 @@
 /* Stile per i bottoni */
 .btn {
   width: 100%;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  font-weight: 500;
+  padding: 12px 0;
+  border-radius: 4px;
+  font-family: $font-mono;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .btn-primary {
-  background-color: $color-primary;
+  background: $color-primary;
   color: #ffffff;
+  border: 1.5px solid $color-primary;
 
   &:hover {
-    background-color: $color-primary-hover;
+    background: $color-green;
+    color: $color-primary;
+    border-color: $color-green;
   }
 }
 
 .btn-secondary {
-  background-color: $bg-surface;
-  color: $text-primary;
-  border: 1px solid $border-color;
+  background: transparent;
+  color: $color-primary;
+  border: 1.5px solid $color-primary;
 
   &:hover {
-    background-color: $bg-surface-hover;
+    background: $color-primary;
+    color: #ffffff;
   }
 }
 
@@ -104,18 +123,19 @@
 
 /* Stile per l'errore */
 .alert-error {
-  background-color: $status-closed-bg;
-  border: 1px solid #fca5a5;
-  color: $status-closed-text;
+  background-color: #fee2e2;
+  border: 1.5px solid #fca5a5; // Adattato allo spessore generale
+  color: #991b1b;
   padding: 0.75rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  border-radius: 4px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  width: 100%; // Si adatta alla card in modo molto più pulito
+  width: 100%;
   box-sizing: border-box;
 }
+
 /* --- Stili Password --- */
 .password-wrapper {
   position: relative;
@@ -124,12 +144,12 @@
 
   .password-input {
     width: 100%;
-    padding-right: 2.8rem; // Spazio per l'icona
+    padding-right: 2.8rem;
   }
 
   .password-icon {
     position: absolute;
-    right: 1rem;
+    right: 14px; // Allineato al padding dell'input
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
@@ -139,7 +159,7 @@
     transition: color 0.2s ease;
 
     &:hover {
-      color: $color-primary; 
+      color: $color-green; // Cambia in verde all'hover
     }
   }
 }
@@ -151,30 +171,30 @@
   display: block;
 
   .select {
-    appearance: none; // Rimuove la freccia standard di Windows/Mac
+    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     width: 100%;
-    padding-right: 2.8rem; // Spazio per il tuo SVG
+    padding-right: 2.8rem;
     cursor: pointer;
     background-color: #ffffff;
     
     &:invalid {
-      color: $text-secondary; // Mantiene il placeholder grigio finché non si seleziona un'opzione
+      color: $text-secondary;
     }
     
     option {
-      color: $text-primary; // Le opzioni nel menù a tendina saranno scure
+      color: $text-primary;
     }
   }
 
   .select-arrow {
     position: absolute;
-    right: 1rem;
+    right: 14px; // Allineato al padding dell'input
     top: 50%;
     transform: translateY(-50%);
-    width: 1rem; // Regola se la tua freccia è troppo grande o piccola
-    pointer-events: none; // Cruciale: permette di cliccare la select anche se si clicca esattamente sopra l'immagine
+    width: 1rem;
+    pointer-events: none;
     z-index: 10;
   }
 }

@@ -2,65 +2,68 @@
 
 .custom-navbar {
   background-color: $bg-surface; 
-  border-bottom: 1px solid $border-color; 
+  border-bottom: 1.5px solid $border-color; // Bordo ispessito a 1.5px
   padding: 0.75rem 1.5rem;
 
   .brand-text {
+    font-family: $font-display; // Applicato il font dei titoli
     color: $color-primary;
-    font-weight: 700;
-    font-size: 1.25rem;
-    letter-spacing: -0.5px; 
+    font-weight: 800; // Bold come nei titoli
+    font-size: 1.5rem;
+    letter-spacing: -0.02em; // Tracking leggermente stretto
   }
 
   .nav-link {
     color: $text-secondary;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 600;
     transition: color 0.2s ease;
     padding: 0.5rem 1rem;
 
     &:hover, &.active {
-      color: $color-accent; 
+      color: $color-green; // Cambiato in verde tech
     }
   }
 
   // Stile per il menu a tendina
   .dropdown-menu {
     background-color: $bg-surface;
-    border: 1px solid $border-color;
-    border-radius: 8px;
-    box-shadow: $shadow-card;
+    border: 1.5px solid $border-color; // Bordo ispessito
+    border-radius: 4px; // Raggio ridotto per look spigoloso
+    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05); // Ombra netta
     margin-top: 0.5rem;
     
     .dropdown-item {
       color: $text-primary;
       font-weight: 500;
-      font-size: 0.95rem;
+      font-size: 13px;
       padding: 0.5rem 1rem;
 
       &:hover {
         background-color: $bg-surface-hover;
-        color: $color-accent;
+        color: $color-green;
       }
     }
     
     .dropdown-divider {
-      border-top-color: $border-color;
+      border-top: 1.5px solid $border-color; // Allineato agli altri bordi
     }
   }
 }
 
 .custom-search-input {
   background-color: #ffffff;
-  border: 1px solid $border-color;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  color: $text-primary;
-  box-shadow: none; // Rimuove l'ombra base di Bootstrap
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  border: 1.5px solid $border-color; // Bordo ispessito
+  border-radius: 4px; // Raggio ridotto
+  font-size: 13px;
+  padding: 0.5rem 0.75rem;
+  color: $color-primary;
+  box-shadow: none;
+  transition: border-color 0.2s ease, outline 0.2s ease;
 
   &:focus {
-    border-color: $color-accent;
-    box-shadow: 0 0 0 1px $color-accent;
+    border-color: $color-green;
+    outline: 3px solid rgba($color-green, 0.15); // Outline in stile search-bar
   }
   
   &::placeholder {
@@ -71,13 +74,19 @@
 .btn-primary {
   background-color: $color-primary;
   color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-  padding: 0.375rem 1rem; 
+  border: 1.5px solid $color-primary; // Aggiunto bordo anche al bottone pieno
+  border-radius: 4px; // Raggio ridotto
+  font-family: $font-mono; // Font terminale
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase; // Testo in maiuscolo
+  font-weight: 600;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  padding: 0.4rem 1.2rem; 
 
   &:hover {
-    background-color: $color-primary-hover;
+    background-color: $color-green;
+    color: $color-primary;
+    border-color: $color-green;
   }
 }

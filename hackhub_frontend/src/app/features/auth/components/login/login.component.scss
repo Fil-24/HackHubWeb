@@ -6,18 +6,30 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: $bg-main; // Usa il tuo grigio/blu chiarissimo
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: $bg-main;
 }
 
 #card-login {
-  background-color: $bg-surface; // Usa il tuo bianco 99%
-  border: 1px solid $border-color; // Usa il tuo bordo morbido
-  border-radius: 8px;
-  box-shadow: $shadow-card; // Usa la tua ombra "fredda"
-  padding: 2.5rem;
+  background-color: $bg-surface;
+  border: 1px solid $border-color; 
+  border-radius: 6px; // Aggiornato a 6px in linea con .hc-card
+  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05); // Ombra più netta e moderna
+  padding: 3rem 2.5rem;
   width: 100%;
   max-width: 400px;
+  position: relative;
+  overflow: hidden;
+
+  // Barra verde in cima stile .hc-card-bar
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: $color-green;
+  }
 }
 
 .frm {
@@ -29,111 +41,121 @@
 }
 
 #login-title {
+  font-family: $font-display;
   margin-top: 0 !important;
   margin-bottom: 1.5rem !important;
   text-align: left;
-  color: $text-primary; // Usa il tuo grigio antracite
-  font-size: 1.25rem;
-  font-weight: 600;
+  color: $text-primary;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 800;
+  line-height: 1.1;
 }
 
 #logo {
   width: 60px;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   align-self: flex-start; 
 }
 
 /* Stile per gli input */
 .input {
   width: 100%;
-  padding: 0.75rem 1rem;
-  background-color: #ffffff; // Sfondo input bianco puro per staccare dal bg-surface
-  border: 1px solid $border-color;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  color: $text-primary;
+  padding: 12px 14px;
+  background-color: #ffffff; 
+  border: 1.5px solid $border-color; // Bordo ispessito
+  border-radius: 4px; // Raggio ridotto per un look più spigoloso
+  font-size: 13px;
+  color: $color-primary;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s, outline 0.2s;
   box-sizing: border-box;
 
   &:focus {
-    border-color: $color-accent; // Usa il tuo blu tech al focus
-    box-shadow: 0 0 0 1px $color-accent;
+    border-color: $color-green; 
+    outline: 3px solid rgba($color-green, 0.15); // Outline semi-trasparente
   }
   
   &::placeholder {
-    color: $text-secondary; // Usa il tuo grigio medio
+    color: $text-secondary; 
   }
 }
 
 /* Stile per i bottoni */
 .btn {
   width: 100%;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  font-weight: 500;
+  padding: 12px 0;
+  border-radius: 4px;
+  font-family: $font-mono;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .btn-primary {
-  background-color: $color-primary; // Slate scuro per azione principale
+  background: $color-primary; 
   color: #ffffff;
+  border: 1.5px solid $color-primary;
 
   &:hover {
-    background-color: $color-primary-hover;
+    background: $color-green;
+    color: $color-primary;
+    border-color: $color-green;
   }
 }
 
 .btn-secondary {
-  background-color: $bg-surface;
-  color: $text-primary;
-  border: 1px solid $border-color;
+  background: transparent;
+  color: $color-primary;
+  border: 1.5px solid $color-primary;
 
   &:hover {
-    background-color: $bg-surface-hover; // Feedback delicato al passaggio del mouse
+    background: $color-primary;
+    color: #ffffff;
   }
 }
 
-/* Stile per l'errore basato sui tuoi stati semantici */
+/* Stile per l'errore (allineato ai colori dei badge .hc-badge-expiring) */
 .alert-error {
-  background-color: $status-closed-bg; // Rosso pastello desaturato
-  border: 1px solid #fca5a5; // Bordo leggermente più scuro dello sfondo per definire la card
-  color: $status-closed-text; // Rosso scuro testuale
+  background-color: #fee2e2; 
+  border: 1.5px solid #fca5a5; 
+  color: #991b1b; 
   padding: 0.75rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  border-radius: 4px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
-// Assicurati che questo codice sia FUORI dalle altre regole (non annidato dentro .frm a meno che non lo desideri)
 
+/* Gestione occhio della password */
 .password-wrapper {
   position: relative;
   width: 100%;
-  display: block; // Meglio block di flex per gestire figli in absolute
+  display: block; 
 
   .password-input {
     width: 100%;
-    padding-right: 2.8rem; // Lascia lo spazio a destra per non far finire il testo sotto l'icona
+    padding-right: 2.8rem; 
   }
 
   .password-icon {
     position: absolute;
-    right: 1rem;
+    right: 14px;
     top: 50%;
-    transform: translateY(-50%); // Centra verticalmente l'icona al millimetro
-    z-index: 10; // Forza l'icona a stare IN PRIMO PIANO, sopra l'input
+    transform: translateY(-50%); 
+    z-index: 10; 
     color: $text-secondary; 
     cursor: pointer;
     font-size: 1.1rem;
     transition: color 0.2s ease;
 
     &:hover {
-      color: $color-primary; 
+      color: $color-green; // Ora diventa verde all'hover
     }
   }
 }

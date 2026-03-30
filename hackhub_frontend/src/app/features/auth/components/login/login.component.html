@@ -1,7 +1,10 @@
 <div class="login-container">
   <div class="card" id="card-login">
-    <img src="assets/img/logo.svg" alt="Logo" id="logo">
-    <h2 id="login-title">Login</h2>
+    
+    <div class="d-flex align-items-center gap-3">
+      <img src="/assets/img/logo.svg" alt="Logo" id="logo">
+      <h2 id="login-title" class="mb-0">Login</h2>
+    </div>
     <form (ngSubmit)="login()" class="frm" ngNativeValidate>
       <input type="email" class="input" [(ngModel)]="email" name="email" placeholder="Email" required />
     <div class="password-wrapper">
