@@ -8,7 +8,11 @@
   flex-direction: column;
   background-color: $bg-main;
 }
-
+#logo {
+  width: 60px;
+  margin-bottom: 1.5rem;
+  align-self: flex-start; 
+}
 #card-signup {
   background-color: $bg-surface;
   border: 1px solid $border-color;

@@ -1,18 +1,16 @@
 <nav class="navbar navbar-expand-lg custom-navbar">
   <div class="container-fluid">
-    <a class="navbar-brand brand-text" href="#">HackPlatform</a>
-    
+    <a class="navbar-brand brand-text" routerLink="/"><img src="assets/img/logo.svg" alt="Logo" id="logo">Hack<span class="accent">Hub</span></a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link" routerLink="/hackathons" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Hackathons</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -26,11 +24,40 @@
           </ul>
         </li>
       </ul>
-      
-      <form class="d-flex search-form" role="search">
-        <input class="form-control custom-search-input me-2" type="search" placeholder="Cerca hackathon..." aria-label="Search">
-        <button class="btn btn-primary" type="submit">Cerca</button>
-      </form>
+
+      <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+      @if (!isAuthenticated()) {
+        <a class="btn btn-outline-primary" routerLink="/login">Login</a>
+        <a class="btn btn-primary" routerLink="/register">Sign Up</a> 
+        } @else {
+        <div class="nav-item dropdown profile-dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center text-decoration-none px-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            
+            <div class="d-flex flex-column align-items-end text-end me-2">
+              <span class="profile-name">{{ userProfile()?.name }}</span>
+              <span class="profile-role">{{ userProfile()?.role }}</span>
+            </div>
+
+            <img [src]="userProfile()?.avatarUrl" alt="Avatar" class="profile-avatar">
+
+          </a>
+          
+          <ul class="dropdown-menu dropdown-menu-end shadow">
+            <li class="px-4 py-3 text-center">
+                <img [src]="userProfile()?.avatarUrl" alt="Profile Large" class="profile-avatar-large mb-2">
+                <h6 class="mb-0 brand-text" style="font-size: 1rem;">{{ userProfile()?.name }}</h6>
+                <small class="text-muted">{{ userProfile()?.email }}</small>
+              </li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" routerLink="/dashboard">Il mio profilo</a></li>
+            <li><a class="dropdown-item" routerLink="/settings">Impostazioni</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><button class="dropdown-item text-danger" (click)="logout()">Logout</button></li>
+          </ul>
+        </div>
+      }
+    </div>
+
     </div>
   </div>
 </nav>

@@ -90,3 +90,77 @@
     border-color: $color-green;
   }
 }
+.btn-outline-primary {
+  color: $color-primary;
+  background-color: transparent;
+  border: 1.5px solid $color-primary;
+  border-radius: 4px;
+  font-family: $font-mono;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  padding: 0.4rem 1.2rem; 
+
+  &:hover {
+    background-color: rgba($color-primary, 0.05); // Leggero sfondo al passaggio
+    color: $color-green;
+    border-color: $color-green;
+  }
+}
+#logo {
+  width: 40px;
+  height: auto;
+  margin-right: 0.75rem;
+}
+.accent {
+    color: $color-green;
+}
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid $border-color;
+}
+.profile-avatar-large {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid $border-color;
+}
+
+.profile-dropdown {
+  // Rimuoviamo la freccina standard dal dropdown per un look più pulito
+  .dropdown-toggle::after {
+    display: none; 
+  }
+  
+  // Rimuoviamo il padding in eccesso e gestiamo l'interlinea
+  .dropdown-toggle {
+    padding: 0;
+    line-height: 1.1; // Avvicina il nome al ruolo
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  // Stili per il Nome
+  .profile-name {
+    color: $color-primary;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  // Stili per il Ruolo
+  .profile-role {
+    color: $text-secondary;
+    font-size: 11px;
+    font-weight: 400;
+    margin-top: 2px; // Piccolo spazio tra nome e ruolo
+  }
+}
