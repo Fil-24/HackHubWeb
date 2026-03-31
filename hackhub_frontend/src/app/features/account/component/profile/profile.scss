@@ -1,0 +1,173 @@
+@use "../../../../../colors" as *; // Assicurati che questo percorso punti al tuo file _colors.scss
+
+.profile-section {
+  background: $bg-main;
+  min-height: calc(100vh - 80px); // Sottrai l'altezza stimata della navbar
+  display: flex;
+  align-items: center;
+}
+
+// ── LA CARD ──
+.pr-card {
+  background: $bg-surface;
+  border-radius: 6px;
+  border: 1px solid $border-color;
+  box-shadow: $shadow-card;
+  position: relative;
+  overflow: hidden;
+}
+
+.pr-card-bar {
+  height: 4px;
+  background: $color-green;
+  width: 100%;
+}
+
+.pr-card-body {
+  padding: 48px 40px;
+}
+
+// ── TIPOGRAFIA ──
+.pr-title {
+  font-family: $font-display;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 800;
+  color: $color-primary;
+  margin-bottom: 12px;
+  line-height: 1.1;
+
+  .accent {
+    color: $color-green;
+  }
+}
+
+.pr-badge {
+  display: inline-block;
+  font-family: $font-mono;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $color-green;
+  background: rgba($color-green, 0.1);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.pr-divider {
+  width: 100%;
+  height: 1px;
+  background: $border-color;
+  margin: 32px 0;
+}
+
+// ── GRIGLIA DATI E FORM ──
+.pr-info-grid,
+.pr-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.pr-info-item,
+.pr-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pr-full-width {
+  grid-column: 1 / -1;
+}
+
+.pr-label {
+  font-family: $font-mono;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $text-secondary;
+}
+
+.pr-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.accent-green {
+  color: $color-green;
+}
+
+.pr-text-muted {
+  color: $text-secondary;
+  font-style: italic;
+  font-weight: 400;
+}
+
+// ── INPUT FIELDS (stile simile alla search-bar) ──
+.pr-input {
+  width: 100%;
+  background: #ffffff;
+  border: 1.5px solid $border-color;
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: $color-primary;
+  outline: none;
+  transition: border-color 0.2s, outline 0.2s;
+
+  &:focus {
+    border-color: $color-green;
+    outline: 3px solid rgba($color-green, 0.15);
+  }
+}
+
+// ── BOTTONI ──
+.pr-btn-primary {
+  background: $color-primary;
+  color: #ffffff;
+  border: none;
+  padding: 14px 24px;
+  font-family: $font-mono;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover:not(:disabled) {
+    background: $color-green;
+    color: $color-primary;
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.pr-btn-outline {
+  font-family: $font-mono;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 14px 24px;
+  border-radius: 4px;
+  border: 1.5px solid $color-primary;
+  color: $color-primary;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+&:hover {
+    background-color: rgba($color-primary, 0.05); // Leggero sfondo al passaggio
+    color: $color-green;
+    border-color: $color-green;
+  }
+ 
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

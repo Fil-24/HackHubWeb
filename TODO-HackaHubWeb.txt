@@ -1,3 +1,3 @@
--aggiungere salt
+-criptare la password prima di inviarla, quindi nel frontend
 
 -sistemare i model all'interno del home

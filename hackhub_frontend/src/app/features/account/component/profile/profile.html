@@ -1,0 +1,112 @@
+<section class="profile-section">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        
+        <div class="pr-card">
+          <div class="pr-card-bar"></div>
+          
+          <div class="pr-card-body">
+            
+            @if (authService.user(); as user) {
+              
+              <div class="text-center mb-5">
+                <h3 class="pr-title" >
+                  {{ user.name }} <span class="accent">{{ user.surname }}</span>
+                </h3>
+                <span class="pr-badge">{{ user.role }}</span>
+              </div>
+              
+              <div class="pr-divider"></div>
+              
+              @if (!isEditing()) {
+                <div class="pr-info-grid">
+                  <div class="pr-info-item">
+                    <span class="pr-label">Nome</span>
+                    <span class="pr-value">{{ user.name }}</span>
+                  </div>
+                  
+                  <div class="pr-info-item">
+                    <span class="pr-label">Cognome</span>
+                    <span class="pr-value">{{ user.surname }}</span>
+                  </div>
+
+                  <div class="pr-info-item pr-full-width">
+                    <span class="pr-label">Nickname</span>
+                    <span class="pr-value">{{ user.nickname || 'Nessun nickname' }}</span>
+                  </div>
+                  
+                  <div class="pr-info-item pr-full-width">
+                    <span class="pr-label">Email</span>
+                    <span class="pr-value">{{ user.email }}</span>
+                  </div>
+
+                  <div class="pr-info-item pr-full-width mt-2">
+                    <span class="pr-label">Status Team</span>
+                    @if (user.idTeam) {
+                      <span class="pr-value accent-green">Assegnato al Team #{{ user.idTeam }}</span>
+                    } @else {
+                      <span class="pr-value pr-text-muted">Nessun team assegnato</span>
+                    }
+                  </div>
+                </div>
+
+                <div class="mt-5 text-center">
+                  <button class="pr-btn-primary w-100" (click)="toggleEdit()">
+                    Modifica Informazioni →
+                  </button>
+                </div>
+
+              } @else {
+                <div class="pr-form">
+                  
+                  <div class="pr-input-group">
+                    <label class="pr-label">Nome</label>
+                    <input type="text" class="pr-input" [(ngModel)]="editName">
+                  </div>
+
+                  <div class="pr-input-group">
+                    <label class="pr-label">Cognome</label>
+                    <input type="text" class="pr-input" [(ngModel)]="editSurname">
+                  </div>
+
+                  <div class="pr-input-group pr-full-width">
+                    <label class="pr-label">Nickname</label>
+                    <input type="text" class="pr-input" [(ngModel)]="editNickname">
+                  </div>
+
+                  <div class="pr-input-group pr-full-width">
+                    <label class="pr-label">Email</label>
+                    <input type="email" class="pr-input" [(ngModel)]="editEmail">
+                  </div>
+
+                </div>
+
+                <div class="mt-5 d-flex gap-3">
+                  <button class="pr-btn-outline w-50" (click)="cancelEdit()" [disabled]="isSaving()">Annulla</button>
+                  <button class="pr-btn-primary w-50 d-flex justify-content-center align-items-center gap-2" (click)="saveChanges()" [disabled]="isSaving()">
+                    @if (isSaving()) {
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      Salvataggio...
+                    } @else {
+                      Salva Modifiche
+                    }
+                  </button>
+                </div>
+              }
+
+            } @else {
+              <div class="text-center py-5">
+                <div class="spinner-border" style="color: #00c896;" role="status">
+                  <span class="visually-hidden">Caricamento...</span>
+                </div>
+              </div>
+            }
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
