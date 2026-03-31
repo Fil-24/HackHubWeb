@@ -1,1 +1,149 @@
 /* You can add global styles to this file, and also import other style files */
+// _shared.scss
+@use "colors" as *;
+
+// ── TYPOGRAPHY ──
+%title-display {
+  font-family: $font-display;
+  color: $text-primary;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 800;
+  line-height: 1.1;
+
+  .accent { color: $color-green; }
+}
+
+// ── LAYOUT & CONTAINERS ──
+%auth-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: $bg-main;
+}
+
+// ── CARDS ──
+%card-base {
+  background-color: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  box-shadow: $shadow-card;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+// Per la riga verde superiore (usata come ::before o div)
+%card-top-bar {
+  content: '';
+  width: 100%;
+  height: 3px;
+  background: $color-green;
+  display: block;
+}
+
+// ── FORMS & INPUTS ──
+%input-base {
+  width: 100%;
+  background-color: #ffffff;
+  border: 1.5px solid $border-color;
+  border-radius: 4px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: $color-primary;
+  outline: none;
+  transition: border-color 0.2s, outline 0.2s;
+  box-sizing: border-box;
+
+  &:focus, &:focus-within {
+    border-color: $color-green;
+    outline: 3px solid rgba($color-green, 0.15);
+  }
+  
+  &::placeholder { color: $text-secondary; }
+}
+
+// ── PASSWORD WRAPPER ──
+%password-wrapper {
+  position: relative;
+  width: 100%;
+  display: block; 
+
+  input { padding-right: 2.8rem; }
+
+  .password-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%); 
+    z-index: 10; 
+    color: $text-secondary; 
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.2s ease;
+
+    &:hover { color: $color-green; }
+  }
+}
+
+// ── BUTTONS ──
+%btn-base {
+  font-family: $font-mono;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  display: inline-block;
+  text-align: center;
+  border: 1.5px solid transparent;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+%btn-primary {
+  @extend %btn-base;
+  background: $color-primary;
+  color: #ffffff;
+  border-color: $color-primary;
+
+  &:hover:not(:disabled) {
+    background: $color-green;
+    color: $color-primary;
+    border-color: $color-green;
+  }
+}
+
+%btn-outline {
+  @extend %btn-base;
+  background: transparent;
+  color: $color-primary;
+  border-color: $color-primary;
+
+  &:hover:not(:disabled) {
+    background-color: rgba($color-primary, 0.05);
+    color: $color-green;
+    border-color: $color-green;
+  }
+}
+
+// ── ALERTS ──
+%alert-error {
+  background-color: $status-closed-bg;
+  border: 1.5px solid $status-closed-border;
+  color: $status-closed-text;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}

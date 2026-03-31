@@ -1,16 +1,17 @@
 @use "../colors" as *; 
+@use "../styles" as *;
 
 .custom-navbar {
   background-color: $bg-surface; 
-  border-bottom: 1.5px solid $border-color; // Bordo ispessito a 1.5px
+  border-bottom: 1.5px solid $border-color;
   padding: 0.75rem 1.5rem;
 
   .brand-text {
-    font-family: $font-display; // Applicato il font dei titoli
+    font-family: $font-display;
     color: $color-primary;
-    font-weight: 800; // Bold come nei titoli
+    font-weight: 800;
     font-size: 1.5rem;
-    letter-spacing: -0.02em; // Tracking leggermente stretto
+    letter-spacing: -0.02em;
   }
 
   .nav-link {
@@ -20,17 +21,14 @@
     transition: color 0.2s ease;
     padding: 0.5rem 1rem;
 
-    &:hover, &.active {
-      color: $color-green; // Cambiato in verde tech
-    }
+    &:hover, &.active { color: $color-green; }
   }
 
-  // Stile per il menu a tendina
   .dropdown-menu {
     background-color: $bg-surface;
-    border: 1.5px solid $border-color; // Bordo ispessito
-    border-radius: 4px; // Raggio ridotto per look spigoloso
-    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05); // Ombra netta
+    border: 1.5px solid $border-color;
+    border-radius: 4px;
+    box-shadow: $shadow-card;
     margin-top: 0.5rem;
     
     .dropdown-item {
@@ -45,78 +43,33 @@
       }
     }
     
-    .dropdown-divider {
-      border-top: 1.5px solid $border-color; // Allineato agli altri bordi
-    }
+    .dropdown-divider { border-top: 1.5px solid $border-color; }
   }
 }
 
 .custom-search-input {
-  background-color: #ffffff;
-  border: 1.5px solid $border-color; // Bordo ispessito
-  border-radius: 4px; // Raggio ridotto
-  font-size: 13px;
+  @extend %input-base;
   padding: 0.5rem 0.75rem;
-  color: $color-primary;
-  box-shadow: none;
-  transition: border-color 0.2s ease, outline 0.2s ease;
-
-  &:focus {
-    border-color: $color-green;
-    outline: 3px solid rgba($color-green, 0.15); // Outline in stile search-bar
-  }
-  
-  &::placeholder {
-    color: $text-secondary;
-  }
 }
 
 .btn-primary {
-  background-color: $color-primary;
-  color: #ffffff;
-  border: 1.5px solid $color-primary; // Aggiunto bordo anche al bottone pieno
-  border-radius: 4px; // Raggio ridotto
-  font-family: $font-mono; // Font terminale
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase; // Testo in maiuscolo
-  font-weight: 600;
-  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  @extend %btn-primary;
   padding: 0.4rem 1.2rem; 
-
-  &:hover {
-    background-color: $color-green;
-    color: $color-primary;
-    border-color: $color-green;
-  }
 }
+
 .btn-outline-primary {
-  color: $color-primary;
-  background-color: transparent;
-  border: 1.5px solid $color-primary;
-  border-radius: 4px;
-  font-family: $font-mono;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 600;
-  transition: all 0.15s ease;
+  @extend %btn-outline;
   padding: 0.4rem 1.2rem; 
-
-  &:hover {
-    background-color: rgba($color-primary, 0.05); // Leggero sfondo al passaggio
-    color: $color-green;
-    border-color: $color-green;
-  }
 }
+
 #logo {
   width: 40px;
   height: auto;
   margin-right: 0.75rem;
 }
-.accent {
-    color: $color-green;
-}
+
+.accent { color: $color-green; }
+
 .profile-avatar {
   width: 36px;
   height: 36px;
@@ -124,6 +77,7 @@
   object-fit: cover;
   border: 1.5px solid $border-color;
 }
+
 .profile-avatar-large {
   width: 64px;
   height: 64px;
@@ -133,34 +87,25 @@
 }
 
 .profile-dropdown {
-  // Rimuoviamo la freccina standard dal dropdown per un look più pulito
-  .dropdown-toggle::after {
-    display: none; 
-  }
+  .dropdown-toggle::after { display: none; }
   
-  // Rimuoviamo il padding in eccesso e gestiamo l'interlinea
   .dropdown-toggle {
     padding: 0;
-    line-height: 1.1; // Avvicina il nome al ruolo
+    line-height: 1.1;
     transition: opacity 0.2s ease;
-
-    &:hover {
-      opacity: 0.8;
-    }
+    &:hover { opacity: 0.8; }
   }
 
-  // Stili per il Nome
   .profile-name {
     color: $color-primary;
     font-size: 14px;
     font-weight: 600;
   }
 
-  // Stili per il Ruolo
   .profile-role {
     color: $text-secondary;
     font-size: 11px;
     font-weight: 400;
-    margin-top: 2px; // Piccolo spazio tra nome e ruolo
+    margin-top: 2px;
   }
 }

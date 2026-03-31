@@ -1,12 +1,9 @@
 @use "../../../../colors" as *;
-
-$font-display: 'Syne', sans-serif;
-$font-mono: 'DM Mono', monospace;
-
+@use "../../../../styles" as *;
 
 // ════════════════════════════════════════════════════
 //  SECTION 1 — BANNER
-// ════════════════════════════════════════════════════
+// ═════════════════════════════════════════════════╗
 .home-first-section {
     position: relative;
     min-height: 100vh;
@@ -15,7 +12,6 @@ $font-mono: 'DM Mono', monospace;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-
     background: $color-primary;
 }
 
@@ -32,10 +28,9 @@ $font-mono: 'DM Mono', monospace;
     z-index: 1;
 }
 
-
 /* Titolo principale */
 .hh-title {
-    font-family: 'Syne', sans-serif;
+    font-family: $font-display;
     z-index: 1;
     font-size: clamp(52px, 10vw, 96px);
     font-weight: 800;
@@ -45,23 +40,23 @@ $font-mono: 'DM Mono', monospace;
     text-align: center;
     position: relative;
     animation: fadeUp 0.7s ease 0.1s both;
-}
 
-.hh-title span.accent {
-    color: $color-green;
-}
+    span.accent {
+        color: $color-green;
+    }
 
-.hh-title::before {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    color: #ff3b6b;
-    clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
-    transform: translate(-2px, 0);
-    opacity: 0;
-    animation: glitch 4s infinite 1s;
+    &::before {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        color: $color-glitch; // Usa la variabile definita in _colors.scss
+        clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+        transform: translate(-2px, 0);
+        opacity: 0;
+        animation: glitch 4s infinite 1s;
+    }
 }
 
 .hh-cursor {
@@ -79,7 +74,6 @@ $font-mono: 'DM Mono', monospace;
         opacity: 0;
         transform: translateY(18px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -87,38 +81,15 @@ $font-mono: 'DM Mono', monospace;
 }
 
 @keyframes glitch {
-
-    0%,
-    90%,
-    100% {
-        opacity: 0;
-    }
-
-    91% {
-        opacity: 0.7;
-        transform: translate(-2px, 0);
-    }
-
-    93% {
-        opacity: 0.7;
-        transform: translate(2px, 0);
-    }
-
-    95% {
-        opacity: 0;
-    }
+    0%, 90%, 100% { opacity: 0; }
+    91% { opacity: 0.7; transform: translate(-2px, 0); }
+    93% { opacity: 0.7; transform: translate(2px, 0); }
+    95% { opacity: 0; }
 }
 
 @keyframes blink {
-
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
 
 
@@ -139,6 +110,7 @@ $font-mono: 'DM Mono', monospace;
 }
 
 .search-label {
+    font-family: $font-mono;
     font-size: 11px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -158,10 +130,8 @@ $font-mono: 'DM Mono', monospace;
 }
 
 .search-title {
+    @extend %title-display; // Eredita stili base del titolo
     font-size: clamp(28px, 4vw, 46px);
-    font-weight: 800;
-    color: $color-primary;
-    line-height: 1.1;
     margin-bottom: 16px;
 
     em {
@@ -177,12 +147,12 @@ $font-mono: 'DM Mono', monospace;
     letter-spacing: 0.03em;
 }
 
-// ── COLONNA DESTRA ──
+// ── COLONNA DESTRA (Search bar custom ma legata ai colori) ──
 .search-bar {
     display: flex;
     align-items: stretch;
     background: #ffffff;
-    border: 1.5px solid $color-primary;
+    border: 1.5px solid $border-color;
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 20px;
@@ -192,11 +162,12 @@ $font-mono: 'DM Mono', monospace;
         border-color: $color-green;
         outline: 3px solid rgba($color-green, 0.15);
     }
-}
-.search-bar form {
-    display: flex;
-    flex: 1;
-    align-items: stretch;
+
+    form {
+        display: flex;
+        flex: 1;
+        align-items: stretch;
+    }
 }
 
 .search-icon {
@@ -207,7 +178,7 @@ $font-mono: 'DM Mono', monospace;
     svg {
         width: 16px;
         height: 16px;
-        stroke: $color-primary;
+        stroke: $text-secondary;
         fill: none;
         stroke-width: 2;
         stroke-linecap: round;
@@ -222,26 +193,20 @@ $font-mono: 'DM Mono', monospace;
     color: $color-primary;
     background: transparent;
     padding: 14px 8px 14px 0;
+
+    &::placeholder {
+        color: $text-secondary;
+    }
 }
 
 .search-btn {
-    background: $color-primary;
-    color: #ffffff;
+    @extend %btn-primary; // Eredita lo stile bottone primario condiviso
     border: none;
+    border-radius: 0; // Override per farlo attaccare all'input wrapper
     padding: 0 22px;
-    font-family: $font-mono;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
     white-space: nowrap;
-    transition: background 0.2s, color 0.2s;
-
-    &:hover {
-        background: $color-green;
-        color: $color-primary;
-    }
 }
+
 // ════════════════════════════════════════════════════
 .sh-divider {
     width: 100%;
@@ -253,7 +218,7 @@ $font-mono: 'DM Mono', monospace;
 //  SECTION 3 — GRIGLIA CARDS
 // ════════════════════════════════════════════════════
 .hc-wrap {
-    background: #f6f8fa;
+    background: $bg-main;
     padding: 48px 0;
 }
 
@@ -265,6 +230,7 @@ $font-mono: 'DM Mono', monospace;
 }
 
 .hc-label {
+    font-family: $font-mono;
     font-size: 11px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -273,22 +239,20 @@ $font-mono: 'DM Mono', monospace;
     display: flex;
     align-items: center;
     gap: 8px;
-}
 
-.hc-label::before {
-    content: '';
-    display: inline-block;
-    width: 20px;
-    height: 2px;
-    background: $color-green;
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 2px;
+        background: $color-green;
+    }
 }
 
 .hc-title {
+    @extend %title-display;
     font-size: clamp(22px, 3vw, 36px);
-    font-weight: 800;
-    color: $text-primary;
     margin: 0;
-    line-height: 1.1;
 }
 
 .hc-count {
@@ -304,28 +268,22 @@ $font-mono: 'DM Mono', monospace;
     gap: 20px;
 }
 
+// ── CARD REFATTORIZZATA ──
 .hc-card {
-    background: #fdfdfd;
-    border-radius: 6px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05);
-    overflow: hidden;
+    @extend %card-base; // Eredita tutto il design shadow/border della card base
     display: flex;
     flex-direction: column;
     height: 100%;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-}
 
-.hc-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px -4px rgba(15, 23, 42, 0.1);
-    border-color: $color-green;
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: $shadow-card-hover;
+        border-color: $color-green;
+    }
 }
 
 .hc-card-bar {
-    height: 3px;
-    background: $color-green;
-    width: 100%;
+    @extend %card-top-bar; // Barra verde in cima riutilizzata
 }
 
 .hc-card-body {
@@ -334,6 +292,7 @@ $font-mono: 'DM Mono', monospace;
 }
 
 .hc-card-category {
+    font-family: $font-mono;
     font-size: 10px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -342,7 +301,7 @@ $font-mono: 'DM Mono', monospace;
 }
 
 .hc-card-name {
-    font-family: 'Syne', sans-serif;
+    font-family: $font-display;
     font-size: 16px;
     font-weight: 800;
     color: $text-primary;
@@ -359,6 +318,7 @@ $font-mono: 'DM Mono', monospace;
 
 .hc-badge {
     display: inline-block;
+    font-family: $font-mono;
     font-size: 9px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -370,17 +330,17 @@ $font-mono: 'DM Mono', monospace;
 }
 
 .hc-badge-new {
-    background: $bg-surface-hover;
-    color: #166534; //TODO
+    background: $status-open-bg;
+    color: $status-open-text;
 }
 
 .hc-badge-expiring {
-    background: #fee2e2;
-    color: #991b1b;
+    background: $status-closed-bg;
+    color: $status-closed-text;
 }
 
 .hc-card-footer {
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid $border-color;
     padding: 14px 20px 16px;
     display: flex;
     flex-direction: column;
@@ -400,6 +360,7 @@ $font-mono: 'DM Mono', monospace;
 }
 
 .hc-date-label {
+    font-family: $font-mono;
     font-size: 9px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -410,33 +371,20 @@ $font-mono: 'DM Mono', monospace;
     font-size: 12px;
     font-weight: 700;
     color: $text-primary;
-}
 
-.hc-date-value.expiring {
-    color: #991b1b;
+    &.expiring {
+        color: $status-closed-text;
+    }
 }
 
 .hc-divider {
     height: 1px;
-    background: #e2e8f0;
+    background: $border-color;
     margin: 0 -20px;
 }
 
 .hc-btn {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 10px 0;
-    border-radius: 4px;
-    border: 1.5px solid #0f172a;
-    color: #0f172a;
-    background: transparent;
-    cursor: pointer;
+    @extend %btn-outline; // Eredita lo stile bottone con bordo condiviso
     width: 100%;
-    transition: background 0.15s, color 0.15s;
-}
-
-.hc-btn:hover {
-    background: #0f172a;
-    color: #fff;
+    padding: 10px 0;
 }

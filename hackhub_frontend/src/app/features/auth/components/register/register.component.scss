@@ -1,38 +1,21 @@
-@use "../../../../../colors" as *; // Risolve l'errore "Undefined variable"
+@use "../../../../../colors" as *;
+@use "../../../../../styles" as *;
 
-.register-container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  background-color: $bg-main;
+.login-container, .register-container {
+  @extend %auth-container;
 }
-#logo {
-  width: 60px;
-  margin-bottom: 1.5rem;
-  align-self: flex-start; 
-}
-#card-signup {
-  background-color: $bg-surface;
-  border: 1px solid $border-color;
-  border-radius: 6px; // Aggiornato per riprendere la spigolosità di .hc-card
-  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05); // Ombra più netta
+
+#card-login, #card-signup {
+  @extend %card-base;
   padding: 3rem 2.5rem;
   width: 100%;
   max-width: 400px;
-  position: relative;
-  overflow: hidden;
 
-  // Barra verde in cima stile .hc-card-bar
   &::before {
-    content: '';
+    @extend %card-top-bar;
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 3px;
-    background: $color-green;
   }
 }
 
@@ -44,157 +27,51 @@
   gap: 1.25rem;
 }
 
-#signup-title {
-  font-family: $font-display;
+#login-title, #signup-title {
+  @extend %title-display;
   margin-top: 0 !important;
   margin-bottom: 1.5rem !important;
   text-align: left;
-  color: $text-primary;
-  font-size: clamp(28px, 4vw, 36px);
-  font-weight: 800;
-  line-height: 1.1;
 }
 
 #logo {
   width: 60px;
   margin-bottom: 1.5rem;
-  align-self: flex-start;
+  align-self: flex-start; 
 }
 
-/* Stile per gli input */
-.input {
-  width: 100%;
-  padding: 12px 14px;
-  background-color: #ffffff;
-  border: 1.5px solid $border-color; // Bordo ispessito
-  border-radius: 4px; // Raggio ridotto
-  font-size: 13px;
-  color: $color-primary;
-  outline: none;
-  transition: border-color 0.2s, outline 0.2s;
-  box-sizing: border-box;
+/* Form Elements */
+.input { @extend %input-base; }
 
-  &:focus {
-    border-color: $color-green;
-    outline: 3px solid rgba($color-green, 0.15); // Outline semi-trasparente al focus
-  }
-  
-  &::placeholder {
-    color: $text-secondary;
-  }
-}
+.btn { width: 100%; padding: 12px 0; }
+.btn-primary { @extend %btn-primary; @extend .btn; }
+.btn-secondary { @extend %btn-outline; @extend .btn; }
 
-/* Stile per i bottoni */
-.btn {
-  width: 100%;
-  padding: 12px 0;
-  border-radius: 4px;
-  font-family: $font-mono;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
+.alert-error { @extend %alert-error; }
 
-.btn-primary {
-  background: $color-primary;
-  color: #ffffff;
-  border: 1.5px solid $color-primary;
-
-  &:hover {
-    background: $color-green;
-    color: $color-primary;
-    border-color: $color-green;
-  }
-}
-
-.btn-secondary {
-  background: transparent;
-  color: $color-primary;
-  border: 1.5px solid $color-primary;
-
-  &:hover {
-    background: $color-primary;
-    color: #ffffff;
-  }
-}
-
-#btn-signup {
-  margin-top: 0.5rem;
-}
-
-/* Stile per l'errore */
-.alert-error {
-  background-color: #fee2e2;
-  border: 1.5px solid #fca5a5; // Adattato allo spessore generale
-  color: #991b1b;
-  padding: 0.75rem;
-  border-radius: 4px;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* --- Stili Password --- */
 .password-wrapper {
-  position: relative;
-  width: 100%;
-  display: block; 
-
-  .password-input {
-    width: 100%;
-    padding-right: 2.8rem;
-  }
-
-  .password-icon {
-    position: absolute;
-    right: 14px; // Allineato al padding dell'input
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    color: $text-secondary; 
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: $color-green; // Cambia in verde all'hover
-    }
-  }
+  @extend %password-wrapper;
+  .password-input { @extend %input-base; }
 }
 
-/* --- Stili Select Custom --- */
+/* Solo in Register: Select Custom */
 .select-wrapper {
   position: relative;
   width: 100%;
   display: block;
 
   .select {
+    @extend %input-base;
     appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    width: 100%;
-    padding-right: 2.8rem;
     cursor: pointer;
-    background-color: #ffffff;
     
-    &:invalid {
-      color: $text-secondary;
-    }
-    
-    option {
-      color: $text-primary;
-    }
+    &:invalid { color: $text-secondary; }
+    option { color: $text-primary; }
   }
 
   .select-arrow {
     position: absolute;
-    right: 14px; // Allineato al padding dell'input
+    right: 14px;
     top: 50%;
     transform: translateY(-50%);
     width: 1rem;
