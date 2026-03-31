@@ -138,7 +138,6 @@ $font-mono: 'DM Mono', monospace;
     }
 }
 
-
 .search-label {
     font-size: 11px;
     letter-spacing: 0.2em;
@@ -255,12 +254,7 @@ $font-mono: 'DM Mono', monospace;
 // ════════════════════════════════════════════════════
 .hc-wrap {
     background: #f6f8fa;
-    padding: 48px 0;}
-
-.hc-inner {
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 0 24px;
+    padding: 48px 0;
 }
 
 .hc-header {
