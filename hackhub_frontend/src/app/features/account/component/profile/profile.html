@@ -116,8 +116,19 @@
                   </div>
 
                 </div>
+                @if (errorMessage()) {<br>
+        <div class="alert alert-error">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+      @if (successMessage()) {<br>
+        <div class="alert alert-success">
+          <i class="fa-solid fa-check"></i>
+          <span>{{ successMessage() }}</span></div>}
 
                 <div class="mt-5 d-flex gap-3">
+                        
                   <button class="pr-btn-outline w-50" (click)="cancelEdit()" [disabled]="isSaving()">Annulla</button>
                   <button class="pr-btn-primary w-50 d-flex justify-content-center align-items-center gap-2" (click)="saveChanges()" [disabled]="isSaving()">
                     @if (isSaving()) {
@@ -137,7 +148,7 @@
                 </div>
               </div>
             }
-
+       
           </div>
         </div>
 

@@ -85,7 +85,8 @@
   @extend %btn-outline;
   padding: 14px 24px;
 }
-
+.alert-error { @extend %alert-error; }
+.alert-success { @extend %alert-success; }
 // ── PASSWORD WRAPPER ──
 // Estende il placeholder globale per creare la vera classe HTML
 .password-wrapper {

@@ -2,6 +2,8 @@ import { Component, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../auth/service/auth.service';
+import { waitForAsync } from '@angular/core/testing';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -35,9 +37,12 @@ export class ProfileComponent {
       }
     });
   }
+  errorMessage = signal<string | null>(null);
+  successMessage = signal<string | null>(null);
   isPasswordVisible: boolean = false;
   isConfirmPasswordVisible: boolean = false;
   isOldPasswordVisible: boolean = false;
+  messageTimeout: any; // Per tenere traccia del timer di cancellazione dei messaggi
 
   toggleOldPasswordVisibility(): void {
     this.isOldPasswordVisible = !this.isOldPasswordVisible;
@@ -64,28 +69,68 @@ export class ProfileComponent {
     }
     this.isEditing.set(false);
   }
+  private clearMessagesAfterDelay() {
+    // Se c'è già un timer in corso, lo cancella (evita bug se l'utente clicca velocemente)
+    if (this.messageTimeout) {
+      clearTimeout(this.messageTimeout);
+    }
+    
+    // Imposta un nuovo timer di 5000 millisecondi (5 secondi)
+    this.messageTimeout = setTimeout(() => {
+      this.errorMessage.set(null);
+      this.successMessage.set(null);
+    }, 5000);
+  }
 
   saveChanges() {
     this.isSaving.set(true); // Disabilita il form/bottoni
 
-    const dataToUpdate = {
+    const dataToUpdate: any = {
       name: this.editName,
       surname: this.editSurname,
       nickname: this.editNickname,
       email: this.editEmail
     };
+    // 2. Aggiungi i dati della password SOLO se l'utente ha inserito qualcosa
+      if (this.editOldPassword || this.editNewPassword) {
+        
+        // Controlla che le nuove password coincidano
+        if (this.editNewPassword !== this.editConfirmPassword) {
+          this.errorMessage.set('Le password non coincidono!');
+          // Qui potresti mostrare un errore nella UI
+          this.isSaving.set(false);
+          return; // Ferma l'esecuzione, non chiamare il backend
+        }
+
+        // Controlla che la nuova password rispetti la Regex
+        if (!this.passwordRegex.test(this.editNewPassword)) {
+          this.errorMessage.set('La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola, una minuscola e un numero.');
+         this.isSaving.set(false);
+          return;
+        }
+
+        // Aggiungi le password al payload (assicurati che i nomi dei campi 
+        // coincidano con quelli che il tuo backend si aspetta)
+        dataToUpdate.oldPassword = this.editOldPassword;
+        dataToUpdate.newPassword = this.editNewPassword;
+      }
 
     // Chiamata pulita al Service!
     this.authService.updateProfile(dataToUpdate).subscribe({
       next: (res) => {
-        console.log('Profilo aggiornato con successo!', res);
+        this.successMessage.set('Profilo aggiornato con successo!');
         this.isSaving.set(false);
         this.isEditing.set(false); // Chiude la modalità modifica
+          this.clearMessagesAfterDelay(); // Imposta il timer per cancellare i messaggi
+        this.editOldPassword = '';
+        this.editNewPassword = '';
+        this.editConfirmPassword = '';
+      
       },
       error: (err) => {
-        console.error('Errore durante il salvataggio', err);
         this.isSaving.set(false);
-        // Qui in futuro potrai mostrare un messaggio di errore a schermo (es. toast)
+        this.errorMessage.set(err.message || 'Errore sconosciuto durante l\'aggiornamento del profilo');
+        this.clearMessagesAfterDelay(); // Imposta il timer per cancellare i messaggi
       }
     });
   }
