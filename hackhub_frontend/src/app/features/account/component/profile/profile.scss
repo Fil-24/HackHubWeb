@@ -85,3 +85,9 @@
   @extend %btn-outline;
   padding: 14px 24px;
 }
+
+// ── PASSWORD WRAPPER ──
+// Estende il placeholder globale per creare la vera classe HTML
+.password-wrapper {
+  @extend %password-wrapper;
+}

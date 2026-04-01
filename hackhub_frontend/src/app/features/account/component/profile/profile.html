@@ -11,7 +11,7 @@
             @if (authService.user(); as user) {
               
               <div class="text-center mb-5">
-                <h3 class="pr-title" >
+                <h3 class="pr-title">
                   {{ user.name }} <span class="accent">{{ user.surname }}</span>
                 </h3>
                 <span class="pr-badge">{{ user.role }}</span>
@@ -78,6 +78,41 @@
                   <div class="pr-input-group pr-full-width">
                     <label class="pr-label">Email</label>
                     <input type="email" class="pr-input" [(ngModel)]="editEmail">
+                  </div>
+
+                  <div class="pr-full-width">
+                    <div class="pr-divider my-4"></div>
+                  </div>
+
+                  <div class="pr-input-group pr-full-width mb-2">
+                    <span class="pr-label" style="color: #00c896;">Cambio Password (Opzionale)</span>
+                    <span class="pr-value" style="font-size: 12px; color: #64748b;">
+                      Compila questi campi solo se desideri aggiornare la tua password.
+                    </span>
+                  </div>
+
+                  <div class="pr-input-group pr-full-width">
+                    <label class="pr-label">Vecchia Password</label>
+                    <div class="password-wrapper position-relative w-100">
+                      <input [type]="isOldPasswordVisible ? 'text' : 'password'" class="pr-input w-100" [(ngModel)]="editOldPassword" placeholder="Inserisci la password attuale">
+                      <i [class]="isOldPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" (click)="toggleOldPasswordVisibility()"></i>
+                    </div>
+                  </div>
+
+                  <div class="pr-input-group pr-full-width">
+                    <label class="pr-label">Nuova Password</label>
+                    <div class="password-wrapper position-relative w-100">
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="pr-input w-100" [(ngModel)]="editNewPassword" placeholder="Inserisci la nuova password">
+                      <i [class]="isPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" (click)="togglePasswordVisibility()"></i>
+                    </div>
+                  </div>
+
+                  <div class="pr-input-group pr-full-width">
+                    <label class="pr-label">Conferma Nuova Password</label>
+                    <div class="password-wrapper position-relative w-100">
+                      <input [type]="isConfirmPasswordVisible ? 'text' : 'password'" class="pr-input w-100" [(ngModel)]="editConfirmPassword" placeholder="Ripeti la nuova password">
+                      <i [class]="isConfirmPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" (click)="toggleConfirmPasswordVisibility()"></i>
+                    </div>
                   </div>
 
                 </div>

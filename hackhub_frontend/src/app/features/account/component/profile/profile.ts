@@ -14,11 +14,14 @@ export class ProfileComponent {
   
   isEditing = signal(false);
   isSaving = signal(false); // Gestisce lo stato di caricamento del bottone
-
+  passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
   editName = '';
   editSurname = '';
   editNickname = '';
   editEmail = '';
+  editOldPassword = '';
+  editNewPassword = '';
+  editConfirmPassword = '';
 
   constructor(public authService: AuthService) {
     effect(() => {
@@ -28,8 +31,23 @@ export class ProfileComponent {
         this.editSurname = user.surname || '';
         this.editNickname = user.nickname || '';
         this.editEmail = user.email || '';
+
       }
     });
+  }
+  isPasswordVisible: boolean = false;
+  isConfirmPasswordVisible: boolean = false;
+  isOldPasswordVisible: boolean = false;
+
+  toggleOldPasswordVisibility(): void {
+    this.isOldPasswordVisible = !this.isOldPasswordVisible;
+  }
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.isConfirmPasswordVisible = !this.isConfirmPasswordVisible;
   }
 
   toggleEdit() {

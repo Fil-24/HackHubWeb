@@ -157,22 +157,25 @@ public class AccountService implements Activable<Long> {
         if(email == null)
             throw new IllegalArgumentException("Email cannot be null");
 
-        if (oldPassword == null || newPassword == null)
-            throw new IllegalArgumentException("Password cannot be null");
-
-        if (newPassword.isEmpty() || oldPassword.isEmpty())
-            throw new IllegalArgumentException("password cannot be empty");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account account =findByEmail(auth.getName()).get() ;
-        if (!encoder.matches(oldPassword,account.getPassword()))
-            throw new IllegalArgumentException("Old password not valid");
+
 
         account.setName(name);
         account.setSurname(surname);
         account.setEmail(email);
         account.setNickname(nickname);
-        account.changePassword(oldPassword, encoder.encode(newPassword));
+
+        if (!(oldPassword == null || newPassword == null)) {
+            if (!(newPassword.isEmpty() || oldPassword.isEmpty())){
+                if (!encoder.matches(oldPassword,account.getPassword()))
+                    throw new IllegalArgumentException("Old password not valid");
+                account.changePassword(oldPassword, encoder.encode(newPassword));
+            }
+        }
+
+
 
         return accountRepository.save(account);
     }
