@@ -53,7 +53,7 @@
                   <div class="pr-info-item pr-full-width mt-2">
                     <span class="pr-label">Status Team</span>
                     @if (user.idTeam) {
-                      <span class="pr-value accent-green">Assegnato al Team #{{ user.idTeam }}</span>
+                      <span class="pr-value accent-green">{{ user.teamName || 'Team non specificato' }}</span>
                     } @else {
                       <span class="pr-value pr-text-muted">Nessun team assegnato</span>
                     }

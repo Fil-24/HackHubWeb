@@ -1,15 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { InvitationService } from '../../service/invitation.service';
+import { Invitation } from '../../models/invitation.model';
 
-// Interfaccia per definire la struttura dei dati dell'invito
-export interface Invitation {
-  id: string;
-  teamName: string;
-  senderName: string;
-  role: string;
-  createdAt: Date;
-}
+
 
 @Component({
   selector: 'app-invitation',
@@ -28,6 +23,8 @@ export class InvitationComponent implements OnInit {
   errorMessage = signal<string | null>(null);
   private messageTimeout: any;
 
+  constructor(private invitationService: InvitationService) {}
+
   ngOnInit() {
     this.loadInvitations();
   }
@@ -35,41 +32,66 @@ export class InvitationComponent implements OnInit {
   // Simula il caricamento dal backend
   loadInvitations() {
     this.isLoading.set(true);
-    
-    // TODO: Sostituisci questo setTimeout con la chiamata al tuo Service
-    // Esempio: this.teamService.getInvitations().subscribe(...)
-    setTimeout(() => {
-      this.invitations.set([
-        { id: '1', teamName: 'Progetto Alpha', senderName: 'Mario Rossi', role: 'Sviluppatore', createdAt: new Date() },
-        { id: '2', teamName: 'Marketing Team1', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) },
-        { id: '3', teamName: 'Marketing Team2', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) },
-        { id: '4', teamName: 'Marketing Team3', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) },
-        { id: '5', teamName: 'Marketing Team4', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) },
-        { id: '6', teamName: 'Marketing Team5', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) },
-        { id: '7', teamName: 'Marketing Team6', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) }
-      ]);
-      this.isLoading.set(false);
-    }, 800);
+
+    this.invitationService.getAll().subscribe({
+      next: (data) => {
+        
+        this.invitations.set(data.filter(inv => inv.state === 'pending').map(inv => ({
+          idInvitation: inv.idInvitation,
+          state: inv.state,
+          invitationDate: inv.invitationDate,
+          idInvitedAccount: inv.idInvitedAccount,
+          invitedAccountEmail: inv.invitedAccountEmail,
+          idInvitingTeam: inv.idInvitingTeam,
+          invitingTeamName: inv.invitingTeamName,
+          senderName: inv.invitingTeamName // Sostituisci con il nome reale del mittente se disponibile
+        })));
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        this.errorMessage.set('Errore nel caricamento degli inviti.');
+        this.isLoading.set(false);
+        this.clearMessagesAfterDelay();
+      }
+    });
   }
 
-  acceptInvitation(id: string) {
-    this.processAction(id, 'accettato');
+  acceptInvitation(idInvitation: number) {
+    this.invitationService.acceptInvitation(idInvitation).subscribe({
+      next: () => {
+        this.handleResponse(idInvitation, 'accettato');
+      },
+      error: () => {
+        this.errorMessage.set('Errore nell\'accettare l\'invito.');
+        this.clearMessagesAfterDelay();
+      }
+
+    });
   }
 
-  rejectInvitation(id: string) {
-    this.processAction(id, 'rifiutato');
+  rejectInvitation(idInvitation: number) {
+   this.invitationService.rejectInvitation(idInvitation).subscribe({
+      next: () => {
+        this.handleResponse(idInvitation, 'rifiutato');
+        
+      },
+      error: () => {
+        this.errorMessage.set('Errore nel rifiutare l\'invito.');
+        this.clearMessagesAfterDelay();
+      }
+    });
   }
 
-  private processAction(id: string, action: 'accettato' | 'rifiutato') {
-    // TODO: Qui andrà la chiamata reale al backend per salvare la scelta
-    
+  
+
+  private handleResponse(id: number, action: 'accettato' | 'rifiutato') {
     // Mostra il messaggio di successo e fa partire il timer di 5 secondi
     this.successMessage.set(`Invito ${action} con successo!`);
     this.errorMessage.set(null);
     this.clearMessagesAfterDelay();
 
     // Rimuove visivamente l'invito dalla lista aggiornando il signal
-    this.invitations.update(current => current.filter(inv => inv.id !== id));
+    this.invitations.update(current => current.filter(inv => inv.idInvitation !== id));
   }
 
   // Metodo per nascondere i messaggi dopo 5 secondi

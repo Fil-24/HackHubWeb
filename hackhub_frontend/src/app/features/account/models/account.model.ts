@@ -7,4 +7,5 @@ export interface Account {
   role: 'USER' | 'STAFF' | 'ADMIN';
   disabled: boolean;
   idTeam?: number | null;
+  teamName?: string | null;
 }
