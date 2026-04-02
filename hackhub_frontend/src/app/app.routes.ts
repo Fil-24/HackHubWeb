@@ -4,6 +4,7 @@ import { RegisterComponent } from './features/auth/components/register/register.
 import { HomeComponent } from './features/home/component/home.component';
 import { ProfileComponent } from './features/account/component/profile/profile';
 import { AuthGuard } from './core/guards/auth.guard';
+import { InvitationComponent } from './features/account/component/invitation/invitation';
 
 
 export const routes: Routes = [
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent },
   { path: 'profile', component: ProfileComponent,canActivate: [AuthGuard] },
+  {path:'invitations', component: InvitationComponent, canActivate: [AuthGuard]},
   { path: '**', redirectTo: 'home' }
 ];

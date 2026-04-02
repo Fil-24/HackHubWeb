@@ -1,0 +1,52 @@
+<div class="invitations-container">
+  <h2>Inviti ricevuti</h2>
+  <p class="subtitle">Gestisci le richieste per unirti a nuovi team.</p>
+
+  @if (successMessage()) {
+    <div class="alert alert-success">
+      <span class="icon">✅</span> {{ successMessage() }}
+    </div>
+  }
+  @if (errorMessage()) {
+    <div class="alert alert-error">
+      <span class="icon">❌</span> {{ errorMessage() }}
+    </div>
+  }
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Caricamento inviti in corso...</p>
+    </div>
+  } 
+  @else if (invitations().length === 0) {
+    <div class="empty-state">
+      <p>Non hai nessun nuovo invito al momento.</p>
+    </div>
+  } 
+  @else {
+    <div class="invitations-grid">
+      @for (invito of invitations(); track invito.id) {
+        <div class="invitation-card">
+          <div class="card-header">
+            <div class="team-avatar">{{ invito.teamName.charAt(0) }}</div>
+            <div class="team-info">
+              <h3>{{ invito.teamName }}</h3>
+              <span class="date">{{ invito.createdAt | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+          
+          <div class="card-body">
+            <p><strong>{{ invito.senderName }}</strong> ti ha invitato a partecipare al team.</p>
+            <p class="role-badge">Ruolo proposto: <span>{{ invito.role }}</span></p>
+          </div>
+
+          <div class="card-actions">
+            <button class="btn btn-outline" (click)="rejectInvitation(invito.id)">Rifiuta</button>
+            <button class="btn btn-primary" (click)="acceptInvitation(invito.id)">Accetta Invito</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

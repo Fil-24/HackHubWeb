@@ -16,7 +16,16 @@
                 </h3>
                 <span class="pr-badge">{{ user.role }}</span>
               </div>
-              
+               @if (errorMessage()) {
+        <div class="alert alert-error">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+      @if (successMessage()) {
+        <div class="alert alert-success">
+          <i class="fa-solid fa-check"></i>
+          <span>{{ successMessage() }}</span></div>}
               <div class="pr-divider"></div>
               
               @if (!isEditing()) {
@@ -116,16 +125,7 @@
                   </div>
 
                 </div>
-                @if (errorMessage()) {<br>
-        <div class="alert alert-error">
-          <i class="fa-solid fa-triangle-exclamation"></i>
-          <span>{{ errorMessage() }}</span>
-        </div>
-      }
-      @if (successMessage()) {<br>
-        <div class="alert alert-success">
-          <i class="fa-solid fa-check"></i>
-          <span>{{ successMessage() }}</span></div>}
+               
 
                 <div class="mt-5 d-flex gap-3">
                         
