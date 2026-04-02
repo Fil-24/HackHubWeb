@@ -3,3 +3,4 @@
 -sistemare i model all'interno del home
 
 -revisionare il componente hackathon in generale
+-rimuovere mock su hackathon.service quando il db viene popolato e togliere i commenti/import

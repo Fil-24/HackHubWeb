@@ -12,7 +12,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'hackathon', component: HackathonComponent},
+  { path: 'hackathon/:id', component: HackathonComponent },
   { path: 'profile', component: ProfileComponent,canActivate: [AuthGuard] },
   {path:'invitations', component: InvitationComponent, canActivate: [AuthGuard]},
   { path: '**', redirectTo: 'home' },
