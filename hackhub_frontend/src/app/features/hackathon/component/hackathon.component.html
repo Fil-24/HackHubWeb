@@ -84,16 +84,6 @@
             <!-- ── COLONNA PRINCIPALE ── -->
             <div class="hd-main">
 
-                <!-- Descrizione -->
-                <div class="hd-section-card">
-                    <div class="hd-section-card__bar"></div>
-                    <div class="hd-section-card__inner">
-                        <div class="hd-label">Descrizione</div>
-                        <h2 class="hd-section-title">Di cosa si tratta?</h2>
-                        <p class="hd-description">{{ hackathon()!.description }}</p>
-                    </div>
-                </div>
-
                 <!-- Regole / info aggiuntive -->
                 @if (hackathon()!.rules) {
                 <div class="hd-section-card">
@@ -105,26 +95,6 @@
                     </div>
                 </div>
                 }
-
-                <!-- Premi -->
-                @if (hackathon()!.prizes && hackathon()!.prizes!.length > 0) {
-                <div class="hd-section-card">
-                    <div class="hd-section-card__bar"></div>
-                    <div class="hd-section-card__inner">
-                        <div class="hd-label">Premi</div>
-                        <h2 class="hd-section-title">In palio</h2>
-                        <div class="hd-prizes">
-                            @for (prize of hackathon()!.prizes; track $index) {
-                            <div class="hd-prize-item">
-                                <span class="hd-prize-item__pos">{{ $index + 1 }}°</span>
-                                <span class="hd-prize-item__desc">{{ prize }}</span>
-                            </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-                }
-
             </div>
 
             <!-- ── SIDEBAR ── -->
@@ -168,7 +138,7 @@
                         <ul class="hd-info-list">
                             <li class="hd-info-list__item">
                                 <span class="hd-info-list__key">Organizzatore</span>
-                                <span class="hd-info-list__val">{{ hackathon()!.organizer ?? '—' }}</span>
+                                <!--<span class="hd-info-list__val">{{ hackathon()!.organizer ?? '—' }}</span>-->
                             </li>
                             <li class="hd-info-list__item">
                                 <span class="hd-info-list__key">Sede</span>
@@ -180,7 +150,7 @@
                             </li>
                             <li class="hd-info-list__item">
                                 <span class="hd-info-list__key">Formato</span>
-                                <span class="hd-info-list__val">{{ hackathon()!.format ?? 'In presenza' }}</span>
+                                <!-- <span class="hd-info-list__val">{{ hackathon()!.format ?? 'In presenza' }}</span> -->
                             </li>
                         </ul>
                     </div>

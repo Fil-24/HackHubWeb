@@ -22,10 +22,9 @@ export class AuthService {
   constructor(private http: HttpClient) {
     const token = localStorage.getItem(this.tokenKey);
   }
- //----------------update profile----------------
- 
-  updateProfile(updateData: Partial<Account>): Observable<Account> {
-    return this.http.put<Account>(`${environment.apiUrl}/accounts/profile`, updateData).pipe(
+  
+ updateProfile(updateData: Partial<Account>): Observable<Account> {
+    return this.http.put<Account>(`${environment.apiUrl}/profile`, updateData).pipe(
       tap((updatedUser: Account) => {
         this.userSignal.set(updatedUser);
       })

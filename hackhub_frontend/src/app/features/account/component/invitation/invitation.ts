@@ -36,7 +36,7 @@ export class InvitationComponent implements OnInit {
     this.invitationService.getAll().subscribe({
       next: (data) => {
         
-        this.invitations.set(data.filter(inv => inv.state === 'pending').map(inv => ({
+        this.invitations.set(data.filter(inv => inv.state === 'PENDING').map(inv => ({
           idInvitation: inv.idInvitation,
           state: inv.state,
           invitationDate: inv.invitationDate,
