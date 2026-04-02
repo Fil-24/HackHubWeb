@@ -41,7 +41,12 @@ export class InvitationComponent implements OnInit {
     setTimeout(() => {
       this.invitations.set([
         { id: '1', teamName: 'Progetto Alpha', senderName: 'Mario Rossi', role: 'Sviluppatore', createdAt: new Date() },
-        { id: '2', teamName: 'Marketing Team', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) }
+        { id: '2', teamName: 'Marketing Team1', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) },
+        { id: '3', teamName: 'Marketing Team2', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) },
+        { id: '4', teamName: 'Marketing Team3', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) },
+        { id: '5', teamName: 'Marketing Team4', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) },
+        { id: '6', teamName: 'Marketing Team5', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) },
+        { id: '7', teamName: 'Marketing Team6', senderName: 'Giulia Bianchi', role: 'Designer', createdAt: new Date(Date.now() - 86400000) }
       ]);
       this.isLoading.set(false);
     }, 800);

@@ -1,189 +1,86 @@
-// Variabili di colore per coerenza stilistica
-$primary-color: #4f46e5; // Indigo-600
-$primary-hover: #4338ca; // Indigo-700
-$text-main: #1f2937;     // Gray-800
-$text-muted: #6b7280;    // Gray-500
-$bg-card: #ffffff;
-$border-color: #e5e7eb;
+@use "../../../../../colors" as *;
+@use "../../../../../styles" as *;
 
-.invitations-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-
-  h2 {
-    margin: 0 0 0.5rem 0;
-    color: $text-main;
-    font-size: 1.75rem;
-  }
-
-  .subtitle {
-    color: $text-muted;
-    margin-bottom: 2rem;
-  }
+// ── LAYOUT GLOBALE ──
+.profile-section {
+  background: $bg-main;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: flex-start; 
 }
 
-// --- Stili Alert (Riutilizzati dal Profile) ---
-.alert {
-  padding: 1rem 1.25rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
-  font-weight: 500;
+// ── COMPONENTI CARD ──
+.pr-card { @extend %card-base; }
+.pr-card-bar { @extend %card-top-bar; }
+
+// ── TYPOGRAPHY & BADGE ──
+.pr-title { 
+  @extend %title-display;
+  margin-bottom: 12px; 
+}
+
+.pr-badge {
+  display: inline-block;
+  font-family: $font-mono;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $color-green;
+  background: rgba($color-green, 0.1);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.pr-label {
+  font-family: $font-mono;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $text-secondary;
+}
+
+.pr-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.pr-text-muted {
+  color: $text-secondary;
+  font-style: italic;
+  font-weight: 400;
+}
+
+// ── BOTTONI & ALERT ──
+.pr-btn-primary { @extend %btn-primary; }
+.pr-btn-outline { @extend %btn-outline; }
+.alert-error { @extend %alert-error; }
+.alert-success { @extend %alert-success; }
+
+// ── STILE SPECIFICO INVITI ──
+.team-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  background-color: rgba($color-green, 0.1);
+  color: $color-green;
   display: flex;
   align-items: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  animation: slideInFade 0.3s ease-out forwards;
-
-  .icon { margin-right: 8px; }
-
-  &.alert-success {
-    background-color: #ecfdf5;
-    color: #065f46;
-    border: 1px solid #10b981;
-  }
-
-  &.alert-error {
-    background-color: #fef2f2;
-    color: #991b1b;
-    border: 1px solid #ef4444;
-  }
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: $font-mono;
+  border: 1px solid rgba($color-green, 0.2);
 }
 
-@keyframes slideInFade {
-  0% { opacity: 0; transform: translateY(-10px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-// --- Griglia e Card degli Inviti ---
-.invitations-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-}
-
-.invitation-card {
-  background: $bg-card;
-  border: 1px solid $border-color;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-  transition: transform 0.2s, box-shadow 0.2s;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.05);
+// Utilità responsiva per i bordi interni e i bottoni
+@media (min-width: 768px) {
+  .border-md {
+    border-left: 1px solid $border-color !important;
+    border-right: 1px solid $border-color !important;
   }
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-
-    .team-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 8px;
-      background-color: #e0e7ff; // Indigo-100
-      color: $primary-color;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .team-info {
-      h3 {
-        margin: 0;
-        font-size: 1.1rem;
-        color: $text-main;
-      }
-      .date {
-        font-size: 0.8rem;
-        color: $text-muted;
-      }
-    }
+  .w-md-auto {
+    width: auto !important;
   }
-
-  .card-body {
-    margin-bottom: 1.5rem;
-    font-size: 0.95rem;
-    color: #4b5563;
-
-    p { margin: 0 0 0.5rem 0; }
-
-    .role-badge {
-      display: inline-block;
-      margin-top: 0.5rem;
-      span {
-        background-color: #f3f4f6;
-        padding: 0.2rem 0.6rem;
-        border-radius: 999px;
-        font-size: 0.85rem;
-        font-weight: 500;
-        color: $text-main;
-      }
-    }
-  }
-
-  .card-actions {
-    display: flex;
-    gap: 0.75rem;
-
-    .btn {
-      flex: 1;
-      padding: 0.6rem 1rem;
-      border-radius: 6px;
-      font-weight: 500;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: center;
-      border: none;
-
-      &.btn-primary {
-        background-color: $primary-color;
-        color: white;
-        
-        &:hover { background-color: $primary-hover; }
-      }
-
-      &.btn-outline {
-        background-color: transparent;
-        color: $text-main;
-        border: 1px solid $border-color;
-
-        &:hover {
-          background-color: #f9fafb;
-          border-color: #d1d5db;
-        }
-      }
-    }
-  }
-}
-
-// --- Stati vuoti e caricamento ---
-.empty-state, .loading-state {
-  text-align: center;
-  padding: 3rem 1rem;
-  background: #f9fafb;
-  border: 1px dashed $border-color;
-  border-radius: 12px;
-  color: $text-muted;
-}
-
-.spinner {
-  width: 30px;
-  height: 30px;
-  border: 3px solid #e5e7eb;
-  border-top-color: $primary-color;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 1rem auto;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }
