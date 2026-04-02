@@ -55,11 +55,11 @@
                 <div class="hc-label">Hackathon</div>
                 <h2 class="hc-title">Tutti gli eventi</h2>
             </div>
-            <div class="hc-count">// {{ hackathon.length }} risultati trovati</div>
+            <div class="hc-count">// {{ hackathon()!.length }} risultati trovati</div>
         </div>
-        @if(hackathon.length > 0) {
+        @if(hackathon()!.length > 0) {
         <div class="hc-grid">
-            @for (h of hackathon; track $index) {
+            @for (h of hackathon(); track $index) {
             <div class="hc-card" >
                 <div class="hc-card-bar"></div>
                 <div class="hc-card-body">
@@ -88,7 +88,7 @@
             }
         </div>
         }
-        @if(hackathon.length === 0) {
+        @if(hackathon()!.length === 0) {
             <!-- Nessun risultato -->
             <div class="state-box">
                 <p class="state-box__title">Nessun hackathon trovato</p>

@@ -8,7 +8,7 @@ import { Hackathon } from '../models/hackathon.model';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  hackathon: Hackathon[] = [];
+  hackathon = signal<Hackathon[]|null>(null);
   errorMessage = signal<string | null>(null);
   searchQuery = '';
 
@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   caricaHackathon(): void {
     this.homeService.getAll().subscribe({
       next: (data) => {
-        this.hackathon = data;
+        this.hackathon.set(data);
       },
       error: (err) => {
         this.errorMessage.set(err.message);
@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
     }
     this.homeService.cerca(this.searchQuery).subscribe({
       next: (data) => {
-        this.hackathon = data;
+        this.hackathon.set(data);
       },
       error: (err) => {
         this.errorMessage.set(err.message);
