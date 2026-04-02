@@ -1,0 +1,95 @@
+<section class="profile-section">
+  <div class="container py-5">
+    
+    <div class="row justify-content-center mb-5">
+      <div class="col-12 text-center">
+        <h3 class="pr-title">Inviti <span class="accent">Ricevuti</span></h3>
+        <p class="pr-text-muted mt-2">Gestisci le richieste per unirti a nuovi team.</p>
+      </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+      <div class="col-12 col-lg-10">
+        @if (errorMessage()) {
+          <div class="alert alert-error">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+        @if (successMessage()) {
+          <div class="alert alert-success">
+            <i class="fa-solid fa-check"></i>
+            <span>{{ successMessage() }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (isLoading()) {
+      <div class="text-center py-5">
+        <div class="spinner-border" style="color: #00c896;" role="status">
+          <span class="visually-hidden">Caricamento...</span>
+        </div>
+        <p class="pr-label mt-3">Caricamento inviti in corso...</p>
+      </div>
+    } 
+    
+    @else if (invitations().length === 0) {
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+          <div class="pr-card text-center p-5">
+            <i class="fa-solid fa-envelope-open mb-3" style="font-size: 2.5rem; color: #cbd5e1;"></i>
+            <p class="pr-value mb-0">Non hai nessun nuovo invito al momento.</p>
+          </div>
+        </div>
+      </div>
+    } 
+    
+    @else {
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 d-flex flex-column gap-3">
+          
+          @for (invito of invitations(); track invito.idInvitation) {
+            
+            <div class="pr-card">
+              <div class="pr-card-bar"></div>
+              
+              <div class="pr-card-body p-4">
+                <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-4">
+                  
+                  <div class="d-flex align-items-center gap-3" style="min-width: 250px;">
+                    <div class="team-avatar flex-shrink-0">
+                      {{ invito.invitingTeamName.charAt(0) | uppercase }}
+                    </div>
+                    <div>
+                      <h4 class="pr-value m-0" style="font-size: 1.15rem;">{{ invito.invitingTeamName }}</h4>
+                      <span class="pr-label">{{ invito.invitationDate | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                  </div>
+  
+                  <div class="flex-grow-1 border-start border-end border-0 border-md px-md-4 py-2 py-md-0" style="border-color: #e5e7eb !important;">
+                    <p class="pr-text-muted mb-2" style="font-size: 14px;">
+                      Il team <strong class="pr-value">{{ invito.invitingTeamName }}</strong> ti ha invitato.
+                    </p>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="pr-label mb-0">Stato:</span>
+                      <span class="pr-badge">{{ invito.state }}</span>
+                    </div>
+                  </div>
+  
+                  <div class="d-flex gap-2 mt-2 mt-md-0 flex-shrink-0 w-100 w-md-auto justify-content-end">
+                    <button class="pr-btn-outline flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="rejectInvitation(invito.idInvitation)">Rifiuta</button>
+                    <button class="pr-btn-primary flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="acceptInvitation(invito.idInvitation)">Accetta</button>
+                  </div>
+  
+                </div>
+              </div>
+            </div>
+  
+          }
+
+        </div>
+      </div>
+    }
+  </div>
+</section>

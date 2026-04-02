@@ -147,3 +147,17 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+%alert-success {
+  background-color: #00c8966f;
+  border: 1.5px solid $color-green;
+  color: $status-open-text;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}

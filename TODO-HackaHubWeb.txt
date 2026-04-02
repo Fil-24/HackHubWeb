@@ -1,3 +1,5 @@
 -criptare la password prima di inviarla, quindi nel frontend
 
 -sistemare i model all'interno del home
+
+-revisionare il componente hackathon in generale

@@ -1,18 +1,19 @@
 @use "../../../../../colors" as *;
 @use "../../../../../styles" as *;
 
+// ── LAYOUT GLOBALE ──
 .profile-section {
   background: $bg-main;
   min-height: calc(100vh - 80px);
   display: flex;
-  align-items: center;
+  align-items: flex-start; 
 }
 
+// ── COMPONENTI CARD ──
 .pr-card { @extend %card-base; }
 .pr-card-bar { @extend %card-top-bar; }
 
-.pr-card-body { padding: 48px 40px; }
-
+// ── TYPOGRAPHY & BADGE ──
 .pr-title { 
   @extend %title-display;
   margin-bottom: 12px; 
@@ -30,28 +31,6 @@
   border-radius: 4px;
   font-weight: 700;
 }
-
-.pr-divider {
-  width: 100%;
-  height: 1px;
-  background: $border-color;
-  margin: 32px 0;
-}
-
-// ── GRIGLIA DATI E FORM ──
-.pr-info-grid, .pr-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-.pr-info-item, .pr-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.pr-full-width { grid-column: 1 / -1; }
 
 .pr-label {
   font-family: $font-mono;
@@ -73,22 +52,35 @@
   font-weight: 400;
 }
 
-// ── INPUT & BOTTONI ──
-.pr-input { @extend %input-base; }
-
-.pr-btn-primary { 
-  @extend %btn-primary;
-  padding: 14px 24px;
-}
-
-.pr-btn-outline { 
-  @extend %btn-outline;
-  padding: 14px 24px;
-}
+// ── BOTTONI & ALERT ──
+.pr-btn-primary { @extend %btn-primary; }
+.pr-btn-outline { @extend %btn-outline; }
 .alert-error { @extend %alert-error; }
 .alert-success { @extend %alert-success; }
-// ── PASSWORD WRAPPER ──
-// Estende il placeholder globale per creare la vera classe HTML
-.password-wrapper {
-  @extend %password-wrapper;
+
+// ── STILE SPECIFICO INVITI ──
+.team-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  background-color: rgba($color-green, 0.1);
+  color: $color-green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: $font-mono;
+  border: 1px solid rgba($color-green, 0.2);
+}
+
+// Utilità responsiva per i bordi interni e i bottoni
+@media (min-width: 768px) {
+  .border-md {
+    border-left: 1px solid $border-color !important;
+    border-right: 1px solid $border-color !important;
+  }
+  .w-md-auto {
+    width: auto !important;
+  }
 }

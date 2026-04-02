@@ -25,7 +25,8 @@ public record AccountResponse(
         String email,
         String role,
         boolean disabled,
-        Long idTeam
+        Long idTeam,
+        String teamName
 ) {
 
     /**
@@ -46,7 +47,8 @@ public record AccountResponse(
                 account.getEmail(),
                 account.getRole().name(),
                 account.isDisabled(),
-                team != null ? team.getIdTeam() : null
+                team != null ? team.getIdTeam() : null,
+                team !=null ? team.getName() : null
         );
     }
 }
