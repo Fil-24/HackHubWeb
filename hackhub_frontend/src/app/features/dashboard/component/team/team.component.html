@@ -29,33 +29,32 @@
     } 
     @else {
       
-      @if (myTeam()) {
-        <div class="row justify-content-center mb-5">
-          <div class="col-12 col-lg-10">
-            <div class="pr-card">
-              <div class="pr-card-bar" style="background-color: #00c896;"></div>
-              <div class="pr-card-body p-4 text-center">
-                <i class="fa-solid fa-crown mb-3" style="font-size: 2.5rem; color: #00c896;"></i>
-                <h4 class="pr-value" style="font-size: 1.5rem;">Il Mio Team: {{ myTeam()?.name }}</h4>
-                <p class="pr-text-muted">Sei già membro di un team. Qui in futuro verranno inseriti i dettagli, le opzioni di gestione e la chat dedicata.</p>
-                </div>
-            </div>
-          </div>
-        </div>
+     @if (myTeam()) {
+        <app-my-team [team]="myTeam()!"></app-my-team>
       }
-      
       @else {
+        
         <div class="row justify-content-center mb-4">
           <div class="col-12 col-lg-10">
-             <div class="pr-search-bar">
-               <i class="fa-solid fa-magnifying-glass search-icon"></i>
-               <input 
-                 type="text" 
-                 class="pr-input-search" 
-                 placeholder="Cerca un team per nome..." 
-                 [value]="searchQuery()"
-                 (input)="updateSearch($event)">
-             </div>
+            <div class="d-flex flex-column flex-md-row gap-3">
+              <div class="pr-search-bar flex-grow-1">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input 
+                  type="text" 
+                  class="pr-input-search" 
+                  placeholder="Cerca un team per nome..." 
+                  [value]="searchQuery()"
+                  (input)="updateSearch($event)">
+              </div>
+
+              @if (isLoggedIn()) {
+                <button class="pr-btn-primary flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="openCreateTeam()">
+                  <i class="fa-solid fa-plus"></i>
+                  <span> Crea Team</span>
+                </button>
+              }
+
+            </div>
           </div>
         </div>
 

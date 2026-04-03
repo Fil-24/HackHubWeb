@@ -18,7 +18,10 @@
 .pr-title { @extend %title-display; margin-bottom: 12px; }
 .pr-btn-outline { @extend %btn-outline; }
 .alert-error { @extend %alert-error; }
-
+.pr-btn-primary {
+  @extend %btn-primary;
+ 
+}
 // ── TYPOGRAPHY & BADGE ──
 .pr-badge {
   display: inline-block;

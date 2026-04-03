@@ -171,6 +171,8 @@ public class SecurityConfig {
                                         "/api/hackathons",
                                         "/api/hackathons/*"
                                 ).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/teams")
+                                .permitAll()
                                 .requestMatchers(
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
