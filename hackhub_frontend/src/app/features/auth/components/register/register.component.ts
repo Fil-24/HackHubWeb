@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 import { RegisterRequest } from '../../models/auth.model';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -11,26 +11,52 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.scss'],
   standalone: true,
   imports: [
-    FormsModule,
-    CommonModule
+    ReactiveFormsModule, 
+    CommonModule,
+    RouterModule
   ]
 })
 export class RegisterComponent {
-  passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
-  name = '';
-  surname = '';
-  nickname = '';
-  email = '';
-  password = '';
-  confirmPassword = '';
-  role: 'USER' | 'STAFF' = 'USER';
+  registerForm: FormGroup;
   errorMessage = signal<string | null>(null);
-
-  constructor(private authService: AuthService, private router: Router) {}
 
   isPasswordVisible: boolean = false;
   isConfirmPasswordVisible: boolean = false;
+
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    // Creazione del form con tutte le validazioni
+    this.registerForm = this.fb.group({
+      name: ['', Validators.required],
+      surname: ['', Validators.required],
+      nickname: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [
+        Validators.required,
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)
+      ]],
+      confirmPassword: ['', Validators.required],
+      role: ['', Validators.required] // Il valore vuoto iniziale forzerà la scelta
+    }, { 
+      validators: this.passwordMatchValidator // Validatore di gruppo per comparare i due campi
+    });
+  }
+
+  // Validatore custom per controllare che le password siano identiche
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
+
+    if (password && confirmPassword && password !== confirmPassword) {
+      // Imposta un errore specifico sul campo confirmPassword
+      control.get('confirmPassword')?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    }
+    return null;
+  }
 
   togglePasswordVisibility(): void {
     this.isPasswordVisible = !this.isPasswordVisible;
@@ -39,37 +65,34 @@ export class RegisterComponent {
   toggleConfirmPasswordVisibility(): void {
     this.isConfirmPasswordVisible = !this.isConfirmPasswordVisible;
   }
+
   register() {
     this.errorMessage.set(null);
 
-    if (!this.passwordRegex.test(this.password)) {
-      this.errorMessage.set("Password must contain at least 8 characters, including 1 uppercase letter, 1 lowercase letter, and 1 number.");
+    // Se il form non è valido, mostriamo tutti gli errori rossi e fermiamo l'invio
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
       return;
     }
 
-    if (this.password !== this.confirmPassword) {
-      this.errorMessage.set("Passwords do not match");
-      return;
-    }
-
+    // Estraiamo i dati dal form escludendo il confirmPassword che non serve al backend
+    const formValue = this.registerForm.value;
     const req: RegisterRequest = {
-      name: this.name,
-      surname: this.surname,
-      nickname: this.nickname,
-      email: this.email,
-      password: this.password,
-      role: this.role
+      name: formValue.name,
+      surname: formValue.surname,
+      nickname: formValue.nickname,
+      email: formValue.email,
+      password: formValue.password,
+      role: formValue.role
     };
 
     this.authService.signup(req).subscribe({
       next: () => {
         this.router.navigate(['/dashboard']);
       },
-
       error: err => {
-        this.errorMessage.set(err.message);
+        this.errorMessage.set(err.message || 'Errore durante la registrazione.');
       }
-
     });
   }
 }

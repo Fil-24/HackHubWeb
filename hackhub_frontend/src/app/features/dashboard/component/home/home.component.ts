@@ -1,6 +1,6 @@
 import { Component, OnInit , signal} from '@angular/core';
-import { HomeService } from '../service/home.service';
-import { Hackathon } from '../models/hackathon.model';
+import { HomeService } from '../../service/home.service';
+import { Hackathon } from '../../models/hackathon.model';
 
 @Component({
   selector: 'app-home',

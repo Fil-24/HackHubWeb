@@ -5,29 +5,57 @@
       <img src="/assets/img/logo.svg" alt="Logo" id="logo">
       <h2 id="login-title" class="mb-0">Login</h2>
     </div>
-    <form (ngSubmit)="login()" class="frm" ngNativeValidate>
-      <input type="email" class="input" [(ngModel)]="email" name="email" placeholder="Email" required />
-    <div class="password-wrapper">
-    <input 
-      [type]="isPasswordVisible ? 'text' : 'password'" 
-      class="input password-input" 
-      [(ngModel)]="password" 
-      name="password" 
-      placeholder="Password" 
-      required 
-    />
-    <i [class]="isPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" 
-      (click)="togglePasswordVisibility()">
-    </i>
-  </div>
-    @if (errorMessage()) {
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="frm">
+      
+      <div class="input-group mb-3">
+        <input 
+          type="email" 
+          class="input w-100" 
+          formControlName="email" 
+          placeholder="Email" 
+          [class.border-danger]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+        />
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          <div class="text-danger small mt-1">
+            @if (loginForm.get('email')?.errors?.['required']) { <span>L'email è obbligatoria.</span> }
+            @if (loginForm.get('email')?.errors?.['email']) { <span>Inserisci un indirizzo email valido.</span> }
+          </div>
+        }
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="password-wrapper position-relative w-100">
+          <input 
+            [type]="isPasswordVisible ? 'text' : 'password'" 
+            class="input password-input w-100" 
+            formControlName="password" 
+            placeholder="Password" 
+            [class.border-danger]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          />
+          <i 
+            [class]="isPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" 
+            (click)="togglePasswordVisibility()"
+            style="cursor: pointer;">
+          </i>
+        </div>
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <div class="text-danger small mt-1">
+            @if (loginForm.get('password')?.errors?.['required']) { <span>La password è obbligatoria.</span> }
+          </div>
+        }
+      </div>
+
+      @if (errorMessage()) {
         <div class="alert alert-error">
           <i class="fa-solid fa-triangle-exclamation"></i>
           <span>{{ errorMessage() }}</span>
         </div>
       }
+      
       <button type="submit" class="btn btn-primary" id="btn-login">Sign In</button>
-      <button type="button" class="btn btn-secondary" [routerLink]="['/register']"> Register</button>
+      <button type="button" class="btn btn-secondary mt-2" [routerLink]="['/register']">Sign Up</button>
+      
     </form>
   </div>
 </div>

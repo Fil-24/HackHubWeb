@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 // import { Observable } from 'rxjs';
 import { Observable, of } from 'rxjs';
 
-import { Hackathon } from '../../home/models/hackathon.model';
+import { Hackathon } from '../models/hackathon.model';
 
 
 @Injectable({ providedIn: 'root' })

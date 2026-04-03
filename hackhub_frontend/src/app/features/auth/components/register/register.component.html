@@ -1,27 +1,60 @@
 <div class="register-container">
   <div class="card" id="card-signup">
-    <div class="d-flex align-items-center gap-3">
-    <img src="/assets/img/logo.svg" alt="Logo" id="logo">
-    <h2 id="login-title" class="mb-0">Sign Up</h2>
-  </div>
-    <form class="frm" (ngSubmit)="register()" ngNativeValidate>
-      <input type="text" class="input" [(ngModel)]="name" name="name" placeholder="Name" required />
-      <input type="text" class="input" [(ngModel)]="surname" name="surname" placeholder="Surname" required />
-      <input type="text" class="input" [(ngModel)]="nickname" name="nickname" placeholder="Nickname" required />
-      <input type="email" class="input" [(ngModel)]="email" name="email" placeholder="Email" required />
+    <div class="d-flex align-items-center gap-3 mb-3">
+      <img src="/assets/img/logo.svg" alt="Logo" id="logo">
+      <h2 id="login-title" class="mb-0">Sign Up</h2>
+    </div>
+
+    <form class="frm" [formGroup]="registerForm" (ngSubmit)="register()">
       
-      <div class="password-wrapper">
-        <input [type]="isPasswordVisible ? 'text' : 'password'" class="input password-input" [(ngModel)]="password" name="password" placeholder="Password" required/>
-        <i [class]="isPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" (click)="togglePasswordVisibility()"></i>
+      <input type="text" class="input mb-2" formControlName="name" placeholder="Name" 
+             [class.border-danger]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" />
+      
+      <input type="text" class="input mb-2" formControlName="surname" placeholder="Surname" 
+             [class.border-danger]="registerForm.get('surname')?.invalid && registerForm.get('surname')?.touched" />
+      
+      <input type="text" class="input mb-2" formControlName="nickname" placeholder="Nickname" 
+             [class.border-danger]="registerForm.get('nickname')?.invalid && registerForm.get('nickname')?.touched" />
+      
+      <div class="mb-2">
+        <input type="email" class="input w-100" formControlName="email" placeholder="Email" 
+               [class.border-danger]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" />
+        @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+          <div class="text-danger small mt-1">Inserisci un'email valida.</div>
+        }
+      </div>
+      
+      <div class="mb-2">
+        <div class="password-wrapper position-relative w-100">
+          <input [type]="isPasswordVisible ? 'text' : 'password'" class="input password-input w-100" 
+                 formControlName="password" placeholder="Password" 
+                 [class.border-danger]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" />
+          <i [class]="isPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" 
+             (click)="togglePasswordVisibility()" style="cursor: pointer;"></i>
+        </div>
+        @if (registerForm.get('password')?.errors?.['pattern'] && registerForm.get('password')?.touched) {
+          <div class="text-danger small mt-1">
+            Min 8 caratteri, 1 maiuscola, 1 minuscola, 1 numero.
+          </div>
+        }
       </div>
 
-      <div class="password-wrapper">
-        <input [type]="isConfirmPasswordVisible ? 'text' : 'password'" class="input password-input" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required/>
-        <i [class]="isConfirmPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" (click)="toggleConfirmPasswordVisibility()"></i>
+      <div class="mb-2">
+        <div class="password-wrapper position-relative w-100">
+          <input [type]="isConfirmPasswordVisible ? 'text' : 'password'" class="input password-input w-100" 
+                 formControlName="confirmPassword" placeholder="Confirm Password" 
+                 [class.border-danger]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" />
+          <i [class]="isConfirmPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" 
+             (click)="toggleConfirmPasswordVisibility()" style="cursor: pointer;"></i>
+        </div>
+        @if (registerForm.get('confirmPassword')?.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched) {
+          <div class="text-danger small mt-1">Le password non coincidono.</div>
+        }
       </div>
       
-      <div class="select-wrapper">
-        <select [(ngModel)]="role" class="input select" name="role" required>
+      <div class="select-wrapper mb-3 position-relative">
+        <select formControlName="role" class="input select w-100" 
+                [class.border-danger]="registerForm.get('role')?.invalid && registerForm.get('role')?.touched">
           <option value="" disabled selected hidden>Select Role</option>
           <option value="USER">User</option>
           <option value="STAFF">Staff</option>
@@ -36,7 +69,7 @@
         </div>
       }
 
-      <button class="btn btn-primary" type="submit" id="btn-signup">Sign Up</button>
+      <button class="btn btn-primary w-100 mt-2" type="submit" id="btn-signup">Sign Up</button>
     </form>
   </div>
 </div>

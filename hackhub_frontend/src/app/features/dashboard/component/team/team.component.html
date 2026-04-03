@@ -1,0 +1,209 @@
+<section class="profile-section">
+  <div class="container py-5">
+
+    <div class="row justify-content-center mb-4">
+      <div class="col-12 col-lg-8">
+        @if (errorMessage()) {
+          <div class="alert alert-error">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+        @if (successMessage()) {
+          <div class="alert alert-success">
+            <i class="fa-solid fa-check"></i>
+            <span>{{ successMessage() }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (isLoading()) {
+      <div class="text-center py-5">
+        <div class="spinner-border" style="color: #00c896;" role="status">
+          <span class="visually-hidden">Caricamento...</span>
+        </div>
+      </div>
+    } 
+    @else {
+
+      @if (isLoggedIn() && hasTeam() && myTeam()) {
+        
+        <div class="row justify-content-center mb-5">
+          <div class="col-12 col-md-10 col-lg-8">
+            
+            <div class="pr-card">
+              <div class="pr-card-bar"></div>
+              
+              <div class="pr-card-body">
+                
+                <div class="text-center mb-4">
+                  <h3 class="pr-title">
+                    Team <span class="accent">{{ myTeam()?.name }}</span>
+                  </h3>
+                  <span class="pr-badge">Roster Attivo</span>
+                </div>
+                
+                <div class="pr-divider"></div>
+                
+                <div class="pr-info-grid">
+                  
+                  <div class="pr-info-item pr-full-width">
+                    <span class="pr-label">Progetto</span>
+                    <span class="pr-value" style="font-size: 1.25rem;">{{ myTeam()?.projectTitle }}</span>
+                  </div>
+                  
+                  <div class="pr-info-item pr-full-width mt-2">
+                    <span class="pr-label">Descrizione Progetto</span>
+                    <span class="pr-value pr-text-muted" style="line-height: 1.6; font-style: normal;">
+                      {{ myTeam()?.projectDescription }}
+                    </span>
+                  </div>
+
+                  <div class="pr-full-width">
+                    <div class="pr-divider my-4"></div>
+                    <span class="pr-label mb-3 d-block">Componenti ({{ myTeam()?.members?.length }})</span>
+                    
+                    <div class="row g-3">
+                      @for (memberName of myTeam()?.members; track memberName) {
+                        <div class="col-12 col-sm-6">
+                          <div class="d-flex align-items-center gap-3 p-3 rounded" style="background: rgba(0, 200, 150, 0.05); border: 1px solid rgba(0, 200, 150, 0.1);">
+                            <div class="team-avatar flex-shrink-0" style="width: 36px; height: 36px; font-size: 14px;">
+                              <i class="fa-solid fa-user-astronaut"></i>
+                            </div>
+                            <span class="pr-value m-0" style="font-size: 15px;">{{ memberName }}</span>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="mt-5 text-center">
+                  <button class="pr-btn-outline pr-btn-danger w-100" style="max-width: 300px;">
+                    <i class="fa-solid fa-right-from-bracket me-2"></i> Abbandona Team
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      }
+
+      @else {
+        
+        <div class="row justify-content-center mb-4">
+          <div class="col-12 text-center">
+            <h3 class="pr-title">Esplora <span class="accent">Team</span></h3>
+            <p class="pr-text-muted mt-2">Cerca un gruppo a cui unirti o visualizza i dettagli dei progetti.</p>
+          </div>
+        </div>
+
+        <div class="row justify-content-center mb-5">
+          <div class="col-12 col-lg-10">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass search-box__icon"></i>
+              <input type="text" class="search-box__input" placeholder="Ricerca team per nome o progetto...">
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 d-flex flex-column gap-3">
+            
+            @for (team of allTeams(); track team.id) {
+              <div class="pr-card" style="overflow: hidden;">
+                <div class="pr-card-body p-4">
+                  <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-4">
+                    
+                    <div class="d-flex align-items-center gap-3" style="min-width: 250px;">
+                      <div class="team-avatar flex-shrink-0">
+                        {{ team.name.charAt(0) | uppercase }}
+                      </div>
+                      <div>
+                        <h4 class="pr-value m-0" style="font-size: 1.15rem;">{{ team.name }}</h4>
+                        <span class="pr-label mt-1"><i class="fa-solid fa-users me-1"></i> {{ team.members.length }} Membri</span>
+                      </div>
+                    </div>
+
+                    <div class="flex-grow-1 border-start border-end border-0 border-md px-md-4 py-2 py-md-0" style="border-color: #e5e7eb !important;">
+                      <p class="pr-text-muted mb-2" style="font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">
+                        <strong>Progetto:</strong> {{ team.projectTitle }}
+                      </p>
+                      <div class="d-flex align-items-center gap-2">
+                        <span class="pr-label mb-0">Stato:</span>
+                        <span class="pr-badge" [class.bg-danger]="team.members.length >= 4">
+                          {{ team.members.length < 4 ? 'Disponibile' : 'Al Completo' }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-2 mt-md-0 flex-shrink-0 w-100 w-md-auto justify-content-end">
+                      <button class="pr-btn-outline flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="openTeamModal(team)">
+                        <i class="fa-solid fa-circle-info me-2"></i> Dettagli
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            }
+
+          </div>
+        </div>
+      }
+    }
+  </div>
+</section>
+
+@if (selectedTeam(); as team) {
+  <div class="cyber-modal-backdrop" (click)="closeModal()"></div>
+  <div class="cyber-modal pr-card">
+    <div class="pr-card-bar"></div>
+    <button class="cyber-modal__close" (click)="closeModal()">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    
+    <div class="cyber-modal__header">
+      <div class="team-avatar me-3">
+        {{ team.name.charAt(0) | uppercase }}
+      </div>
+      <div>
+        <h3 class="pr-title m-0" style="font-size: 1.5rem;">{{ team.name }}</h3>
+        <span class="pr-badge mt-2" [class.bg-danger]="team.members.length >= 4">
+          {{ team.members.length < 4 ? 'Disponibile' : 'Al Completo' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="cyber-modal__body mt-4">
+      <span class="pr-label d-block mb-1">Progetto</span>
+      <p class="pr-value mb-4" style="font-size: 1.15rem;">{{ team.projectTitle }}</p>
+
+      <span class="pr-label d-block mb-1">Descrizione</span>
+      <p class="pr-value pr-text-muted" style="font-size: 14px; line-height: 1.6; font-style: normal;">
+        {{ team.projectDescription }}
+      </p>
+      
+      <div class="pr-divider my-4"></div>
+
+      <span class="pr-label d-block mb-3">Membri ({{ team.members.length }})</span>
+      <div class="d-flex flex-wrap gap-2">
+        @for (member of team.members; track member) {
+          <span class="pr-value" style="font-size: 13px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">
+            {{ member }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <div class="cyber-modal__footer mt-5">
+      <button class="pr-btn-primary w-100" style="padding: 12px;" [disabled]="team.members.length >= 4">
+        {{ team.members.length < 4 ? 'Richiedi Accesso al Team' : 'Team al completo' }}
+      </button>
+    </div>
+  </div>
+}

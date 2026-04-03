@@ -101,7 +101,7 @@ public class TeamService {
      * @return the list of all {@link Team} entities; an empty list if none exist
      * @throws org.springframework.security.access.AccessDeniedException if the caller is not authorized
      */
-    @PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasRole('USER')")
     public List<Team> getAllTeams() {
         return teamRepository.findAll();
     }

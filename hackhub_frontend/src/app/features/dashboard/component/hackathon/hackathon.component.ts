@@ -2,8 +2,8 @@ import { Component, OnInit, signal, computed } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { HackathonService } from '../service/hackathon.service';
-import { Hackathon } from '../../home/models/hackathon.model';
+import { HackathonService } from '../../service/hackathon.service';
+import { Hackathon } from '../../models/hackathon.model';
 
 @Component({
   selector: 'app-hackathon',
