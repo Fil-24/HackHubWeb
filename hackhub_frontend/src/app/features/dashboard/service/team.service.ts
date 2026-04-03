@@ -54,24 +54,33 @@ export class TeamService {
     return this.http.get<any[]>(`${this.apiUrl}/${id}/members`);
   }
 
-  /**
-   * Funzione di utilità per mappare il DTO del backend all'interfaccia frontend.
-   * Modifica questi campi in base a come è fatto esattamente il tuo TeamResponse Java.
-   */
-  private mapToTeamModel(backendObj: any): Team {
+private mapToTeamModel(backendObj: any): Team {
     return {
-      id: backendObj.idTeam || backendObj.id,
-      name: backendObj.name,
-      // Se il backend non ha un titolo progetto separato, usiamo il nome o un default
-      projectTitle: backendObj.projectTitle || backendObj.name, 
-      projectDescription: backendObj.description || '',
-      // Se i membri non sono inclusi nella response base, potresti doverli caricare separatamente,
-      // ma qui assumiamo che il DTO ti passi almeno un array di stringhe o oggetti
-      members: backendObj.members ? backendObj.members.map((m: any) => m.name || m) : [],
-      
-      //membersCount: backendObj.stats?.membersCount || (backendObj.members ? backendObj.members.length : 0),
-      //maxMembers: backendObj.stats?.maxMembers || 4,
-      //status: (backendObj.stats?.membersCount >= 4) ? 'FULL' : 'OPEN'
+      id: backendObj.id || backendObj.idTeam,
+      name: backendObj.name || '',
+      description: backendObj.description || '',
+      leader: {
+        id: backendObj.leader?.id || 0,
+        nickname: backendObj.leader?.nickname || 'Leader',
+        email: backendObj.leader?.email || ''
+      },
+      // Mappatura sicura dei membri verso l'interfaccia TeamMember
+      members: backendObj.members && Array.isArray(backendObj.members) 
+        ? backendObj.members.map((m: any) => ({
+            id: m.id || 0,
+            nickname: m.nickname || 'Membro sconosciuto' ,
+            email: m.email || ''
+          }))
+        : [],
+        
+      // Mappatura sicura delle statistiche verso l'interfaccia TeamStats
+      teamStats: {
+        hackathonsPlayed: backendObj.teamStats?.hackathonsPlayed || 0,
+        // Mantengo il nome della proprietà "hackthonsWon" esattamente come l'hai scritta nella tua interfaccia TeamStats
+        hackthonsWon: backendObj.teamStats?.hackthonsWon || 0, 
+        podiums: backendObj.teamStats?.podiums || 0,
+        winRate: backendObj.teamStats?.winRate || 0
+      }
     };
   }
 }

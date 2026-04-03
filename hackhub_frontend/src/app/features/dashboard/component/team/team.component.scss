@@ -8,48 +8,18 @@
   display: flex;
   align-items: flex-start; 
 }
+.relative-section {
+  position: relative;
+}
 
 // ── COMPONENTI BASE ──
-.pr-card { 
-  @extend %card-base; 
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+.pr-card { @extend %card-base; }
 .pr-card-bar { @extend %card-top-bar; }
-
-// Padding specifico (come nel profilo) sovrascrivibile con p-4 se necessario
-.pr-card-body { 
-  padding: 48px 40px; 
-  @media (max-width: 768px) { padding: 32px 20px; }
-}
-
-.pr-divider {
-  width: 100%;
-  height: 1px;
-  background: $border-color;
-  margin: 32px 0;
-}
-
-// ── GRIGLIA DATI (Mio Team) ──
-.pr-info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-.pr-info-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.pr-full-width { grid-column: 1 / -1; }
+.pr-title { @extend %title-display; margin-bottom: 12px; }
+.pr-btn-outline { @extend %btn-outline; }
+.alert-error { @extend %alert-error; }
 
 // ── TYPOGRAPHY & BADGE ──
-.pr-title { 
-  @extend %title-display;
-  margin-bottom: 12px; 
-}
-
 .pr-badge {
   display: inline-block;
   font-family: $font-mono;
@@ -61,8 +31,6 @@
   padding: 6px 14px;
   border-radius: 4px;
   font-weight: 700;
-  
-  &.bg-danger { background: rgba(#ff4d4f, 0.2) !important; color: #ff4d4f !important; }
 }
 
 .pr-label {
@@ -85,26 +53,37 @@
   font-weight: 400;
 }
 
-// ── BOTTONI & AVATAR ──
-.pr-btn-primary { 
-  @extend %btn-primary;
-  padding: 14px 24px;
+// ── RICERCA ──
+.pr-search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    color: $text-secondary;
+  }
+  
+  .pr-input-search {
+    width: 100%;
+    background: transparent; // O aggiungi un colore di sfondo se necessario
+    border: 1px solid rgba($text-secondary, 0.2);
+    border-radius: 8px;
+    padding: 14px 20px 14px 45px;
+    color: $text-primary;
+    font-size: 15px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: $color-green;
+      box-shadow: 0 0 0 3px rgba($color-green, 0.1);
+    }
+  }
 }
 
-.pr-btn-outline { 
-  @extend %btn-outline;
-  padding: 14px 24px;
-}
-
-.pr-btn-danger {
-  border-color: #ff4d4f;
-  color: #ff4d4f;
-  &:hover { background: rgba(#ff4d4f, 0.1); border-color: #ff4d4f; }
-}
-
-.alert-error { @extend %alert-error; }
-.alert-success { @extend %alert-success; }
-
+// ── AVATAR ──
 .team-avatar {
   width: 48px;
   height: 48px;
@@ -120,99 +99,116 @@
   border: 1px solid rgba($color-green, 0.2);
 }
 
-// ── RICERCA (Esplora Team) ──
-.search-box {
-  position: relative;
+// ── MODALE / POPUP ──
+.pr-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 20px;
+}
+
+.pr-modal-content {
   width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalFadeIn 0.3s ease-out;
+}
 
-  &__icon {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: $text-secondary;
-    font-size: 16px;
+.btn-close-custom {
+  background: rgba($text-secondary, 0.1);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: $text-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  
+  &:hover {
+    background: rgba($text-secondary, 0.3);
   }
+}
 
-  &__input {
-    width: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid $border-color;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .stat-box {
+    background: rgba($text-secondary, 0.05);
+    border: 1px solid rgba($text-secondary, 0.1);
     border-radius: 8px;
-    padding: 16px 20px 16px 50px;
-    color: $text-primary;
-    font-family: $font-mono;
-    font-size: 14px;
-    transition: all 0.3s ease;
-
-    &::placeholder { color: $text-secondary; opacity: 0.7; }
-    &:focus {
-      outline: none;
-      border-color: $color-green;
-      box-shadow: 0 0 0 3px rgba($color-green, 0.1);
-      background: rgba(0, 0, 0, 0.4);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      font-family: $font-mono;
+      color: $text-primary;
+      margin-top: 4px;
     }
   }
 }
 
-// ── MODAL / POP-UP ──
-.cyber-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  z-index: 9998;
-}
-
-.cyber-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 600px;
-  background: $bg-main;
-  border: 1px solid $border-color;
-  padding: 0; // Padding azzerato per permettere alla pr-card-bar di aderire
-  z-index: 9999;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-
-  &__close {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    background: transparent;
-    border: none;
-    color: $text-secondary;
-    font-size: 20px;
-    cursor: pointer;
-    transition: color 0.2s;
-    &:hover { color: #ff4d4f; }
-  }
-
-  &__header, &__body, &__footer {
-    padding: 0 40px;
-    @media (max-width: 768px) { padding: 0 24px; }
-  }
-
-  &__header {
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  
+  .member-item {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid $border-color;
-    padding-top: 32px;
-    padding-bottom: 24px;
-  }
-  
-  &__footer {
-    padding-bottom: 32px;
+    gap: 12px;
+    padding: 12px;
+    background: rgba($text-secondary, 0.05);
+    border-radius: 8px;
+    
+    .member-icon {
+      color: $text-secondary;
+      font-size: 20px;
+      background: rgba($text-secondary, 0.1);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
   }
 }
 
-// ── UTILITY RESPONSIVE ──
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// ── UTILITIES RESPONSIVE ──
 @media (min-width: 768px) {
   .border-md {
-    border-left: 1px solid $border-color !important;
-    border-right: 1px solid $border-color !important;
+    border-left: 1px solid rgba($text-secondary, 0.2) !important;
+    border-right: 1px solid rgba($text-secondary, 0.2) !important;
   }
-  .w-md-auto { width: auto !important; }
+  .w-md-auto {
+    width: auto !important;
+  }
 }

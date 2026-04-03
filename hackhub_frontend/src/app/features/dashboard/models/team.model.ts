@@ -1,7 +1,11 @@
+import { TeamMember } from "./teamMember.model";
+import { TeamStats } from "./teamStats.model";
+
 export interface Team {
     id: number;
     name: string;
-    members: string[];  // elenco dei nomi dei membri del team
-    projectTitle: string;
-    projectDescription: string;
+    leader: TeamMember;
+    members: TeamMember[];
+    description: string;
+    teamStats: TeamStats;
 }
