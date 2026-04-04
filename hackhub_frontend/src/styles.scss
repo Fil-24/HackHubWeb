@@ -134,7 +134,7 @@
 }
 
 // ── ALERTS ──
-%alert-error {
+.alert-error {
   background-color: $status-closed-bg;
   border: 1.5px solid $status-closed-border;
   color: $status-closed-text;
@@ -148,7 +148,7 @@
   box-sizing: border-box;
 }
 
-%alert-success {
+.alert-success {
   background-color: #00c8966f;
   border: 1.5px solid $color-green;
   color: $status-open-text;

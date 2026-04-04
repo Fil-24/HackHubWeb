@@ -86,7 +86,7 @@
                         <div>
                           <h4 class="pr-value m-0" style="font-size: 1.15rem;">{{ team.name }}</h4>
                           <div class="d-flex align-items-center gap-2 mt-1">
-                            <span class="pr-label mb-0"><i class="fa-solid fa-users"></i> {{ (team.members?.length || 0) + (team.leader ? 1 : 0) }} MEMBRI</span>
+                            <span class="pr-label mb-0"><i class="fa-solid fa-users"></i> {{ (team.members ? team.members!.length : 0) + (team.leader ? 1 : 0) }} MEMBRI</span>
                           </div>
                         </div>
                       </div>
