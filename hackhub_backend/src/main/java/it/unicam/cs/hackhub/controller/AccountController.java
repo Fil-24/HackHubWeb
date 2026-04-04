@@ -22,6 +22,7 @@
 package it.unicam.cs.hackhub.controller;
 
 import it.unicam.cs.hackhub.DTO.AccountResponse;
+import it.unicam.cs.hackhub.DTO.MentorResponse;
 import it.unicam.cs.hackhub.model.Account;
 import it.unicam.cs.hackhub.model.Team;
 import it.unicam.cs.hackhub.service.AccountService;
@@ -136,5 +137,9 @@ public class AccountController {
         accountService.setDisabled(id, disabled);
         String status = disabled ? "disabled" : "active";
         return ResponseEntity.ok("Account " + id + " " + status );
+    }
+    @GetMapping("/staff")
+    public ResponseEntity<List<MentorResponse>> getStaff(){
+        return  ResponseEntity.ok (accountService.getStaff().stream().map(MentorResponse::fromEntity).toList());
     }
 }

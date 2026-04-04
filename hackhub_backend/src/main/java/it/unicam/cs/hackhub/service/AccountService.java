@@ -338,5 +338,9 @@ public class AccountService implements Activable<Long> {
     public Optional<Account> findByEmail(String email){
         return accountRepository.findByEmail(email);
     }
+    @PreAuthorize("hasAnyRole('STAFF')")
+    public List<Account> getStaff(){
+        return accountRepository.findByRole(Role.STAFF);
+    }
 }
 

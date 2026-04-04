@@ -22,8 +22,10 @@
 package it.unicam.cs.hackhub.repository;
 
 import it.unicam.cs.hackhub.model.Account;
+import it.unicam.cs.hackhub.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -68,4 +70,12 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
      *         {@code false} otherwise
      */
     boolean existsByNickname(String nickname);
+
+    /**
+     * Retrieves a list of accounts based on the specified role.
+     *
+     * @param role the role to filter accounts by
+     * @return a list of accounts matching the specified role, or an empty list if no accounts are found
+     */
+    List<Account> findByRole(Role role);
 }
