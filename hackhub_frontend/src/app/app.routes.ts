@@ -7,6 +7,7 @@ import { ProfileComponent } from './features/account/component/profile/profile';
 import { AuthGuard } from './core/guards/auth.guard';
 import { InvitationComponent } from './features/account/component/invitation/invitation';
 import { TeamComponent } from './features/dashboard/component/team/team.component';
+import { CreaHackathon } from './features/dashboard/component/creaHackathon/creaHackathon.component';
 
 export const routes: Routes = [
 { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -17,5 +18,6 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent,canActivate: [AuthGuard] },
   {path:'invitations', component: InvitationComponent, canActivate: [AuthGuard]},
   {path: 'teams', component:TeamComponent},
-  { path: '**', redirectTo: 'home' },
+  //{ path: '**', redirectTo: 'home' }, dava problemi ma va messo per gestire rotte non esistenti
+  {path: 'hackathoncrea', component: CreaHackathon, canActivate: [AuthGuard]}
 ];

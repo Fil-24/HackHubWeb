@@ -47,8 +47,6 @@
 .btn-primary { @extend %btn-primary; @extend .btn; }
 .btn-secondary { @extend %btn-outline; @extend .btn; }
 
-.alert-error { @extend %alert-error; }
-
 .password-wrapper {
   @extend %password-wrapper;
   .password-input { @extend %input-base; }
