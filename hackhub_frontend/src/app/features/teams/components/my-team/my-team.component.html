@@ -1,0 +1,259 @@
+<section class="profile-section">
+  <div class="container py-5">
+
+    @if (loading()) {
+      <div class="mt-loading">
+        <span class="mt-loading__dot"></span>
+        <span class="mt-loading__dot"></span>
+        <span class="mt-loading__dot"></span>
+      </div>
+    }
+    @else {
+
+      <!-- ── ALERTS ── -->
+      @if (successMessage()) {
+        <div class="row justify-content-center mb-3">
+          <div class="col-12 col-lg-10">
+            <div class="alert alert-success">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>{{ successMessage() }}</span>
+            </div>
+          </div>
+        </div>
+      }
+      @if (errorMessage()) {
+        <div class="row justify-content-center mb-3">
+          <div class="col-12 col-lg-10">
+            <div class="alert alert-error">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <span>{{ errorMessage() }}</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- ── HERO CARD ── -->
+      <div class="row justify-content-center mb-4">
+        <div class="col-12 col-lg-10">
+          <div class="mt-hero">
+
+            <div class="mt-hero__bg" aria-hidden="true"></div>
+
+            <div class="mt-hero__inner">
+              <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-4">
+
+                <div class="d-flex align-items-center gap-4">
+                  <div class="mt-hero__avatar">
+                    {{ team()?.name?.charAt(0) | uppercase }}
+                  </div>
+                  <div>
+                    <h2 class="mt-hero__name">{{ team()?.name }}</h2>
+                    <p class="mt-hero__desc">
+                      {{ team()?.description || 'Nessuna descrizione inserita.' }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="d-flex gap-2 flex-shrink-0">
+                  @if (isLeader) {
+                    <button class="mt-hero__btn-edit" (click)="showModifyForm = !showModifyForm">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                      <span>Modifica</span>
+                    </button>
+                  }
+                  <button class="mt-hero__btn-leave" (click)="leave()">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span>Lascia</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Stats strip -->
+            <div class="mt-strip">
+              <div class="mt-strip__item">
+                <span class="mt-strip__value">{{ team()?.teamStats?.hackathonsPlayed || 0 }}</span>
+                <span class="mt-strip__label">Hackathon giocati</span>
+              </div>
+              <div class="mt-strip__sep" aria-hidden="true"></div>
+              <div class="mt-strip__item">
+                <span class="mt-strip__value mt-strip__value--green">{{ team()?.teamStats?.hackthonsWon || 0 }}</span>
+                <span class="mt-strip__label">Vittorie</span>
+              </div>
+              <div class="mt-strip__sep" aria-hidden="true"></div>
+              <div class="mt-strip__item">
+                <span class="mt-strip__value">{{ team()?.teamStats?.podiums || 0 }}</span>
+                <span class="mt-strip__label">Podi</span>
+              </div>
+              <div class="mt-strip__sep" aria-hidden="true"></div>
+              <div class="mt-strip__item">
+                <span class="mt-strip__value mt-strip__value--green">{{ team()?.teamStats?.winRate || 0 }}%</span>
+                <span class="mt-strip__label">Win rate</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FORM MODIFICA ── -->
+      @if (showModifyForm) {
+        <div class="row justify-content-center mb-4">
+          <div class="col-12 col-lg-10">
+            <div class="mt-section-card mt-section-card--anim">
+              <div class="mt-section-card__bar"></div>
+              <div class="mt-section-card__inner">
+
+                <div class="mt-section-header mb-4">
+                  <div class="mt-section-header__icon">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </div>
+                  <div>
+                    <h5 class="mt-section-header__title">Modifica Team</h5>
+                    <p class="mt-section-header__sub">Aggiorna il nome e la descrizione del tuo team</p>
+                  </div>
+                </div>
+
+                <div class="d-flex flex-column gap-3">
+                  <div class="mt-field">
+                    <label class="mt-field__label">
+                      <i class="fa-solid fa-tag"></i> Nome Team
+                    </label>
+                    <input type="text" class="mt-field__input"
+                      [(ngModel)]="name" maxlength="50"
+                      placeholder="Nome del team...">
+                    <span class="mt-field__counter">{{ name.length }}/50</span>
+                  </div>
+                  <div class="mt-field">
+                    <label class="mt-field__label">
+                      <i class="fa-solid fa-align-left"></i> Descrizione
+                    </label>
+                    <textarea class="mt-field__input mt-field__textarea"
+                      [(ngModel)]="description" maxlength="300" rows="4"
+                      placeholder="Descrivi il tuo team...">
+                    </textarea>
+                    <span class="mt-field__counter">{{ description.length }}/300</span>
+                  </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4 justify-content-end">
+                  <button class="mt-btn-ghost" (click)="showModifyForm = false">
+                    Annulla
+                  </button>
+                  <button class="mt-btn-primary" (click)="modifyTeam()">
+                    <i class="fa-solid fa-floppy-disk me-1"></i> Salva modifiche
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+      @else
+      {
+        <!-- ── MEMBRI ── -->
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+          <div class="mt-section-card">
+            <div class="mt-section-card__bar"></div>
+            <div class="mt-section-card__inner">
+
+              <div class="mt-section-header mb-4">
+                <div class="mt-section-header__icon">
+                  <i class="fa-solid fa-users"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mt-section-header__title">
+                    Membri della Squadra
+                  </h5>
+                  <p class="mt-section-header__sub">
+                    {{ (team()?.members?.length || 0) + (team()?.leader ? 1 : 0) }} persone in questo team
+                  </p>
+                </div>
+              </div>
+
+              <div class="mt-members">
+
+                <!-- Leader -->
+                @if (team()?.leader) {
+                  <div class="mt-member mt-member--leader">
+                    <div class="mt-member__avatar mt-member__avatar--leader">
+                      <i class="fa-solid fa-user-astronaut member-icon"></i>
+                    </div>
+                    <div class="mt-member__info">
+                      <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span class="mt-member__name">{{ team()?.leader?.nickname }}</span>
+                        <span class="mt-member__badge">
+                          <i class="fa-solid fa-crown"></i> Leader
+                        </span>
+                      </div>
+                      <span class="mt-member__email">{{ team()?.leader?.email }}</span>
+                    </div>
+                  </div>
+                }
+
+                <!-- Separatore se ci sono membri -->
+                @if (team()?.members?.length) {
+                  <div class="mt-members__sep">
+                    <span>Membri</span>
+                  </div>
+                }
+
+                @for (member of team()?.members ?? []; track member.id) {
+                  <div class="mt-member">
+                    <div class="mt-member__avatar">
+                      <i class="fa-solid fa-user-astronaut member-icon"></i>
+                    </div>
+                    <div class="mt-member__info">
+                      <span class="mt-member__name">{{ member.nickname }}</span>
+                      <span class="mt-member__email">{{ member.email }}</span>
+                    </div>
+                    @if (isLeader) {
+                      <button class="mt-member__remove" (click)="removeMember(member.id)"
+                        title="Rimuovi {{ member.nickname }}">
+                        <i class="fa-solid fa-xmark"></i>
+                      </button>
+                    }
+                  </div>
+                }
+
+              </div>
+
+              <!-- ── INVITA ── -->
+              @if (isLeader) {
+                <div class="mt-invite">
+                  <div class="mt-invite__header">
+                    <i class="fa-solid fa-paper-plane mt-invite__icon"></i>
+                    <span class="mt-section-header__title" style="font-size: 14px;">Invita un membro</span>
+                  </div>
+                  <p class="mt-section-header__sub mb-3">
+                    Inserisci l'email dell'utente che vuoi aggiungere al team
+                  </p>
+                  <div class="d-flex flex-column flex-md-row gap-2">
+                    <div class="mt-invite__input-wrap flex-grow-1">
+                      <i class="fa-solid fa-at mt-invite__input-icon"></i>
+                      <input
+                        type="email"
+                        class="mt-invite__input"
+                        placeholder="email@esempio.com"
+                        [value]="newMemberEmail()"
+                        (input)="newMemberEmail.set($any($event.target).value)">
+                    </div>
+                    <button class="mt-btn-primary flex-shrink-0" (click)="inviteMember()">
+                      <i class="fa-solid fa-paper-plane me-1"></i> Invita
+                    </button>
+                  </div>
+                </div>
+              }
+
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    
+    }
+  </div>
+</section>

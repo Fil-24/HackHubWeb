@@ -6,7 +6,9 @@ import { HackathonComponent } from './features/dashboard/component/hackathon/hac
 import { ProfileComponent } from './features/account/component/profile/profile';
 import { AuthGuard } from './core/guards/auth.guard';
 import { InvitationComponent } from './features/account/component/invitation/invitation';
-import { TeamComponent } from './features/dashboard/component/team/team.component';
+import { TeamComponent } from './features/teams/components/team/team.component';
+import { TeamGuard } from './core/guards/team.guard';
+import { MyTeamComponent } from './features/teams/components/my-team/my-team.component';
 
 export const routes: Routes = [
 { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -14,8 +16,9 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent },
   { path: 'hackathon/:id', component: HackathonComponent },
-  { path: 'profile', component: ProfileComponent,canActivate: [AuthGuard] },
-  {path:'invitations', component: InvitationComponent, canActivate: [AuthGuard]},
-  {path: 'teams', component:TeamComponent},
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'invitations', component: InvitationComponent, canActivate: [AuthGuard]},
+  { path: 'teams', component:TeamComponent, canActivate: [TeamGuard]},
+  { path: 'teams/my', component:MyTeamComponent, canActivate: [AuthGuard]},
   { path: '**', redirectTo: 'home' },
 ];

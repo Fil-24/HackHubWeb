@@ -3,6 +3,7 @@ import { Component, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InvitationService } from '../../service/invitation.service';
 import { Invitation } from '../../models/invitation.model';
+import { AuthService } from '../../../auth/service/auth.service';
 
 
 
@@ -59,6 +60,7 @@ export class InvitationComponent implements OnInit {
   acceptInvitation(idInvitation: number) {
     this.invitationService.acceptInvitation(idInvitation).subscribe({
       next: () => {
+        //TODO Bisogna aggiornare l'idTeam di authService quando si accetta l'invito
         this.handleResponse(idInvitation, 'accettato');
       },
       error: () => {

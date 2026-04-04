@@ -30,7 +30,7 @@
     @else {
       
      @if (myTeam()) {
-        <app-my-team [team]="myTeam()!"></app-my-team>
+        <!--<app-my-team [team]="myTeam()!"></app-my-team>-->
       }
       @else {
         
@@ -96,7 +96,7 @@
                           {{ team.description || 'Nessuna descrizione disponibile.' }}
                         </p>
                         <div class="d-flex align-items-center gap-2">
-                          <span class="pr-badge"><i class="fa-solid fa-trophy"></i> {{ team.teamStats?.hackthonsWon || 0 }} Vittorie</span>
+                          <span class="pr-badge"><i class="fa-solid fa-trophy"></i> {{ team.teamStats!.hackthonsWon || 0 }} Vittorie</span>
                         </div>
                       </div>
       
@@ -150,24 +150,24 @@
         <div class="stats-grid mb-4">
           <div class="stat-box">
             <span class="pr-label">Giocati</span>
-            <span class="stat-value">{{ selectedTeam()!.teamStats?.hackathonsPlayed || 0 }}</span>
+            <span class="stat-value">{{ selectedTeam()!.teamStats!.hackathonsPlayed || 0 }}</span>
           </div>
           <div class="stat-box">
             <span class="pr-label">Vittorie</span>
-            <span class="stat-value text-success">{{ selectedTeam()!.teamStats?.hackthonsWon || 0 }}</span>
+            <span class="stat-value text-success">{{ selectedTeam()!.teamStats!.hackthonsWon || 0 }}</span>
           </div>
           <div class="stat-box">
             <span class="pr-label">Podi</span>
-            <span class="stat-value">{{ selectedTeam()!.teamStats?.podiums || 0 }}</span>
+            <span class="stat-value">{{ selectedTeam()!.teamStats!.podiums || 0 }}</span>
           </div>
           <div class="stat-box">
             <span class="pr-label">Win Rate</span>
-            <span class="stat-value">{{ selectedTeam()!.teamStats?.winRate || 0 }}%</span>
+            <span class="stat-value">{{ selectedTeam()!.teamStats!.winRate || 0 }}%</span>
           </div>
         </div>
 
        <h5 class="pr-value mb-3">
-          Membri della Squadra ({{ (selectedTeam()!.members?.length || 0) + (selectedTeam()!.leader ? 1 : 0) }})
+          Membri della Squadra ({{ (selectedTeam()!.members!.length || 0) + (selectedTeam()!.leader ? 1 : 0) }})
         </h5>
         
         <div class="members-list">
@@ -205,6 +205,97 @@
             <p class="pr-text-muted">Nessun membro visibile.</p>
           }
           
+        </div>
+
+      </div>
+    </div>
+  </div>
+}
+
+@if(showCreateForm()) {
+  <div class="pr-modal-overlay" (click)="closeCreateForm()">
+    <div class="pr-modal-content pr-card" (click)="$event.stopPropagation()">
+      <div class="pr-card-bar" style="background-color: #00c896;"></div>
+
+      <div class="pr-card-body p-4 p-md-5">
+
+        <div class="d-flex justify-content-between align-items-start mb-4">
+          <div class="d-flex align-items-center gap-3">
+            <div>
+              <h3 class="pr-title m-0" style="font-size: 1.8rem;">Crea <span class="accent">Team</span></h3>
+              <span class="pr-label">Compila i campi per creare il tuo team</span>
+            </div>
+          </div>
+          <button class="btn-close-custom" (click)="closeCreateForm()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        @if (createErrorMessage()) {
+          <div class="alert alert-error mb-3">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>{{ createErrorMessage() }}</span>
+          </div>
+        }
+
+        @if (createSuccessMessage()) {
+          <div class="alert alert-success mb-3">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>{{ createSuccessMessage() }}</span>
+          </div>
+        }
+
+        <div class="d-flex flex-column gap-3">
+
+          <div class="create-field">
+            <label class="pr-label mb-2 d-block">
+              <i class="fa-solid fa-tag me-1"></i> Nome Team
+            </label>
+            <input
+              type="text"
+              class="pr-create-input"
+              placeholder="Es. Phoenix Squad..."
+              [(ngModel)]="newTeamName"
+              maxlength="50">
+            <span class="pr-label d-flex justify-content-end mt-1">
+              {{ newTeamName.length }}/50
+            </span>
+          </div>
+
+          <div class="create-field">
+            <label class="pr-label mb-2 d-block">
+              <i class="fa-solid fa-align-left me-1"></i> Descrizione
+            </label>
+            <textarea
+              class="pr-create-input pr-create-textarea"
+              placeholder="Descrivi il tuo team, la vostra specialità, i vostri obiettivi..."
+              [(ngModel)]="newTeamDescription"
+              maxlength="300"
+              rows="4">
+            </textarea>
+            <span class="pr-label d-flex justify-content-end mt-1">
+              {{ newTeamDescription.length }}/300
+            </span>
+          </div>
+
+        </div>
+
+        <div class="d-flex gap-3 mt-4 justify-content-end">
+          <button class="pr-btn-outline" style="padding: 10px 20px;" (click)="closeCreateForm()">
+            Annulla
+          </button>
+          <button
+            class="pr-btn-primary"
+            style="padding: 10px 24px;"
+            [disabled]="isCreating() || !newTeamName.trim()"
+            (click)="submitCreateTeam()">
+            @if (isCreating()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+              Creazione...
+            } @else {
+              <i class="fa-solid fa-plus me-1"></i> Crea Team
+            }
+          </button>
         </div>
 
       </div>

@@ -12,9 +12,12 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/hackathons" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Hackathons</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/teams" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Teams</a>
-        </li>
+        @if(authService.isUser())
+        {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/teams" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Teams</a>
+          </li>
+        }
       </ul>
 
       <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">

@@ -30,7 +30,7 @@ export class TeamGuard implements CanActivate {
     const teamId = this.auth.teamId;
 
     if (teamId) {
-      return this.router.createUrlTree([`/teams/${teamId}`]);
+      return this.router.createUrlTree([`/teams/my`]);
     }
     else if(!this.auth.isUser()){
       return this.router.createUrlTree([`/dashboard`]);

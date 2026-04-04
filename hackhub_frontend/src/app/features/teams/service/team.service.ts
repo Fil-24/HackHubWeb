@@ -1,8 +1,9 @@
+
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { Team } from '../models/team.model';
+import { Team } from '../model/team.model';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,11 @@ export class TeamService {
     return this.http.delete<{ message: string }>(`${this.apiUrl}/leader`);
   }
 
+  // DELETE /api/teams/members/id
+  removeMember(id : number){
+    return this.http.delete(`${this.apiUrl}/members/${id}`);
+  }
+
   // GET /api/teams/{id}/members
   getTeamMembers(id: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${id}/members`);
@@ -60,14 +66,14 @@ private mapToTeamModel(backendObj: any): Team {
       name: backendObj.name || '',
       description: backendObj.description || '',
       leader: {
-        id: backendObj.leader?.id || 0,
+        id: backendObj.leader?.idTeamMember || 0,
         nickname: backendObj.leader?.nickname || 'Leader',
         email: backendObj.leader?.email || ''
       },
       // Mappatura sicura dei membri verso l'interfaccia TeamMember
       members: backendObj.members && Array.isArray(backendObj.members) 
         ? backendObj.members.map((m: any) => ({
-            id: m.id || 0,
+            id: m.idTeamMember || 0,
             nickname: m.nickname || 'Membro sconosciuto' ,
             email: m.email || ''
           }))

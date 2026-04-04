@@ -1,4 +1,4 @@
-import { Team } from './team.model';
+import { Team } from '../../teams/model/team.model';
 import { Staff } from './staff.model';
 import { Rule } from './rule.model';
 

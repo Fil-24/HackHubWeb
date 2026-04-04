@@ -199,6 +199,32 @@
   }
 }
 
+.pr-textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+  padding-left: 16px !important;
+  font-family: inherit;
+}
+
+// ── FORM CREAZIONE TEAM ──
+.pr-create-input {
+  @extend %input-base;
+  background-color: transparent;
+  color: $text-primary;
+
+  &::placeholder {
+    color: $text-secondary;
+    font-style: italic;
+  }
+}
+
+.pr-create-textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+
 @keyframes modalFadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
