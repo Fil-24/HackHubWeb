@@ -1,55 +1,75 @@
 <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6">
         <div class="cr-card">
+
             <div class="cr-card-bar"></div>
 
+
             <div class="cr-card-body">
+                @if (errorMessage()) {
+                <div class="alert alert-error">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>{{ errorMessage() }}</span>
+                </div>
+                }
+                @if (successMessage()) {
+                <div class="alert alert-success">
+                    <i class="fa-solid fa-check"></i>
+                    <span>{{ successMessage() }}</span>
+                </div>}
                 <h3 class="cr-title text-center mb-5">
                     Crea Hackathon</h3>
                 <div class="cr-form">
 
                     <div class="cr-input-group cr-full-width">
                         <label class="cr-label">Nome</label>
-                        <input type="text" class="cr-input">
+                        <input type="text" class="cr-input" placeholder="Hackathon AI" name="Nome"
+                            [(ngModel)]="hackathonData.nome">
                     </div>
 
                     <div class="cr-input-group">
                         <label class="cr-label">Località</label>
-                        <input type="text" class="cr-input">
+                        <input type="text" class="cr-input" placeholder="Camerino" name="Località"
+                            [(ngModel)]="hackathonData.localita">
                     </div>
 
 
                     <div class="cr-input-group ">
                         <label class="cr-label">Premio (€)</label>
-                        <input type="number" class="cr-input" min="0" placeholder="0">
+                        <input type="number" class="cr-input" min="0" placeholder="0" name="Premio"
+                            [(ngModel)]="hackathonData.premio">
                     </div>
                     <div class="cr-input-group ">
                         <label class="cr-label">Numero massimo di membri per ogni team</label>
-                        <input type="number" class="cr-input" min="1" placeholder="1">
+                        <input type="number" class="cr-input" min="1" placeholder="1"
+                            name="Numero massimo di membri per ogni team"
+                            [(ngModel)]="hackathonData.maxParticipantsPerTeam">
                     </div>
                     <div class="cr-input-group ">
                         <label class="cr-label">Numero massimo di team</label>
-                        <input type="number" class="cr-input" min="1" placeholder="1">
+                        <input type="number" class="cr-input" min="1" placeholder="1" name="Numero massimo di team"
+                            [(ngModel)]="hackathonData.maxParticipants">
                     </div>
                     <div class="cr-input-group ">
                         <label class="cr-label">Data di inizio</label>
-                        <input type="datetime-local" class="cr-input" [(ngModel)]="hackathonData.startDate"
-                            [min]="minDate">
+                        <input type="datetime-local" name="Data di inizio" class="cr-input"
+                            [(ngModel)]="hackathonData.startDate" [min]="minDate">
                     </div>
                     <div class="cr-input-group ">
                         <label class="cr-label">Data di fine</label>
-                        <input type="datetime-local" class="cr-input" [(ngModel)]="hackathonData.endDate"
-                            [min]="hackathonData.startDate">
+                        <input type="datetime-local" name="Data di fine" class="cr-input"
+                            [(ngModel)]="hackathonData.endDate" [min]="hackathonData.startDate">
                     </div>
                     <div class="cr-input-group cr-full-width cr-search-wrap">
                         <label class="cr-label">Giudice</label>
-                        <input type="text" class="cr-input" [(ngModel)]="searchGiudice" (input)="filtraGiudici()"
-                            (blur)="chiudiDropdown('giudice')" placeholder="Cerca giudice..." autocomplete="off">
-                        @if (giudiciFiltrati.length > 0) {
+                        <input type="text" class="cr-input" [(ngModel)]="searchGiudice" (focus)="filtraGiudici()"
+                            (input)="filtraGiudici()" (blur)="chiudiDropdown('giudice')" placeholder="Cerca giudice..."
+                            autocomplete="off">
+                        @if (showGiudici() && giudiciFiltrati.length > 0) {
                         <div class="cr-dropdown">
                             @for (item of giudiciFiltrati; track item.id) {
                             <div class="cr-dropdown-item" (mousedown)="selezionaGiudice(item)">
-                                {{ item.name }}
+                                {{ item.email }}
                             </div>
                             }
                         </div>
@@ -57,13 +77,14 @@
                     </div>
                     <div class="cr-input-group cr-full-width cr-search-wrap">
                         <label class="cr-label">Mentori</label>
-                        <input type="text" class="cr-input" [(ngModel)]="searchMentore" (input)="filtraMentori()"
-                            (blur)="chiudiDropdown('mentore')" placeholder="Cerca mentore..." autocomplete="off">
-                        @if (mentoriFiltrati.length > 0) {
+                        <input type="text" class="cr-input" [(ngModel)]="searchMentore" (focus)="filtraMentori()"
+                            (input)="filtraMentori()" (blur)="chiudiDropdown('mentore')" placeholder="Cerca mentore..."
+                            autocomplete="off">
+                        @if (showMentori() && mentoriFiltrati.length > 0) {
                         <div class="cr-dropdown">
                             @for (item of mentoriFiltrati; track item.id) {
                             <div class="cr-dropdown-item" (mousedown)="selezionaMentore(item)">
-                                {{ item.name }}
+                                {{ item.email }}
                             </div>
                             }
                         </div>
@@ -71,7 +92,7 @@
                         <div class="cr-tags">
                             @for (mentore of mentoriSelezionati; track mentore.id) {
                             <div class="cr-tag">
-                                {{ mentore.name }}
+                                {{ mentore.email }}
                                 <span (click)="rimuoviMentore(mentore)">✕</span>
                             </div>
                             }
@@ -81,9 +102,10 @@
                     <!-- Regole -->
                     <div class="cr-input-group cr-full-width cr-search-wrap">
                         <label class="cr-label">Regole</label>
-                        <input type="text" class="cr-input" [(ngModel)]="searchRegola" (input)="filtraRegole()"
-                            (blur)="chiudiDropdown('regola')" placeholder="Cerca regola..." autocomplete="off">
-                        @if (regoleFiltrate.length > 0) {
+                        <input type="text" class="cr-input" [(ngModel)]="searchRegola" (focus)="filtraRegole()"
+                            (input)="filtraRegole()" (blur)="chiudiDropdown('regola')" placeholder="Cerca regola..."
+                            autocomplete="off">
+                        @if (showRegole() && regoleFiltrate.length > 0) {
                         <div class="cr-dropdown">
                             @for (item of regoleFiltrate; track item.id) {
                             <div class="cr-dropdown-item" (mousedown)="selezionaRegola(item)">
@@ -113,7 +135,7 @@
                     <button class="cr-btn-outline w-50" (click)="cancelEdit()">Annulla</button>
                     <button class="cr-btn-primary w-50 d-flex justify-content-center align-items-center gap-2"
                         (click)="saveChanges()">
-                        Salva Modifiche
+                        Salva
                     </button>
                 </div>
             </div>

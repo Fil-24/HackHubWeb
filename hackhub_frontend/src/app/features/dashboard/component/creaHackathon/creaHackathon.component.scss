@@ -72,16 +72,19 @@ overflow: visible; }
 .cr-search-wrap {
     position: relative;
     z-index: 10;
+    &:focus-within {
+        z-index: 100; // sale quando è attivo
+    }
 }
 
 .cr-dropdown {
     position: absolute;
-    top: calc(100% - 4px);
+    top: calc(100% + 4px);
     left: 0;
     right: 0;
     z-index: 999;
-    background: var(--cr-card-bg);
-    border: 1px solid var(--cr-border);
+    background: var(--cr-card-bg, white);
+    border: 1px solid var(--cr-border, #e0e0e0);
     border-radius: 8px;
     max-height: 200px;
     overflow-y: auto;
@@ -109,19 +112,30 @@ overflow: visible; }
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: var(--cr-primary-light);
-    color: var(--cr-primary);
-    padding: 4px 10px;
+    background: #e6f4ea;
+    color: #2d6a4f;
+    border: 1px solid #95d5b2;
+    padding: 5px 12px;
     border-radius: 20px;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 500;
 
     span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #95d5b2;
+        color: #1b4332;
+        font-size: 0.65rem;
         cursor: pointer;
-        font-size: 0.75rem;
-        opacity: 0.7;
+        transition: background 0.15s;
 
         &:hover {
-            opacity: 1;
+            background: #52b788;
+            color: white;
         }
     }
 }
@@ -150,12 +164,12 @@ overflow: visible; }
 // ── INPUT & BOTTONI ──
 .cr-input { @extend %input-base; }
 
-.cr-btn-primary { 
+.cr-btn-primary {
   @extend %btn-primary;
   padding: 14px 24px;
 }
 
-.cr-btn-outline { 
+.cr-btn-outline {
   @extend %btn-outline;
   padding: 14px 24px;
 }
