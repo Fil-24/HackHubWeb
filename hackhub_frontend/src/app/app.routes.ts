@@ -9,6 +9,7 @@ import { InvitationComponent } from './features/account/component/invitation/inv
 import { TeamComponent } from './features/teams/components/team/team.component';
 import { TeamGuard } from './core/guards/team.guard';
 import { MyTeamComponent } from './features/teams/components/my-team/my-team.component';
+import { CreaHackathon } from './features/dashboard/component/creaHackathon/creaHackathon.component';
 
 export const routes: Routes = [
 { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,5 +21,6 @@ export const routes: Routes = [
   { path: 'invitations', component: InvitationComponent, canActivate: [AuthGuard]},
   { path: 'teams', component:TeamComponent, canActivate: [TeamGuard]},
   { path: 'teams/my', component:MyTeamComponent, canActivate: [AuthGuard]},
-  { path: '**', redirectTo: 'home' },
+ {path: 'hackathoncrea', component: CreaHackathon, canActivate: [AuthGuard]},
+  { path: '**', redirectTo: 'home' }
 ];

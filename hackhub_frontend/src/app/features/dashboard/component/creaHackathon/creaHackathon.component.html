@@ -1,0 +1,122 @@
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="cr-card">
+            <div class="cr-card-bar"></div>
+
+            <div class="cr-card-body">
+                <h3 class="cr-title text-center mb-5">
+                    Crea Hackathon</h3>
+                <div class="cr-form">
+
+                    <div class="cr-input-group cr-full-width">
+                        <label class="cr-label">Nome</label>
+                        <input type="text" class="cr-input">
+                    </div>
+
+                    <div class="cr-input-group">
+                        <label class="cr-label">Località</label>
+                        <input type="text" class="cr-input">
+                    </div>
+
+
+                    <div class="cr-input-group ">
+                        <label class="cr-label">Premio (€)</label>
+                        <input type="number" class="cr-input" min="0" placeholder="0">
+                    </div>
+                    <div class="cr-input-group ">
+                        <label class="cr-label">Numero massimo di membri per ogni team</label>
+                        <input type="number" class="cr-input" min="1" placeholder="1">
+                    </div>
+                    <div class="cr-input-group ">
+                        <label class="cr-label">Numero massimo di team</label>
+                        <input type="number" class="cr-input" min="1" placeholder="1">
+                    </div>
+                    <div class="cr-input-group ">
+                        <label class="cr-label">Data di inizio</label>
+                        <input type="datetime-local" class="cr-input" [(ngModel)]="hackathonData.startDate"
+                            [min]="minDate">
+                    </div>
+                    <div class="cr-input-group ">
+                        <label class="cr-label">Data di fine</label>
+                        <input type="datetime-local" class="cr-input" [(ngModel)]="hackathonData.endDate"
+                            [min]="hackathonData.startDate">
+                    </div>
+                    <div class="cr-input-group cr-full-width cr-search-wrap">
+                        <label class="cr-label">Giudice</label>
+                        <input type="text" class="cr-input" [(ngModel)]="searchGiudice" (input)="filtraGiudici()"
+                            (blur)="chiudiDropdown('giudice')" placeholder="Cerca giudice..." autocomplete="off">
+                        @if (giudiciFiltrati.length > 0) {
+                        <div class="cr-dropdown">
+                            @for (item of giudiciFiltrati; track item.id) {
+                            <div class="cr-dropdown-item" (mousedown)="selezionaGiudice(item)">
+                                {{ item.name }}
+                            </div>
+                            }
+                        </div>
+                        }
+                    </div>
+                    <div class="cr-input-group cr-full-width cr-search-wrap">
+                        <label class="cr-label">Mentori</label>
+                        <input type="text" class="cr-input" [(ngModel)]="searchMentore" (input)="filtraMentori()"
+                            (blur)="chiudiDropdown('mentore')" placeholder="Cerca mentore..." autocomplete="off">
+                        @if (mentoriFiltrati.length > 0) {
+                        <div class="cr-dropdown">
+                            @for (item of mentoriFiltrati; track item.id) {
+                            <div class="cr-dropdown-item" (mousedown)="selezionaMentore(item)">
+                                {{ item.name }}
+                            </div>
+                            }
+                        </div>
+                        }
+                        <div class="cr-tags">
+                            @for (mentore of mentoriSelezionati; track mentore.id) {
+                            <div class="cr-tag">
+                                {{ mentore.name }}
+                                <span (click)="rimuoviMentore(mentore)">✕</span>
+                            </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Regole -->
+                    <div class="cr-input-group cr-full-width cr-search-wrap">
+                        <label class="cr-label">Regole</label>
+                        <input type="text" class="cr-input" [(ngModel)]="searchRegola" (input)="filtraRegole()"
+                            (blur)="chiudiDropdown('regola')" placeholder="Cerca regola..." autocomplete="off">
+                        @if (regoleFiltrate.length > 0) {
+                        <div class="cr-dropdown">
+                            @for (item of regoleFiltrate; track item.id) {
+                            <div class="cr-dropdown-item" (mousedown)="selezionaRegola(item)">
+                                <span class="cr-dropdown-item-name">{{ item.name }}</span>
+                                <span class="cr-dropdown-item-desc">{{ item.description }}</span>
+                            </div>
+                            }
+                        </div>
+                        }
+                        <div class="cr-tags">
+                            @for (regola of regoleSelezionate; track regola.id) {
+                            <div class="cr-tag">
+                                {{ regola.description }}
+                                <span (click)="rimuoviRegola(regola)">✕</span>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="cr-full-width">
+                        <div class="cr-divider my-4"></div>
+                    </div>
+                </div>
+
+
+                <div class="mt-5 d-flex gap-3">
+
+                    <button class="cr-btn-outline w-50" (click)="cancelEdit()">Annulla</button>
+                    <button class="cr-btn-primary w-50 d-flex justify-content-center align-items-center gap-2"
+                        (click)="saveChanges()">
+                        Salva Modifiche
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
