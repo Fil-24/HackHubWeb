@@ -4,8 +4,15 @@
             <div class="col-12 col-md-5 col-left pe-md-5">
                 <div class="search-label">Hackathon</div>
                 <h2 class="search-title">Tutti gli <em>Hackathon</em></h2>
+                
             </div>
-            <div class="col-12 col-md-7 ps-md-5">
+            
+        </div>
+        <div class="row align-items-center">
+            <div class="col-12 col-md-9 col-left pe-md-5">
+                <p class="search-subtitle">Esplora tutti gli hackathon disponibili, filtra per data, nome e altro ancora.</p>
+            </div>
+            <div class="col-12 col-md-3 ps-md-5 align-items-right">
                 <button class="filter-toggle" (click)="showFiltri = !showFiltri">
                     <svg viewBox="0 0 24 24" width="16" height="16">
                         <line x1="4" y1="6" x2="20" y2="6" />
@@ -36,7 +43,7 @@
                         <circle cx="11" cy="11" r="7" />
                         <line x1="16.5" y1="16.5" x2="22" y2="22" />
                     </svg>
-                    <input type="text" [(ngModel)]="searchTerm" name="search" placeholder="Nome, città..."
+                    <input type="text" [(ngModel)]="searchTerm" name="search" placeholder="Nome Hackathon"
                         class="filter-search-input">
                 </div>
             </div>
@@ -73,7 +80,6 @@
 <section class="h-wrap">
     <div class="container">
         <div class="h-header">
-            <div>
                 <div class="h-label">Hackathon</div>
                 <div class="h-count">// {{ hackathon()!.length }} risultati trovati</div>
             </div>
@@ -117,5 +123,4 @@
             </div>
             }
         </div>
-    </div>
 </section>
