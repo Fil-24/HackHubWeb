@@ -1,4 +1,7 @@
--criptare la password prima di inviarla, quindi nel frontend
+team problemi:
+ - se un utente accetta un invito deve ricaricare la pagine per poter visualizzare l aggiornamento
+- farei vedere il bottone teams a tutti 
+- l'eliminazione di un membro è troppo facile, metterei un bottone piuttosto che una semplice x e un pop up di conferma
 
 -sistemare i model all'interno del home
 
