@@ -17,12 +17,13 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent },
+  {path: 'hackathon/create', component: CreaHackathon, canActivate: [AuthGuard]},
   { path: 'hackathon/:id', component: HackathonComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'invitations', component: InvitationComponent, canActivate: [AuthGuard]},
   { path: 'teams', component:TeamComponent, canActivate: [TeamGuard]},
   { path: 'teams/my', component:MyTeamComponent, canActivate: [AuthGuard]},
- {path: 'hackathoncrea', component: CreaHackathon, canActivate: [AuthGuard]},
+ 
  {path: 'hackathons', component: HackathonsComponent},
   { path: '**', redirectTo: 'home' }
 ];

@@ -19,13 +19,12 @@
 
             <!-- COLONNA SINISTRA: testo -->
             <div class="col-12 col-md-5 col-left pe-md-5">
-                <div class="search-label">Ricerca</div>
+                <div class="search-label">Search</div>
                 <h2 class="search-title">
-                    Trova il tuo<br>
-                    prossimo<em> Hackathon</em>
+                    Find your <br> next<em> Hackathon</em>
                 </h2>
                 <p class="search-desc">
-                    Esplora centinaia di hackathon in tutta italia.<br>
+                    Explore hundreds of hackathons.<br>
                 </p>
             </div>
             <!-- COLONNA DESTRA: search bar -->
@@ -33,16 +32,9 @@
 
                 <div class="search-bar">
                     <div class="search-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-search" viewBox="0 0 16 16">
-                            <path
-                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                        </svg>
+                        <i class="bi bi-search"></i>
                     </div>
-                    <form (ngSubmit)="cerca()" method="get">
-                        <input class="search-input" type="text" placeholder="Es: hackathon AI, blockchain, web3...">
-                        <button type="submit" class="search-btn">→ Cerca</button>
-                    </form>
+                        <input class="search-input" type="text" [(ngModel)]="search" name="search" placeholder="E.g. : AI hackathon, blockchain, web3...">
                 </div>
             </div>
         </div>
@@ -54,13 +46,13 @@
         <div class="hc-header">
             <div>
                 <div class="hc-label">Hackathon</div>
-                <h2 class="hc-title">Eventi futuri</h2>
+                <h2 class="hc-title">Upcoming Events</h2>
             </div>
-            <div class="hc-count">// {{ hackathon()!.length }} risultati trovati</div>
+            <div class="hc-count">// {{ filtro()!.length }} results found</div>
         </div>
-        @if(hackathon()!.length > 0) {
+        @if(filtro()!.length > 0) {
         <div class="hc-grid">
-            @for (h of hackathon()!.slice(0, 9); track $index) {
+            @for (h of filtro().slice(0, 9); track $index) {
             <div class="hc-card">
                 <div class="hc-card-bar"></div>
                 <div class="hc-card-body">
@@ -70,35 +62,40 @@
                 <div class="hc-card-footer">
                     <div class="hc-dates">
                         <div class="hc-date-item">
-                            <span class="hc-date-label">Inizio</span>
+                            <span class="hc-date-label">Start</span>
                             <span class="hc-date-value">{{ h.startDate }}</span>
                         </div>
                         <div class="hc-date-item">
-                            <span class="hc-date-label">Fine</span>
+                            <span class="hc-date-label">End</span>
                             <span class="hc-date-value">{{ h.endDate }}</span>
                         </div>
                         <div class="hc-date-item">
-                            <span class="hc-date-label">Max numero partecipanti</span>
+                            <span class="hc-date-label">Max participants</span>
                             <span class="hc-date-value">{{ h.maxNumberTeams }}</span>
                         </div>
                     </div>
                     <div class="hc-divider"></div>
-                    <button class="hc-btn" routerLink="/hackathon/{{ h.id }}">Visualizza info →</button>
+                    <button class="hc-btn" routerLink="/hackathon/{{ h.id }}">View details →</button>
                 </div>
             </div>
             }
         </div>
 
         <div class="hc-card hc-card-more">
-            <button class="hc-btn" routerLink="/hackathons">Visualizza tutti →</button>
+            <button class="hc-btn" routerLink="/hackathons">View all →</button>
         </div>
 
         }
-        @if(hackathon()!.length === 0) {
+        @if(filtro().length === 0) {
         <!-- Nessun risultato -->
         <div class="state-box">
-            <p class="state-box__title">Nessun hackathon trovato</p>
-            <p class="state-box__sub">Prova con un altro termine di ricerca.</p>
+            <p class="state-box__title">No hackathons found</p>
+            @if(search) {
+            <p class="state-box__sub">Try a different search term.</p>
+            }@else {
+            <p class="state-box__sub">There are no upcoming hackathons at the moment.</p>
+            }
+
         </div>
         }
     </div>

@@ -2,17 +2,18 @@ import { Component, OnInit, signal } from '@angular/core';
 import { HomeService } from '../../service/home.service';
 import { Hackathon } from '../../models/hackathon.model';
 import { RouterLink } from "@angular/router";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [RouterLink]
+  imports: [RouterLink,FormsModule]
 })
 export class HomeComponent implements OnInit {
-  hackathon = signal<Hackathon[] | null>(null);
+  hackathon = signal<Hackathon[] >([]);
   errorMessage = signal<string | null>(null);
-  searchQuery = '';
+  search = '';
 
   constructor(private homeService: HomeService) { }
 
@@ -35,19 +36,13 @@ export class HomeComponent implements OnInit {
       }
     });
   }
-  //TODO: aggiungere validazione input,e invio richiesta al backend, e gestione risposta
-  cerca(): void {
-    if (!this.searchQuery.trim()) {
-      this.caricaHackathon();
-      return;
+  filtro(): Hackathon[] {
+    if (!this.hackathon()) {
+      return [];
     }
-    this.homeService.cerca(this.searchQuery).subscribe({
-      next: (data) => {
-        this.hackathon.set(data);
-      },
-      error: (err) => {
-        this.errorMessage.set(err.message);
-      }
+    const dataAttuale = new Date();
+    return this.hackathon()!.filter(hackathon => {
+      return !this.search || hackathon.name.toLowerCase().includes(this.search.toLowerCase());
     });
   }
 }

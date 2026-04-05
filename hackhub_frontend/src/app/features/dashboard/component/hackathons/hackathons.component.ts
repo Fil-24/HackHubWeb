@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './hackathons.component.scss',
 })
 export class HackathonsComponent implements OnInit {
-  hackathon = signal<Hackathon[] | null>(null);
+  hackathon = signal<Hackathon[]>([]);
   errorMessage = signal<string | null>(null);
   searchTerm = signal<string>('');
   filtroTempo = signal('tutti');

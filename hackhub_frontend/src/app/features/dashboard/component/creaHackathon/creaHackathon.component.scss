@@ -13,6 +13,10 @@ overflow: visible; }
 .cr-title { 
   @extend %title-display;
   margin-bottom: 12px; 
+  em {
+        font-style: italic;
+        color: $color-green;
+    }
 }
 
 .cr-badge {

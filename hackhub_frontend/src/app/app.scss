@@ -1,5 +1,6 @@
 @use "../colors" as *; 
 @use "../styles" as *;
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"); //icone bootstrap
 
 .custom-navbar {
   background-color: $bg-surface; 

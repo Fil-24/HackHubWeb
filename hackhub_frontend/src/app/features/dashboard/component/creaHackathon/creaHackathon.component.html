@@ -18,52 +18,52 @@
                     <span>{{ successMessage() }}</span>
                 </div>}
                 <h3 class="cr-title text-center mb-5">
-                    Crea Hackathon</h3>
+                    Create <em>Hackathon</em></h3>
                 <div class="cr-form">
 
                     <div class="cr-input-group cr-full-width">
-                        <label class="cr-label">Nome</label>
+                        <label class="cr-label">Name</label>
                         <input type="text" class="cr-input" placeholder="Hackathon AI" name="Nome"
                             [(ngModel)]="hackathonData.nome">
                     </div>
 
                     <div class="cr-input-group">
-                        <label class="cr-label">Località</label>
+                        <label class="cr-label">Location</label>
                         <input type="text" class="cr-input" placeholder="Camerino" name="Località"
                             [(ngModel)]="hackathonData.localita">
                     </div>
 
 
                     <div class="cr-input-group ">
-                        <label class="cr-label">Premio (€)</label>
+                        <label class="cr-label">Prize (€)</label>
                         <input type="number" class="cr-input" min="0" placeholder="0" name="Premio"
                             [(ngModel)]="hackathonData.premio">
                     </div>
                     <div class="cr-input-group ">
-                        <label class="cr-label">Numero massimo di membri per ogni team</label>
+                        <label class="cr-label">Maximum number of members per team</label>
                         <input type="number" class="cr-input" min="1" placeholder="1"
                             name="Numero massimo di membri per ogni team"
                             [(ngModel)]="hackathonData.maxParticipantsPerTeam">
                     </div>
                     <div class="cr-input-group ">
-                        <label class="cr-label">Numero massimo di team</label>
+                        <label class="cr-label">Maximum number of teams</label>
                         <input type="number" class="cr-input" min="1" placeholder="1" name="Numero massimo di team"
                             [(ngModel)]="hackathonData.maxParticipants">
                     </div>
                     <div class="cr-input-group ">
-                        <label class="cr-label">Data di inizio</label>
+                        <label class="cr-label">Start Date</label>
                         <input type="datetime-local" name="Data di inizio" class="cr-input"
                             [(ngModel)]="hackathonData.startDate" [min]="minDate">
                     </div>
                     <div class="cr-input-group ">
-                        <label class="cr-label">Data di fine</label>
+                        <label class="cr-label">End Date</label>
                         <input type="datetime-local" name="Data di fine" class="cr-input"
                             [(ngModel)]="hackathonData.endDate" [min]="hackathonData.startDate">
                     </div>
                     <div class="cr-input-group cr-full-width cr-search-wrap">
-                        <label class="cr-label">Giudice</label>
+                        <label class="cr-label">Judge</label>
                         <input type="text" class="cr-input" [(ngModel)]="searchGiudice" (focus)="filtraGiudici()"
-                            (input)="filtraGiudici()" (blur)="chiudiDropdown('giudice')" placeholder="Cerca giudice..."
+                            (input)="filtraGiudici()" (blur)="chiudiDropdown('giudice')" placeholder="Search judge..."
                             autocomplete="off">
                         @if (showGiudici() && giudiciFiltrati.length > 0) {
                         <div class="cr-dropdown">
@@ -76,9 +76,9 @@
                         }
                     </div>
                     <div class="cr-input-group cr-full-width cr-search-wrap">
-                        <label class="cr-label">Mentori</label>
+                        <label class="cr-label">Mentors</label>
                         <input type="text" class="cr-input" [(ngModel)]="searchMentore" (focus)="filtraMentori()"
-                            (input)="filtraMentori()" (blur)="chiudiDropdown('mentore')" placeholder="Cerca mentore..."
+                            (input)="filtraMentori()" (blur)="chiudiDropdown('mentore')" placeholder="Search mentors..."
                             autocomplete="off">
                         @if (showMentori() && mentoriFiltrati.length > 0) {
                         <div class="cr-dropdown">
@@ -101,9 +101,9 @@
 
                     <!-- Regole -->
                     <div class="cr-input-group cr-full-width cr-search-wrap">
-                        <label class="cr-label">Regole</label>
+                        <label class="cr-label">Rules</label>
                         <input type="text" class="cr-input" [(ngModel)]="searchRegola" (focus)="filtraRegole()"
-                            (input)="filtraRegole()" (blur)="chiudiDropdown('regola')" placeholder="Cerca regola..."
+                            (input)="filtraRegole()" (blur)="chiudiDropdown('regola')" placeholder="Search rules..."
                             autocomplete="off">
                         @if (showRegole() && regoleFiltrate.length > 0) {
                         <div class="cr-dropdown">
@@ -132,10 +132,10 @@
 
                 <div class="mt-5 d-flex gap-3">
 
-                    <button class="cr-btn-outline w-50" (click)="cancelEdit()">Annulla</button>
+                    <button class="cr-btn-outline w-50" (click)="cancelEdit()">Cancel</button>
                     <button class="cr-btn-primary w-50 d-flex justify-content-center align-items-center gap-2"
                         (click)="saveChanges()">
-                        Salva
+                        Save
                     </button>
                 </div>
             </div>

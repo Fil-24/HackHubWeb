@@ -7,3 +7,5 @@ team problemi:
 
 -revisionare il componente hackathon in generale
 -rimuovere mock su hackathon.service quando il db viene popolato e togliere i commenti/import
+
+-hackathons sistemare lo sfondo
