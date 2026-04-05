@@ -1,18 +1,20 @@
-import { Component, OnInit , signal} from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { HomeService } from '../../service/home.service';
 import { Hackathon } from '../../models/hackathon.model';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  imports: [RouterLink]
 })
 export class HomeComponent implements OnInit {
-  hackathon = signal<Hackathon[]|null>(null);
+  hackathon = signal<Hackathon[] | null>(null);
   errorMessage = signal<string | null>(null);
   searchQuery = '';
 
-  constructor(private homeService: HomeService) {}
+  constructor(private homeService: HomeService) { }
 
   ngOnInit(): void {
     this.caricaHackathon();
@@ -21,7 +23,12 @@ export class HomeComponent implements OnInit {
   caricaHackathon(): void {
     this.homeService.getAll().subscribe({
       next: (data) => {
-        this.hackathon.set(data);
+        //filtra e ordina i hackathon in base alla data di inizio, mostrando solo quelli futuri
+        const ora = new Date();
+        const ordinati = data
+          .filter(h => new Date(h.startDate) > ora)
+          .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+        this.hackathon.set(ordinati);
       },
       error: (err) => {
         this.errorMessage.set(err.message);

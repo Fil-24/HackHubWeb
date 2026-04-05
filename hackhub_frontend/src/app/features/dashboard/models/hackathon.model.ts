@@ -16,3 +16,4 @@ export interface Hackathon {
     staff: Staff[];
     rules: Rule[];
 }
+

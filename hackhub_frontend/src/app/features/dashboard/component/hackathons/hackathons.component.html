@@ -1,0 +1,121 @@
+<section class="search-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-5 col-left pe-md-5">
+                <div class="search-label">Hackathon</div>
+                <h2 class="search-title">Tutti gli <em>Hackathon</em></h2>
+            </div>
+            <div class="col-12 col-md-7 ps-md-5">
+                <button class="filter-toggle" (click)="showFiltri = !showFiltri">
+                    <svg viewBox="0 0 24 24" width="16" height="16">
+                        <line x1="4" y1="6" x2="20" y2="6" />
+                        <line x1="7" y1="12" x2="17" y2="12" />
+                        <line x1="10" y1="18" x2="14" y2="18" />
+                    </svg>
+
+                    Filtri e ordinamento
+                    <span class="filter-toggle-arrow" [class.open]="showFiltri">▾</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="filter-section">
+    <div class="container">
+
+        @if (showFiltri) {
+        <div class="filter-bar">
+
+            <!-- Ricerca -->
+            <div class="filter-group filter-group-search">
+                <span class="filter-label">Cerca</span>
+                <div class="search-bar-mini">
+                    <svg viewBox="0 0 24 24" width="14" height="14">
+                        <circle cx="11" cy="11" r="7" />
+                        <line x1="16.5" y1="16.5" x2="22" y2="22" />
+                    </svg>
+                    <input type="text" [(ngModel)]="searchTerm" name="search" placeholder="Nome, città..."
+                        class="filter-search-input">
+                </div>
+            </div>
+
+            <!-- Periodo -->
+            <div class="filter-group">
+                <span class="filter-label">Periodo</span>
+                <div class="filter-chips">
+                    <button class="filter-chip" [class.active]="filtroTempo() === 'tutti'"
+                        (click)="setFiltroTempo('tutti')">Tutti</button>
+                    <button class="filter-chip" [class.active]="filtroTempo() === 'futuri'"
+                        (click)="setFiltroTempo('futuri')">Futuri</button>
+                    <button class="filter-chip" [class.active]="filtroTempo() === 'passati'"
+                        (click)="setFiltroTempo('passati')">Passati</button>
+                </div>
+            </div>
+
+            <!-- Ordina -->
+            <div class="filter-group">
+                <span class="filter-label">Ordina per</span>
+                <select class="filter-select" [(ngModel)]="ordinamento" name="ordinamento"
+                    (change)="setOrdinamento(ordinamento())">
+                    <option value="data-asc">Data (più imminenti)</option>
+                    <option value="data-desc">Data (più lontani)</option>
+                    <option value="az">Nome A → Z</option>
+                    <option value="za">Nome Z → A</option>
+                </select>
+            </div>
+
+        </div>
+        }
+    </div>
+</section>
+<section class="h-wrap">
+    <div class="container">
+        <div class="h-header">
+            <div>
+                <div class="h-label">Hackathon</div>
+                <div class="h-count">// {{ hackathon()!.length }} risultati trovati</div>
+            </div>
+            @if(filtro()!.length > 0) {
+            <div class="h-grid">
+                @for (h of filtro()!; track $index) {
+                <div class="h-card">
+                    <div class="h-card-bar"></div>
+                    <div class="h-card-body">
+                        <h3 class="h-card-name">{{ h.name }}</h3>
+                        <p class="h-card-desc">{{ h.location }}</p>
+                    </div>
+                    <div class="h-card-footer">
+                        <div class="h-dates">
+                            <div class="h-date-item">
+                                <span class="h-date-label">Inizio</span>
+                                <span class="h-date-value">{{ formatDate(h.startDate) }}</span>
+                            </div>
+                            <div class="h-date-item">
+                                <span class="h-date-label">Fine</span>
+                                <span class="h-date-value">{{ formatDate(h.endDate) }}</span>
+                            </div>
+                            <div class="h-date-item">
+                                <span class="h-date-label">Max numero partecipanti</span>
+                                <span class="h-date-value">{{ h.maxNumberTeams }}</span>
+                            </div>
+                        </div>
+                        <div class="h-divider"></div>
+                        <button class="h-btn" routerLink="/hackathon/{{ h.id }}">Visualizza info →</button>
+                    </div>
+                </div>
+                }
+            </div>
+
+            }
+            @if(filtro()!.length === 0) {
+            <!-- Nessun risultato -->
+            <div class="state-box">
+                <p class="state-box__title">Nessun hackathon trovato</p>
+                <p class="state-box__sub">Prova con un altro termine di ricerca.</p>
+            </div>
+            }
+        </div>
+    </div>
+</section>

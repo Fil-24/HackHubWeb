@@ -1,101 +1,7 @@
 @use "../../../../../colors" as *;
 @use "../../../../../styles" as *;
 
-// ════════════════════════════════════════════════════
-//  SECTION 1 — BANNER
-// ═════════════════════════════════════════════════╗
-.home-first-section {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background: $color-primary;
-}
 
-// ── Pattern diagonale sottile
-.banner__stripes {
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(-54deg,
-            transparent,
-            transparent 44px,
-            $color-primary-hover 45px,
-            $color-primary-hover 46px);
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* Titolo principale */
-.hh-title {
-    font-family: $font-display;
-    z-index: 1;
-    font-size: clamp(52px, 10vw, 96px);
-    font-weight: 800;
-    color: #ffffff;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    text-align: center;
-    position: relative;
-    animation: fadeUp 0.7s ease 0.1s both;
-
-    span.accent {
-        color: $color-green;
-    }
-
-    &::before {
-        content: attr(data-text);
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        color: $color-glitch; // Usa la variabile definita in _colors.scss
-        clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
-        transform: translate(-2px, 0);
-        opacity: 0;
-        animation: glitch 4s infinite 1s;
-    }
-}
-
-.hh-cursor {
-    display: inline-block;
-    width: 4px;
-    height: 0.85em;
-    background: $color-green;
-    vertical-align: middle;
-    margin-left: 6px;
-    animation: blink 1s step-end infinite;
-}
-
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(18px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes glitch {
-    0%, 90%, 100% { opacity: 0; }
-    91% { opacity: 0.7; transform: translate(-2px, 0); }
-    93% { opacity: 0.7; transform: translate(2px, 0); }
-    95% { opacity: 0; }
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
-
-// ════════════════════════════════════════════════════
-//  SECTION 2 —  Ricerca
-// ════════════════════════════════════════════════════
 .search-section {
     background: $bg-main;
     padding: 72px 0;
@@ -140,19 +46,10 @@
     }
 }
 
-.search-desc {
-    font-size: 12px;
-    color: $text-secondary;
-    line-height: 1.9;
-    letter-spacing: 0.03em;
-}
-
-// ── COLONNA DESTRA (Search bar custom ma legata ai colori) ──
 .search-bar {
     display: flex;
     align-items: stretch;
     background: #ffffff;
-    border: 1.5px solid $border-color;
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 20px;
@@ -206,7 +103,154 @@
     padding: 0 22px;
     white-space: nowrap;
 }
+.filter-section {
+    padding: 0.75rem 0;
+    background: $bg-main;
+}
 
+.filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--cr-border, #e0e0e0);
+    background: transparent;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--cr-text, #222);
+
+    svg {
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+    }
+
+    &:hover {
+        border-color: var(--cr-primary, #534AB7);
+        color: var(--cr-primary, #534AB7);
+    }
+}
+
+.filter-toggle-arrow {
+    font-size: 0.75rem;
+    transition: transform 0.2s;
+
+    &.open {
+        transform: rotate(180deg);
+    }
+}
+
+.filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    border: 1px solid var(--cr-border, #e0e0e0);
+    background: var(--cr-card-bg, #fafafa);
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.filter-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cr-text-muted, #888);
+    white-space: nowrap;
+}
+
+.filter-chips {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.filter-chip {
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--cr-border, #e0e0e0);
+    background: transparent;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+        border-color: var(--cr-primary, #534AB7);
+        color: var(--cr-primary, #534AB7);
+    }
+
+    &.active {
+        background: var(--cr-primary, #534AB7);
+        border-color: var(--cr-primary, #534AB7);
+        color: white;
+    }
+}
+
+.filter-select {
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--cr-border, #e0e0e0);
+    background: transparent;
+    font-size: 0.82rem;
+    cursor: pointer;
+    outline: none;
+    color: var(--cr-text, #222);
+
+    &:focus {
+        border-color: var(--cr-primary, #534AB7);
+    }
+}
+.filter-group-search {
+    flex: 1;
+    min-width: 200px;
+}
+
+.search-bar-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--cr-border, #e0e0e0);
+    background: white;
+    flex: 1;
+
+    svg {
+        stroke: var(--cr-text-muted, #888);
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        flex-shrink: 0;
+    }
+
+    &:focus-within {
+        border-color: var(--cr-primary, #534AB7);
+    }
+}
+
+.filter-search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.85rem;
+    width: 100%;
+    color: var(--cr-text, #222);
+
+    &::placeholder {
+        color: var(--cr-text-muted, #aaa);
+    }
+}
 // ════════════════════════════════════════════════════
 .sh-divider {
     width: 100%;
@@ -214,22 +258,19 @@
     background: $border-color;
 }
 
-// ════════════════════════════════════════════════════
-//  SECTION 3 — GRIGLIA CARDS
-// ════════════════════════════════════════════════════
-.hc-wrap {
+.h-wrap {
     background: $bg-main;
     padding: 48px 0;
 }
 
-.hc-header {
+.h-header {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     margin-bottom: 36px;
 }
 
-.hc-label {
+.h-label {
     font-family: $font-mono;
     font-size: 11px;
     letter-spacing: 0.2em;
@@ -249,27 +290,27 @@
     }
 }
 
-.hc-title {
+.h-title {
     @extend %title-display;
     font-size: clamp(22px, 3vw, 36px);
     margin: 0;
 }
 
-.hc-count {
+.h-count {
     font-size: 12px;
     color: $text-secondary;
     letter-spacing: 0.05em;
     padding-bottom: 4px;
 }
 
-.hc-grid {
+.h-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
 
 // ── CARD REFATTORIZZATA ──
-.hc-card {
+.h-card {
     @extend %card-base; // Eredita tutto il design shadow/border della card base
     display: flex;
     flex-direction: column;
@@ -282,16 +323,16 @@
     }
 }
 
-.hc-card-bar {
+.h-card-bar {
     @extend %card-top-bar; // Barra verde in cima riutilizzata
 }
 
-.hc-card-body {
+.h-card-body {
     padding: 20px 20px 0;
     flex: 1;
 }
 
-.hc-card-category {
+.h-card-category {
     font-family: $font-mono;
     font-size: 10px;
     letter-spacing: 0.15em;
@@ -300,7 +341,7 @@
     margin-bottom: 8px;
 }
 
-.hc-card-name {
+.h-card-name {
     font-family: $font-display;
     font-size: 16px;
     font-weight: 800;
@@ -309,14 +350,14 @@
     line-height: 1.25;
 }
 
-.hc-card-desc {
+.h-card-desc {
     font-size: 11px;
     color: $text-secondary;
     line-height: 1.8;
     margin: 0 0 18px;
 }
 
-.hc-badge {
+.h-badge {
     display: inline-block;
     font-family: $font-mono;
     font-size: 9px;
@@ -329,17 +370,17 @@
     vertical-align: middle;
 }
 
-.hc-badge-new {
+.h-badge-new {
     background: $status-open-bg;
     color: $status-open-text;
 }
 
-.hc-badge-expiring {
+.h-badge-expiring {
     background: $status-closed-bg;
     color: $status-closed-text;
 }
 
-.hc-card-footer {
+.h-card-footer {
     border-top: 1px solid $border-color;
     padding: 14px 20px 16px;
     display: flex;
@@ -347,19 +388,19 @@
     gap: 12px;
 }
 
-.hc-dates {
+.h-dates {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 6px 16px;
 }
 
-.hc-date-item {
+.h-date-item {
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
 
-.hc-date-label {
+.h-date-label {
     font-family: $font-mono;
     font-size: 9px;
     letter-spacing: 0.12em;
@@ -367,7 +408,7 @@
     color: $text-secondary;
 }
 
-.hc-date-value {
+.h-date-value {
     font-size: 12px;
     font-weight: 700;
     color: $text-primary;
@@ -377,17 +418,17 @@
     }
 }
 
-.hc-divider {
+.h-divider {
     height: 1px;
     background: $border-color;
     margin: 0 -20px;
 }
 
-.hc-btn {
+.h-btn {
     @extend %btn-outline; // Eredita lo stile bottone con bordo condiviso
     width: 100%;
     padding: 10px 0;
 }
-.hc-grid {
+.h-grid {
     margin-bottom: 2rem; // spazio tra la griglia e il bottone
 }
