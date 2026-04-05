@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HackathonService } from '../../service/hackathon.service';
+import { AuthService } from '../../../auth/service/auth.service';
 import { Hackathon } from '../../models/hackathon.model';
 
 @Component({
@@ -32,9 +33,18 @@ export class HackathonComponent implements OnInit {
     return Math.max(1, Math.ceil(ms / (1000 * 60 * 60 * 24)));
   });
 
+  /** true se l'utente loggato è l'organizzatore di questo hackathon */
+  isOrganizer = computed(() => {
+  const h = this.hackathon();
+  const user = this.authService.currentUser;
+  if (!h || !user) return false;
+  return this.authService.isStaff() && user.email === (h.staff as any)?.organizerEmail;
+});
+
   constructor(
     private route: ActivatedRoute,
-    private detailService: HackathonService
+    private detailService: HackathonService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -54,7 +64,7 @@ export class HackathonComponent implements OnInit {
         this.hackathon.set(data);
         this.isLoading.set(false);
       },
-      error: (err: { message: string | null; }) => {
+      error: (err: { message: string | null }) => {
         this.errorMessage.set(err.message);
         this.isLoading.set(false);
       },
@@ -69,7 +79,7 @@ export class HackathonComponent implements OnInit {
       next: () => {
         this.isRegistered.set(true);
       },
-      error: (err: { message: string | null; }) => {
+      error: (err: { message: string | null }) => {
         this.errorMessage.set(err.message);
       },
     });

@@ -191,7 +191,6 @@
     }
 }
 
-// ── Cursore lampeggiante (riuso dalla home) ──
 .hh-cursor {
     display: inline-block;
     width: 3px;
@@ -231,7 +230,6 @@
     }
 }
 
-// ── Label riutilizzabile ──
 .hd-label {
     font-family: $font-mono;
     font-size: 11px;
@@ -263,13 +261,9 @@
     &:nth-child(2) { animation-delay: 0.08s; }
     &:nth-child(3) { animation-delay: 0.16s; }
 
-    &__bar {
-        @extend %card-top-bar;
-    }
+    &__bar { @extend %card-top-bar; }
 
-    &__inner {
-        padding: 24px 24px 28px;
-    }
+    &__inner { padding: 24px 24px 28px; }
 }
 
 .hd-section-title {
@@ -278,25 +272,14 @@
     margin: 0 0 16px;
 }
 
-.hd-description {
-    font-size: 13px;
-    color: $text-secondary;
-    line-height: 1.9;
-    letter-spacing: 0.02em;
-    margin: 0;
-}
-
-// ── Premi ──
-.hd-prizes {
+// ── Regole ──
+.hd-rules-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
-.hd-prize-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+.hd-rule-item {
     padding: 12px 16px;
     border: 1px solid $border-color;
     border-radius: 4px;
@@ -308,20 +291,35 @@
         background: rgba($color-green, 0.07);
     }
 
-    &__pos {
-        font-family: $font-display;
-        font-size: 20px;
-        font-weight: 800;
+    &__name {
+        font-family: $font-mono;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
         color: $color-green;
-        min-width: 32px;
-        line-height: 1;
+        display: block;
+        margin-bottom: 4px;
     }
 
     &__desc {
         font-size: 13px;
-        color: $text-primary;
-        line-height: 1.5;
+        color: $text-secondary;
+        line-height: 1.7;
+        margin: 0;
     }
+}
+
+// ── Mentori tag ──
+.hd-mentor-tag {
+    display: inline-block;
+    font-family: $font-mono;
+    font-size: 10px;
+    background: rgba($color-green, 0.1);
+    color: $color-green;
+    border: 1px solid rgba($color-green, 0.25);
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin: 2px 4px 2px 0;
 }
 
 // ════════════════════════════════════════════════════
@@ -345,9 +343,7 @@
         height: 4px;
     }
 
-    &__inner {
-        padding: 22px 22px 24px;
-    }
+    &__inner { padding: 22px 22px 24px; }
 
     &__teams-left {
         font-size: 12px;
@@ -398,13 +394,8 @@
 .hd-info-card {
     @extend %card-base;
 
-    &__bar {
-        @extend %card-top-bar;
-    }
-
-    &__inner {
-        padding: 20px 20px 22px;
-    }
+    &__bar { @extend %card-top-bar; }
+    &__inner { padding: 20px 20px 22px; }
 }
 
 .hd-info-list {
@@ -413,7 +404,6 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0;
 
     &__item {
         display: flex;
@@ -440,6 +430,21 @@
         font-weight: 700;
         color: $text-primary;
         text-align: right;
+    }
+}
+
+// ── Edit button (solo organizzatore) ──
+.hd-edit-btn {
+    @extend %btn-outline;
+    width: 100%;
+    padding: 11px 0;
+    text-align: center;
+    justify-content: center;
+    border-color: $color-green;
+    color: $color-green;
+
+    &:hover {
+        background: rgba($color-green, 0.08);
     }
 }
 

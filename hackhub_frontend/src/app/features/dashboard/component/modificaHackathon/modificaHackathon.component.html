@@ -1,0 +1,155 @@
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="cr-card">
+
+            <div class="cr-card-bar"></div>
+
+            <div class="cr-card-body">
+                @if (errorMessage()) {
+                <div class="alert alert-error">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>{{ errorMessage() }}</span>
+                </div>
+                }
+                @if (successMessage()) {
+                <div class="alert alert-success">
+                    <i class="fa-solid fa-check"></i>
+                    <span>{{ successMessage() }}</span>
+                </div>
+                }
+
+                <h3 class="cr-title text-center mb-5">
+                    Edit <em>Hackathon</em>
+                </h3>
+
+                <div class="cr-form">
+
+                    <div class="cr-input-group cr-full-width">
+                        <label class="cr-label">Name</label>
+                        <input type="text" class="cr-input" name="Nome"
+                            [(ngModel)]="hackathonData.nome">
+                    </div>
+
+                    <div class="cr-input-group">
+                        <label class="cr-label">Location</label>
+                        <input type="text" class="cr-input" name="Località"
+                            [(ngModel)]="hackathonData.localita">
+                    </div>
+
+                    <div class="cr-input-group">
+                        <label class="cr-label">Prize (€)</label>
+                        <input type="number" class="cr-input" min="0"
+                            name="Premio" [(ngModel)]="hackathonData.premio">
+                    </div>
+
+                    <div class="cr-input-group">
+                        <label class="cr-label">Maximum number of members per team</label>
+                        <input type="number" class="cr-input" min="1"
+                            name="MaxMembri" [(ngModel)]="hackathonData.maxParticipantsPerTeam">
+                    </div>
+
+                    <div class="cr-input-group">
+                        <label class="cr-label">Maximum number of teams</label>
+                        <input type="number" class="cr-input" min="1"
+                            name="MaxTeam" [(ngModel)]="hackathonData.maxParticipants">
+                    </div>
+
+                    <div class="cr-input-group">
+                        <label class="cr-label">Start Date</label>
+                        <input type="datetime-local" name="StartDate" class="cr-input"
+                            [(ngModel)]="hackathonData.startDate" [min]="minDate">
+                    </div>
+
+                    <div class="cr-input-group">
+                        <label class="cr-label">End Date</label>
+                        <input type="datetime-local" name="EndDate" class="cr-input"
+                            [(ngModel)]="hackathonData.endDate" [min]="hackathonData.startDate">
+                    </div>
+
+                    <!-- Judge -->
+                    <div class="cr-input-group cr-full-width cr-search-wrap">
+                        <label class="cr-label">Judge</label>
+                        <input type="text" class="cr-input" [(ngModel)]="searchGiudice"
+                            (focus)="filtraGiudici()" (input)="filtraGiudici()"
+                            (blur)="chiudiDropdown('giudice')"
+                            placeholder="Search judge..." autocomplete="off">
+                        @if (showGiudici() && giudiciFiltrati.length > 0) {
+                        <div class="cr-dropdown">
+                            @for (item of giudiciFiltrati; track item.id) {
+                            <div class="cr-dropdown-item" (mousedown)="selezionaGiudice(item)">
+                                {{ item.email }}
+                            </div>
+                            }
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Mentors -->
+                    <div class="cr-input-group cr-full-width cr-search-wrap">
+                        <label class="cr-label">Mentors</label>
+                        <input type="text" class="cr-input" [(ngModel)]="searchMentore"
+                            (focus)="filtraMentori()" (input)="filtraMentori()"
+                            (blur)="chiudiDropdown('mentore')"
+                            placeholder="Search mentors..." autocomplete="off">
+                        @if (showMentori() && mentoriFiltrati.length > 0) {
+                        <div class="cr-dropdown">
+                            @for (item of mentoriFiltrati; track item.id) {
+                            <div class="cr-dropdown-item" (mousedown)="selezionaMentore(item)">
+                                {{ item.email }}
+                            </div>
+                            }
+                        </div>
+                        }
+                        <div class="cr-tags">
+                            @for (mentore of mentoriSelezionati; track mentore.id) {
+                            <div class="cr-tag">
+                                {{ mentore.email }}
+                                <span (click)="rimuoviMentore(mentore)">✕</span>
+                            </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Rules -->
+                    <div class="cr-input-group cr-full-width cr-search-wrap">
+                        <label class="cr-label">Rules</label>
+                        <input type="text" class="cr-input" [(ngModel)]="searchRegola"
+                            (focus)="filtraRegole()" (input)="filtraRegole()"
+                            (blur)="chiudiDropdown('regola')"
+                            placeholder="Search rules..." autocomplete="off">
+                        @if (showRegole() && regoleFiltrate.length > 0) {
+                        <div class="cr-dropdown">
+                            @for (item of regoleFiltrate; track item.id) {
+                            <div class="cr-dropdown-item" (mousedown)="selezionaRegola(item)">
+                                <span class="cr-dropdown-item-name">{{ item.name }}</span>
+                                <span class="cr-dropdown-item-desc">{{ item.description }}</span>
+                            </div>
+                            }
+                        </div>
+                        }
+                        <div class="cr-tags">
+                            @for (regola of regoleSelezionate; track regola.id) {
+                            <div class="cr-tag">
+                                {{ regola.description }}
+                                <span (click)="rimuoviRegola(regola)">✕</span>
+                            </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="cr-full-width">
+                        <div class="cr-divider my-4"></div>
+                    </div>
+                </div>
+
+                <div class="mt-5 d-flex gap-3">
+                    <button class="cr-btn-outline w-50" (click)="cancelEdit()">Cancel</button>
+                    <button class="cr-btn-primary w-50 d-flex justify-content-center align-items-center gap-2"
+                        (click)="saveChanges()">
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

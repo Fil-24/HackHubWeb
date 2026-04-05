@@ -1,0 +1,139 @@
+// Riusa tutti gli stili del creaHackathon — nessuna modifica necessaria.
+// Il componente condivide classi cr-* già definite in creaHackathon.component.scss.
+@use "../../../../../colors" as *;
+@use "../../../../../styles" as *;
+
+.row.justify-content-center {
+    margin-top: 3rem;
+}
+.cr-card { @extend %card-base; }
+.cr-card-bar { @extend %card-top-bar; }
+
+.cr-card-body {
+    padding: 48px 40px;
+    overflow: visible;
+}
+
+.cr-title {
+    @extend %title-display;
+    margin-bottom: 12px;
+    em {
+        font-style: italic;
+        color: $color-green;
+    }
+}
+
+.cr-divider {
+    width: 100%;
+    height: 1px;
+    background: $border-color;
+    margin: 32px 0;
+}
+
+.cr-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.cr-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cr-full-width { grid-column: 1 / -1; }
+
+.cr-label {
+    font-family: $font-mono;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: $text-secondary;
+}
+
+.cr-search-wrap {
+    position: relative;
+    z-index: 10;
+    &:focus-within { z-index: 100; }
+}
+
+.cr-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: var(--cr-card-bg, white);
+    border: 1px solid var(--cr-border, #e0e0e0);
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cr-dropdown-item {
+    padding: 10px 14px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    &:hover { background: var(--cr-hover); }
+}
+
+.cr-dropdown-item-desc {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.cr-dropdown-item-name {
+    font-size: 0.78rem;
+    color: var(--cr-text-muted, #888);
+}
+
+.cr-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.cr-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e6f4ea;
+    color: #2d6a4f;
+    border: 1px solid #95d5b2;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 500;
+
+    span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #95d5b2;
+        color: #1b4332;
+        font-size: 0.65rem;
+        cursor: pointer;
+        transition: background 0.15s;
+        &:hover { background: #52b788; color: white; }
+    }
+}
+
+.cr-input { @extend %input-base; }
+
+.cr-btn-primary {
+    @extend %btn-primary;
+    padding: 14px 24px;
+}
+
+.cr-btn-outline {
+    @extend %btn-outline;
+    padding: 14px 24px;
+}

@@ -23,17 +23,18 @@
     <div class="container">
         <!-- Breadcrumb -->
         <nav class="hd-breadcrumb" aria-label="breadcrumb">
-            <a routerLink="/" class="hd-breadcrumb__link">Home</a>
+            <a routerLink="/hackathons" class="hd-breadcrumb__link">Hackathons</a>
             <span class="hd-breadcrumb__sep">/</span>
             <span class="hd-breadcrumb__current">{{ hackathon()!.name }}</span>
         </nav>
 
         <div class="hd-hero__body">
             <div class="hd-hero__meta">
-                <span class="hd-label">Dettaglio evento</span>
-                <div class="hd-status-badge" [class.hd-status-badge--open]="isOpen()" [class.hd-status-badge--closed]="!isOpen()">
+                <div class="hd-status-badge"
+                    [class.hd-status-badge--open]="isOpen()"
+                    [class.hd-status-badge--closed]="!isOpen()">
                     <span class="hd-status-badge__dot"></span>
-                    {{ isOpen() ? 'Iscrizioni aperte' : 'Iscrizioni chiuse' }}
+                    {{ isOpen() ? 'Registration open' : 'Registration closed' }}
                 </div>
             </div>
 
@@ -50,23 +51,23 @@
         <!-- Quick-stats strip -->
         <div class="hd-quickstats">
             <div class="hd-quickstats__item">
-                <span class="hd-quickstats__label">Data inizio</span>
+                <span class="hd-quickstats__label">Start date</span>
                 <span class="hd-quickstats__value">{{ hackathon()!.startDate | date:'dd MMM yyyy' }}</span>
             </div>
             <div class="hd-quickstats__divider" aria-hidden="true"></div>
             <div class="hd-quickstats__item">
-                <span class="hd-quickstats__label">Data fine</span>
+                <span class="hd-quickstats__label">End date</span>
                 <span class="hd-quickstats__value">{{ hackathon()!.endDate | date:'dd MMM yyyy' }}</span>
             </div>
             <div class="hd-quickstats__divider" aria-hidden="true"></div>
             <div class="hd-quickstats__item">
-                <span class="hd-quickstats__label">Max team</span>
+                <span class="hd-quickstats__label">Max teams</span>
                 <span class="hd-quickstats__value">{{ hackathon()!.maxNumberTeams }}</span>
             </div>
             <div class="hd-quickstats__divider" aria-hidden="true"></div>
             <div class="hd-quickstats__item">
-                <span class="hd-quickstats__label">Durata</span>
-                <span class="hd-quickstats__value">{{ durataDays() }} giorni</span>
+                <span class="hd-quickstats__label">Duration</span>
+                <span class="hd-quickstats__value">{{ durataDays() }} days</span>
             </div>
         </div>
     </div>
@@ -75,49 +76,88 @@
 <div class="sh-divider"></div>
 
 <!-- ═══════════════════════════════════════════
-     BODY — 2 colonne
+     BODY — 2 columns
 ════════════════════════════════════════════ -->
 <section class="hd-body">
     <div class="container">
         <div class="hd-layout">
 
-            <!-- ── COLONNA PRINCIPALE ── -->
+            <!-- ── MAIN COLUMN ── -->
             <div class="hd-main">
 
-                <!-- Regole / info aggiuntive -->
-                @if (hackathon()!.rules) {
+                <!-- Rules -->
+                @if (hackathon()!.rules && hackathon()!.rules.length > 0) {
                 <div class="hd-section-card">
                     <div class="hd-section-card__bar"></div>
                     <div class="hd-section-card__inner">
-                        <div class="hd-label">Regolamento</div>
-                        <h2 class="hd-section-title">Regole della competizione</h2>
-                        <p class="hd-description">{{ hackathon()!.rules }}</p>
+                        <div class="hd-label">Rules</div>
+                        <h2 class="hd-section-title">Competition rules</h2>
+                        <div class="hd-rules-list">
+                            @for (rule of hackathon()!.rules; track rule.id) {
+                            <div class="hd-rule-item">
+                                <span class="hd-rule-item__name">{{ rule.name }}</span>
+                                <p class="hd-rule-item__desc">{{ rule.description }}</p>
+                            </div>
+                            }
+                        </div>
                     </div>
                 </div>
                 }
+
+                <!-- Staff -->
+                @if (hackathon()!.staff) {
+                <div class="hd-section-card">
+                    <div class="hd-section-card__bar"></div>
+                    <div class="hd-section-card__inner">
+                        <div class="hd-label">Staff</div>
+                        <h2 class="hd-section-title">Organizing team</h2>
+                        <ul class="hd-info-list">
+                            <li class="hd-info-list__item">
+                                <span class="hd-info-list__key">Organizer</span>
+                                <span class="hd-info-list__val">{{ $any(hackathon()!.staff).organizerEmail }}</span>
+                            </li>
+                            <li class="hd-info-list__item">
+                                <span class="hd-info-list__key">Judge</span>
+                                <span class="hd-info-list__val">{{ $any(hackathon()!.staff).judgeEmail }}</span>
+                            </li>
+                            @if ($any(hackathon()!.staff)?.mentors && $any(hackathon()!.staff).mentors.length > 0) {
+                            <li class="hd-info-list__item">
+                                <span class="hd-info-list__key">Mentors</span>
+                                <span class="hd-info-list__val">
+                                    @for (m of $any(hackathon()!.staff).mentors; track m.id) {
+                                        <span class="hd-mentor-tag">{{ m.email }}</span>
+                                    }
+                                </span>
+                            </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                }
+
             </div>
 
             <!-- ── SIDEBAR ── -->
             <aside class="hd-sidebar">
 
-                <!-- CTA iscrizione -->
+                <!-- Registration CTA -->
                 <div class="hd-cta-card">
                     <div class="hd-cta-card__bar"></div>
                     <div class="hd-cta-card__inner">
                         <p class="hd-cta-card__teams-left">
                             <span class="hd-cta-card__teams-num">{{ hackathon()!.maxNumberTeams }}</span>
-                            team disponibili
+                            teams available
                         </p>
                         <button
                             class="hd-cta-btn"
                             [disabled]="!isOpen() || isRegistered()"
                             (click)="iscriviti()">
                             @if (isRegistered()) {
-                                <i class="fa-solid fa-check"></i> Già iscritto
+                                <i class="fa-solid fa-check"></i> Already registered
                             } @else if (!isOpen()) {
-                                <i class="fa-solid fa-lock"></i> Iscrizioni chiuse
+                                <i class="fa-solid fa-lock"></i> Registration closed
                             } @else {
-                                → Iscriviti ora
+                                → Register now
                             }
                         </button>
                         @if (isOpen() && !isRegistered()) {
@@ -129,36 +169,47 @@
                     </div>
                 </div>
 
-                <!-- Info scheda -->
+                <!-- Info card -->
                 <div class="hd-info-card">
                     <div class="hd-info-card__bar"></div>
                     <div class="hd-info-card__inner">
-                        <div class="hd-label">Info rapide</div>
-
+                        <div class="hd-label">Quick info</div>
                         <ul class="hd-info-list">
                             <li class="hd-info-list__item">
-                                <span class="hd-info-list__key">Organizzatore</span>
-                                <!--<span class="hd-info-list__val">{{ hackathon()!.organizer ?? '—' }}</span>-->
+                                <span class="hd-info-list__key">Organizer</span>
+                                <span class="hd-info-list__val">{{ $any(hackathon()!.staff)?.organizerEmail ?? '—' }}</span>
                             </li>
                             <li class="hd-info-list__item">
-                                <span class="hd-info-list__key">Sede</span>
+                                <span class="hd-info-list__key">Location</span>
                                 <span class="hd-info-list__val">{{ hackathon()!.location }}</span>
                             </li>
                             <li class="hd-info-list__item">
-                                <span class="hd-info-list__key">Max partecipanti</span>
-                                <span class="hd-info-list__val">{{ hackathon()!.maxNumberTeams }} team</span>
+                                <span class="hd-info-list__key">Max teams</span>
+                                <span class="hd-info-list__val">{{ hackathon()!.maxNumberTeams }}</span>
                             </li>
                             <li class="hd-info-list__item">
-                                <span class="hd-info-list__key">Formato</span>
-                                <!-- <span class="hd-info-list__val">{{ hackathon()!.format ?? 'In presenza' }}</span> -->
+                                <span class="hd-info-list__key">Max members/team</span>
+                                <span class="hd-info-list__val">{{ hackathon()!.maxTeamMembers }}</span>
+                            </li>
+                            <li class="hd-info-list__item">
+                                <span class="hd-info-list__key">Prize</span>
+                                <span class="hd-info-list__val">€ {{ hackathon()!.prize }}</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
+                <!-- Edit button — organizer only -->
+                @if (isOrganizer()) {
+                <button class="hd-edit-btn"
+                    [routerLink]="['/hackathon', hackathon()!.id, 'edit']">
+                    ✏ Edit hackathon
+                </button>
+                }
+
                 <!-- Back button -->
-                <button class="hd-back-btn" routerLink="/">
-                    ← Torna agli eventi
+                <button class="hd-back-btn" routerLink="/hackathons">
+                    ← Back to events
                 </button>
 
             </aside>
