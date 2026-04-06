@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Hackathon } from '../../models/hackathon.model';
 import { RouterLink } from '@angular/router';
-import { HackathonsService } from '../../service/hackathons.service';
+import { HackathonService } from '../../service/hackathon.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -18,13 +18,13 @@ export class HackathonsComponent implements OnInit {
   ordinamento = signal('data-asc');
   showFiltri = false;
 
-  constructor(private hackathonsService: HackathonsService) { }
+  constructor(private hackathonService: HackathonService) { }
   ngOnInit(): void {
     this.caricaHackathon();
   }
 
   caricaHackathon(): void {
-    this.hackathonsService.getAll().subscribe({
+    this.hackathonService.getAll().subscribe({
       next: (data) => {
         // ordina i hackathon in base alla data di inizio
         const ora = new Date();

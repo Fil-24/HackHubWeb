@@ -11,7 +11,7 @@ export interface Hackathon {
     maxNumberTeams: number;
     startDate: string;        // LocalDateTime → string (ISO 8601)
     endDate: string;
-    status: 'OPEN' | 'CLOSED' | 'ONGOING';  // adatta ai valori reali del backend
+    status: 'REGISTERED' | 'CLOSED' | 'ONGOING';
     teams: Team[];
     staff: Staff[];
     rules: Rule[];

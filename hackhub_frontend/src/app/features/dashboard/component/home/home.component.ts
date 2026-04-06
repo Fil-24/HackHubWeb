@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { HomeService } from '../../service/home.service';
+import { HackathonService } from '../../service/hackathon.service';
 import { Hackathon } from '../../models/hackathon.model';
 import { RouterLink } from "@angular/router";
 import { FormsModule } from '@angular/forms';
@@ -15,14 +15,14 @@ export class HomeComponent implements OnInit {
   errorMessage = signal<string | null>(null);
   search = '';
 
-  constructor(private homeService: HomeService) { }
+  constructor(private HackathonService: HackathonService) { }
 
   ngOnInit(): void {
     this.caricaHackathon();
   }
 
   caricaHackathon(): void {
-    this.homeService.getAll().subscribe({
+    this.HackathonService.getAll().subscribe({
       next: (data) => {
         //filtra e ordina i hackathon in base alla data di inizio, mostrando solo quelli futuri
         const ora = new Date();

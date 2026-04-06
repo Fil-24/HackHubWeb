@@ -1,3 +1,4 @@
+/*
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -134,12 +135,7 @@ export class ModificaHackathon implements OnInit {
       this.errorMessage.set('Seleziona almeno un mentore');
       return;
     }
-    /*
-    if (this.regoleSelezionate.length === 0) {
-      this.errorMessage.set('Seleziona almeno una regola');
-      return;
-    }
-    */
+
 
     const data = {
       name: this.hackathonData.nome,
@@ -235,3 +231,4 @@ export class ModificaHackathon implements OnInit {
     if (tipo === 'regola') this.showRegole.set(false);
   }
 }
+  */

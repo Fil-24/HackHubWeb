@@ -23,32 +23,32 @@
 
                     <div class="cr-input-group cr-full-width">
                         <label class="cr-label">Name</label>
-                        <input type="text" class="cr-input" placeholder="Hackathon AI" name="Nome"
-                            [(ngModel)]="hackathonData.nome">
+                        <input type="text" class="cr-input" placeholder="Hackathon AI" name="Name"
+                            [(ngModel)]="hackathonData.name">
                     </div>
 
                     <div class="cr-input-group">
                         <label class="cr-label">Location</label>
-                        <input type="text" class="cr-input" placeholder="Camerino" name="Località"
-                            [(ngModel)]="hackathonData.localita">
+                        <input type="text" class="cr-input" placeholder="Camerino" name="Location"
+                            [(ngModel)]="hackathonData.location">
                     </div>
 
 
                     <div class="cr-input-group ">
                         <label class="cr-label">Prize (€)</label>
-                        <input type="number" class="cr-input" min="0" placeholder="0" name="Premio"
-                            [(ngModel)]="hackathonData.premio">
+                        <input type="number" class="cr-input" min="0" placeholder="0" name="Prize"
+                            [(ngModel)]="hackathonData.prize">
                     </div>
                     <div class="cr-input-group ">
                         <label class="cr-label">Maximum number of members per team</label>
                         <input type="number" class="cr-input" min="1" placeholder="1"
                             name="Numero massimo di membri per ogni team"
-                            [(ngModel)]="hackathonData.maxParticipantsPerTeam">
+                            [(ngModel)]="hackathonData.maxTeamMembers">
                     </div>
                     <div class="cr-input-group ">
                         <label class="cr-label">Maximum number of teams</label>
                         <input type="number" class="cr-input" min="1" placeholder="1" name="Numero massimo di team"
-                            [(ngModel)]="hackathonData.maxParticipants">
+                            [(ngModel)]="hackathonData.maxNumberTeams">
                     </div>
                     <div class="cr-input-group ">
                         <label class="cr-label">Start Date</label>
@@ -67,7 +67,7 @@
                             autocomplete="off">
                         @if (showGiudici() && giudiciFiltrati.length > 0) {
                         <div class="cr-dropdown">
-                            @for (item of giudiciFiltrati; track item.id) {
+                            @for (item of giudiciFiltrati; track item.idAccount) {
                             <div class="cr-dropdown-item" (mousedown)="selezionaGiudice(item)">
                                 {{ item.email }}
                             </div>
@@ -82,7 +82,7 @@
                             autocomplete="off">
                         @if (showMentori() && mentoriFiltrati.length > 0) {
                         <div class="cr-dropdown">
-                            @for (item of mentoriFiltrati; track item.id) {
+                            @for (item of mentoriFiltrati; track item.idAccount) {
                             <div class="cr-dropdown-item" (mousedown)="selezionaMentore(item)">
                                 {{ item.email }}
                             </div>
@@ -90,7 +90,7 @@
                         </div>
                         }
                         <div class="cr-tags">
-                            @for (mentore of mentoriSelezionati; track mentore.id) {
+                            @for (mentore of mentoriSelezionati; track mentore.idAccount) {
                             <div class="cr-tag">
                                 {{ mentore.email }}
                                 <span (click)="rimuoviMentore(mentore)">✕</span>

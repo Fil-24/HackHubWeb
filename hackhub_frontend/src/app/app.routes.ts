@@ -10,7 +10,6 @@ import { TeamComponent } from './features/teams/components/team/team.component';
 import { TeamGuard } from './core/guards/team.guard';
 import { MyTeamComponent } from './features/teams/components/my-team/my-team.component';
 import { CreaHackathon } from './features/dashboard/component/creaHackathon/creaHackathon.component';
-import { ModificaHackathon } from './features/dashboard/component/modificaHackathon/modificaHackathon.component';
 import { HackathonsComponent } from './features/dashboard/component/hackathons/hackathons.component';
 import { UserComponent } from './features/users/component/user.component';
 import { AdminGuard } from './core/guards/admin.guard';
@@ -22,7 +21,7 @@ export const routes: Routes = [
   { path: 'users', component: UserComponent, canActivate: [AdminGuard]},
   { path: 'home', component: HomeComponent },
   { path: 'hackathon/create', component: CreaHackathon, canActivate: [AuthGuard]},
-  { path: 'hackathon/:id/edit', component: ModificaHackathon, canActivate: [AuthGuard] },
+  //{ path: 'hackathon/:id/edit', component: ModificaHackathon, canActivate: [AuthGuard] },
   { path: 'hackathon/:id', component: HackathonComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'invitations', component: InvitationComponent, canActivate: [AuthGuard]},
