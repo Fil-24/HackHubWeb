@@ -134,10 +134,12 @@ export class ModificaHackathon implements OnInit {
       this.errorMessage.set('Seleziona almeno un mentore');
       return;
     }
+    /*
     if (this.regoleSelezionate.length === 0) {
       this.errorMessage.set('Seleziona almeno una regola');
       return;
     }
+    */
 
     const data = {
       name: this.hackathonData.nome,

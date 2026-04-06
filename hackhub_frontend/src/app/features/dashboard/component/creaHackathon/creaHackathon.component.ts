@@ -89,10 +89,12 @@ export class CreaHackathon implements OnInit {
       this.errorMessage.set("Seleziona almeno un mentore");
       return;
     }
+    /*
     if (this.regoleSelezionate.length === 0) {
       this.errorMessage.set("Seleziona almeno una regola");
       return;
     }
+    */
 
     //trasforma i dati in formato adatto al backend
     const data = {
