@@ -44,7 +44,7 @@ export class TeamComponent {
   createErrorMessage = signal<string | null>(null);
   createSuccessMessage = signal<string | null>(null);
 
-  constructor(private teamService: TeamService, private authService: AuthService, private router : Router) {
+  constructor(private teamService: TeamService, protected authService: AuthService, private router : Router) {
     effect(() => {
       const user = this.authService.user();
       

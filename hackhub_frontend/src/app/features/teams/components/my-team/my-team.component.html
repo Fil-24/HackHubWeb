@@ -61,7 +61,7 @@
                       <span>Modifica</span>
                     </button>
                   }
-                  <button class="mt-hero__btn-leave" (click)="leave()">
+                  <button class="mt-hero__btn-leave" (click)="askLeave()">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     <span>Lascia</span>
                   </button>
@@ -211,7 +211,7 @@
                       <span class="mt-member__email">{{ member.email }}</span>
                     </div>
                     @if (isLeader) {
-                      <button class="mt-member__remove" (click)="removeMember(member.id)"
+                      <button class="mt-member__remove" (click)="askRemoveMember(member)"
                         title="Rimuovi {{ member.nickname }}">
                         <i class="fa-solid fa-xmark"></i>
                       </button>
@@ -256,4 +256,36 @@
     
     }
   </div>
+  <!-- ── CONFIRM DIALOG ── -->
+@if (confirmDialog()) {
+  <div class="mt-dialog-overlay" (click)="closeDialog()">
+    <div class="mt-dialog" (click)="$event.stopPropagation()">
+
+      <div class="mt-dialog__icon" [class.mt-dialog__icon--danger]="confirmDialog()!.type === 'danger'">
+        <i [class]="confirmDialog()!.icon"></i>
+      </div>
+
+      <h4 class="mt-dialog__title">{{ confirmDialog()!.title }}</h4>
+      <p class="mt-dialog__body">{{ confirmDialog()!.message }}</p>
+
+      @if (confirmDialog()!.warning) {
+        <div class="mt-dialog__warning">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>{{ confirmDialog()!.warning }}</span>
+        </div>
+      }
+
+      <div class="mt-dialog__actions">
+        <button class="mt-btn-ghost" (click)="closeDialog()">Annulla</button>
+        <button
+          class="mt-dialog__confirm-btn"
+          [class.mt-dialog__confirm-btn--danger]="confirmDialog()!.type === 'danger'"
+          (click)="confirmDialog()!.onConfirm()">
+          {{ confirmDialog()!.confirmLabel }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+}
 </section>

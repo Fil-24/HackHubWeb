@@ -448,3 +448,112 @@
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+// ── CONFIRM DIALOG ──
+.mt-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(#0f172a, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  padding: 20px;
+  animation: mtFadeIn 0.2s ease both;
+}
+
+.mt-dialog {
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  box-shadow: 0 24px 48px -8px rgba(#0f172a, 0.18);
+  padding: 32px 28px 28px;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: mtFadeUp 0.25s ease both;
+
+  &__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba($text-secondary, 0.08);
+    color: $text-secondary;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+
+    &--danger {
+      background: rgba(#ef4444, 0.1);
+      color: #ef4444;
+    }
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: 18px;
+    font-weight: 800;
+    color: $text-primary;
+    margin: 0 0 8px;
+  }
+
+  &__body {
+    font-size: 13px;
+    color: $text-secondary;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  &__warning {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: rgba(#f59e0b, 0.08);
+    border: 1px solid rgba(#f59e0b, 0.25);
+    border-radius: 6px;
+    font-size: 12px;
+    color: #92400e;
+    text-align: left;
+    line-height: 1.4;
+
+    i { color: #f59e0b; flex-shrink: 0; margin-top: 1px; }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  &__confirm-btn {
+    @extend %btn-primary;
+    padding: 10px 22px;
+
+    &--danger {
+      background: #ef4444;
+      border-color: #ef4444;
+      color: #fff;
+
+      &:hover:not(:disabled) {
+        background: #dc2626;
+        border-color: #dc2626;
+        color: #fff;
+      }
+    }
+  }
+}
+
+@keyframes mtFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

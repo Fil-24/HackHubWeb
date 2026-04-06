@@ -18,13 +18,9 @@ export class InvitationService {
   }
 
   //TODO: Unire API di accettazione e rifiuto, passando accept come parametro booleano
-  acceptInvitation(idInvitation: number): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/${idInvitation}/response?accept=true`, {});
-  }
-
-  rejectInvitation(idInvitation: number): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/${idInvitation}/response?accept=false`, {});
-  }
+  respond(id: number, accept: boolean) {
+      return this.http.patch(`${this.apiUrl}/${id}/response?accept=${accept}`, {});
+    }
 
   invite(email: string) {
     return this.http.post(this.apiUrl, { email });

@@ -12,13 +12,16 @@ import { MyTeamComponent } from './features/teams/components/my-team/my-team.com
 import { CreaHackathon } from './features/dashboard/component/creaHackathon/creaHackathon.component';
 import { ModificaHackathon } from './features/dashboard/component/modificaHackathon/modificaHackathon.component';
 import { HackathonsComponent } from './features/dashboard/component/hackathons/hackathons.component';
+import { UserComponent } from './features/users/component/user.component';
+import { AdminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
 { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'users', component: UserComponent, canActivate: [AdminGuard]},
   { path: 'home', component: HomeComponent },
-  {path: 'hackathon/create', component: CreaHackathon, canActivate: [AuthGuard]},
+  { path: 'hackathon/create', component: CreaHackathon, canActivate: [AuthGuard]},
   { path: 'hackathon/:id/edit', component: ModificaHackathon, canActivate: [AuthGuard] },
   { path: 'hackathon/:id', component: HackathonComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },

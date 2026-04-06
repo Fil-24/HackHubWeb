@@ -1,0 +1,340 @@
+@use "../../../../colors" as *;
+@use "../../../../styles" as *;
+@use "sass:color";
+
+.profile-section {
+  background: $bg-main;
+  min-height: calc(100vh - 80px);
+}
+.relative-section { position: relative; }
+
+// ── SHARED ──
+.pr-card         { @extend %card-base; }
+.pr-card-bar     { @extend %card-top-bar; }
+.pr-btn-outline  { @extend %btn-outline; }
+.pr-btn-primary  { @extend %btn-primary; }
+.mt-btn-ghost    { @extend %btn-outline; padding: 10px 18px; }
+
+.pr-title {
+  @extend %title-display;
+  margin-bottom: 12px;
+  .accent { color: $color-green; }
+}
+.pr-label {
+  font-family: $font-mono;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: $text-secondary;
+}
+.pr-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: $text-primary;
+}
+.pr-text-muted {
+  color: $text-secondary;
+  font-style: italic;
+  font-weight: 400;
+}
+
+// ── LOADING DOTS ──
+.mt-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $color-green;
+    animation: mtBlink 1.2s step-end infinite;
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.4s; }
+  }
+}
+@keyframes mtBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.15; }
+}
+
+// ── SEARCH BAR ──
+.pr-search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    color: $text-secondary;
+    pointer-events: none;
+  }
+
+  .pr-input-search {
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba($text-secondary, 0.2);
+    border-radius: 8px;
+    padding: 14px 20px 14px 45px;
+    color: $text-primary;
+    font-size: 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+
+    &:focus {
+      outline: none;
+      border-color: $color-green;
+      box-shadow: 0 0 0 3px rgba($color-green, 0.1);
+    }
+    &::placeholder { color: $text-secondary; }
+  }
+}
+
+// ── FILTER GROUP ──
+.au-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.au-filter-btn {
+  @extend %btn-base;
+  padding: 8px 14px;
+  background: transparent;
+  color: $text-secondary;
+  border-color: rgba($text-secondary, 0.2);
+  font-size: 10px;
+
+  &:hover:not(:disabled) {
+    border-color: $color-green;
+    color: $color-green;
+  }
+
+  &--active {
+    background: rgba($color-green, 0.1);
+    color: $color-green;
+    border-color: rgba($color-green, 0.4);
+  }
+}
+
+// ── CARD DISABILITATA ──
+.au-card--disabled {
+  opacity: 0.65;
+}
+
+// ── AVATAR ──
+.au-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  background: rgba($color-green, 0.1);
+  color: $color-green;
+  font-family: $font-mono;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba($color-green, 0.2);
+  flex-shrink: 0;
+
+  &--disabled {
+    background: rgba($text-secondary, 0.08);
+    color: $text-secondary;
+    border-color: rgba($text-secondary, 0.15);
+  }
+}
+
+// ── ROLE BADGE ──
+.au-role-badge {
+  font-family: $font-mono;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+
+  &--user  { background: rgba($color-accent, 0.1);  color: $color-accent; }
+  &--staff { background: rgba(#f59e0b, 0.1);         color: #92400e; }
+  &--admin { background: rgba($color-green, 0.1);    color: $color-green; }
+}
+
+// ── STATUS BADGE ──
+.au-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: $font-mono;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 3px;
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  &--active {
+    background: $status-open-bg;
+    color: $status-open-text;
+    .au-status-badge__dot {
+      background: $status-open-text;
+      animation: auPulse 1.8s ease-in-out infinite;
+    }
+  }
+
+  &--disabled {
+    background: rgba($text-secondary, 0.1);
+    color: $text-secondary;
+    .au-status-badge__dot { background: $text-secondary; }
+  }
+}
+
+@keyframes auPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(1.4); }
+}
+
+// ── TOGGLE BUTTON ──
+.au-toggle-btn {
+  @extend %btn-base;
+  padding: 7px 16px;
+  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+
+  &--disable {
+    background: transparent;
+    color: #ef4444;
+    border-color: #ef4444;
+    &:hover:not(:disabled) { background: rgba(#ef4444, 0.08); }
+  }
+
+  &--enable {
+    background: transparent;
+    color: $color-green;
+    border-color: $color-green;
+    &:hover:not(:disabled) { background: rgba($color-green, 0.08); }
+  }
+}
+
+// ── DIALOG ──
+.mt-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(#0f172a, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  padding: 20px;
+  animation: mtFadeIn 0.2s ease both;
+}
+
+.mt-dialog {
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  box-shadow: 0 24px 48px -8px rgba(#0f172a, 0.18);
+  padding: 32px 28px 28px;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: mtFadeUp 0.25s ease both;
+
+  &__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba($color-green, 0.1);
+    color: $color-green;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+
+    &--danger {
+      background: rgba(#ef4444, 0.1);
+      color: #ef4444;
+    }
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: 18px;
+    font-weight: 800;
+    color: $text-primary;
+    margin: 0 0 8px;
+  }
+
+  &__body {
+    font-size: 13px;
+    color: $text-secondary;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  &__confirm-btn {
+    @extend %btn-primary;
+    padding: 10px 22px;
+
+    &--danger {
+      background: #ef4444;
+      border-color: #ef4444;
+      color: #fff;
+      &:hover:not(:disabled) {
+        background: #dc2626;
+        border-color: #dc2626;
+      }
+    }
+
+    &--success {
+        background: $color-green;
+        border-color: $color-green;
+        color: $color-primary;
+        &:hover:not(:disabled) {
+            background: color.adjust($color-green, $lightness: -8%);
+            border-color: color.adjust($color-green, $lightness: -8%);
+        }
+    }
+  }
+}
+
+// ── RESPONSIVE ──
+@media (min-width: 768px) {
+  .border-md {
+    border-left: 1px solid rgba($text-secondary, 0.2) !important;
+    border-right: 1px solid rgba($text-secondary, 0.2) !important;
+  }
+  .w-md-auto { width: auto !important; }
+}
+
+@keyframes mtFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes mtFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

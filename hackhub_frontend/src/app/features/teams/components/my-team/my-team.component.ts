@@ -30,6 +30,8 @@ export class MyTeamComponent {
 
   isLeader = false;  
 
+  confirmDialog = signal<ConfirmDialogConfig | null>(null);
+
   constructor(
     private router: Router,
     private teamService: TeamService,
@@ -181,6 +183,57 @@ export class MyTeamComponent {
       },
       error: err => {
         this.errorMessage.set(err.message);
+      }
+    });
+  }
+
+  closeDialog() {
+    this.confirmDialog.set(null);
+  }
+
+  askLeave() {
+    const hasMembers = (this.team()?.members?.length ?? 0) > 0;
+
+    if (this.isLeader) {
+      this.confirmDialog.set({
+        type: 'danger',
+        icon: 'fa-solid fa-arrow-right-from-bracket',
+        title: 'Lasciare il team?',
+        message: 'Stai per abbandonare il tuo team come leader.',
+        warning: hasMembers
+          ? 'Il ruolo di leader verrà assegnato automaticamente ad un altro membro del team.'
+          : 'Non ci sono altri membri: abbandonando il team, questo verrà eliminato definitivamente.',
+        confirmLabel: 'Sì, lascia',
+        onConfirm: () => {
+          this.closeDialog();
+          this.leave();
+        }
+      });
+    } else {
+      this.confirmDialog.set({
+        type: 'danger',
+        icon: 'fa-solid fa-arrow-right-from-bracket',
+        title: 'Lasciare il team?',
+        message: 'Stai per abbandonare il team. Potrai unirti o crearne uno nuovo in qualsiasi momento.',
+        confirmLabel: 'Sì, lascia',
+        onConfirm: () => {
+          this.closeDialog();
+          this.leave();
+        }
+      });
+    }
+  }
+
+  askRemoveMember(member: { id: number; nickname: string }) {
+    this.confirmDialog.set({
+      type: 'danger',
+      icon: 'fa-solid fa-user-xmark',
+      title: 'Rimuovere il membro?',
+      message: `Stai per rimuovere ${member.nickname} dal team. L'utente potrà essere reinvitato in seguito.`,
+      confirmLabel: 'Rimuovi',
+      onConfirm: () => {
+        this.closeDialog();
+        this.removeMember(member.id);
       }
     });
   }

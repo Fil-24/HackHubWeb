@@ -1,7 +1,7 @@
 <section class="profile-section relative-section">
   <div class="container py-5">
     
-    <div class="row justify-content-center mb-5">
+    <div class="row justify-content-center mb-3">
       <div class="col-12 text-center">
         <h3 class="pr-title">Esplora <span class="accent">Team</span></h3>
         <p class="pr-text-muted mt-2">Cerca un team a cui unirti o visualizza i dettagli del tuo gruppo.</p>
@@ -28,91 +28,84 @@
       </div>
     } 
     @else {
-      
-     @if (myTeam()) {
-        <!--<app-my-team [team]="myTeam()!"></app-my-team>-->
-      }
-      @else {
-        
-        <div class="row justify-content-center mb-4">
-          <div class="col-12 col-lg-10">
-            <div class="d-flex flex-column flex-md-row gap-3">
-              <div class="pr-search-bar flex-grow-1">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input 
-                  type="text" 
-                  class="pr-input-search" 
-                  placeholder="Cerca un team per nome..." 
-                  [value]="searchQuery()"
-                  (input)="updateSearch($event)">
-              </div>
+      <div class="row justify-content-center mb-4">
+        <div class="col-12 col-lg-10">
+          <div class="d-flex flex-column flex-md-row gap-3">
+            <div class="pr-search-bar flex-grow-1">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input 
+                type="text" 
+                class="pr-input-search" 
+                placeholder="Cerca un team per nome..." 
+                [value]="searchQuery()"
+                (input)="updateSearch($event)">
+            </div>
 
-              @if (isLoggedIn()) {
-                <button class="pr-btn-primary flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="openCreateTeam()">
-                  <i class="fa-solid fa-plus"></i>
-                  <span> Crea Team</span>
-                </button>
-              }
+            @if (isLoggedIn() && this.authService.isUser()) {
+              <button class="pr-btn-primary flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="openCreateTeam()">
+                <i class="fa-solid fa-plus"></i>
+                <span> Crea Team</span>
+              </button>
+            }
 
+          </div>
+        </div>
+      </div>
+
+      @if (filteredTeams().length === 0) {
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-8">
+            <div class="pr-card text-center p-5">
+              <i class="fa-solid fa-ghost mb-3" style="font-size: 2.5rem; color: #cbd5e1;"></i>
+              <p class="pr-value mb-0">Nessun team trovato con questa ricerca.</p>
             </div>
           </div>
         </div>
-
-        @if (filteredTeams().length === 0) {
-          <div class="row justify-content-center">
-            <div class="col-12 col-lg-8">
-              <div class="pr-card text-center p-5">
-                <i class="fa-solid fa-ghost mb-3" style="font-size: 2.5rem; color: #cbd5e1;"></i>
-                <p class="pr-value mb-0">Nessun team trovato con questa ricerca.</p>
-              </div>
-            </div>
-          </div>
-        } 
-        @else {
-          <div class="row justify-content-center">
-            <div class="col-12 col-lg-10 d-flex flex-column gap-3">
-              
-              @for (team of filteredTeams(); track team.id) {
-                <div class="pr-card">
-                  <div class="pr-card-bar"></div>
-                  
-                  <div class="pr-card-body p-4">
-                    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-4">
-                      
-                      <div class="d-flex align-items-center gap-3" style="min-width: 250px;">
-                        <div class="team-avatar flex-shrink-0">
-                          {{ team.name.charAt(0) | uppercase }}
-                        </div>
-                        <div>
-                          <h4 class="pr-value m-0" style="font-size: 1.15rem;">{{ team.name }}</h4>
-                          <div class="d-flex align-items-center gap-2 mt-1">
-                            <span class="pr-label mb-0"><i class="fa-solid fa-users"></i> {{ (team.members ? team.members!.length : 0) + (team.leader ? 1 : 0) }} MEMBRI</span>
-                          </div>
+      } 
+      @else {
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 d-flex flex-column gap-3">
+            
+            @for (team of filteredTeams(); track team.id) {
+              <div class="pr-card">
+                <div class="pr-card-bar"></div>
+                
+                <div class="pr-card-body p-4">
+                  <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-4">
+                    
+                    <div class="d-flex align-items-center gap-3" style="min-width: 250px;">
+                      <div class="team-avatar flex-shrink-0">
+                        {{ team.name.charAt(0) | uppercase }}
+                      </div>
+                      <div>
+                        <h4 class="pr-value m-0" style="font-size: 1.15rem;">{{ team.name }}</h4>
+                        <div class="d-flex align-items-center gap-2 mt-1">
+                          <span class="pr-label mb-0"><i class="fa-solid fa-users"></i> {{ (team.members ? team.members!.length : 0) + (team.leader ? 1 : 0) }} MEMBRI</span>
                         </div>
                       </div>
-      
-                      <div class="flex-grow-1 border-start border-end border-0 border-md px-md-4 py-2 py-md-0" style="border-color: #e5e7eb !important;">
-                        <p class="pr-text-muted mb-2 text-truncate" style="max-width: 300px; font-size: 14px;">
-                          {{ team.description || 'Nessuna descrizione disponibile.' }}
-                        </p>
-                        <div class="d-flex align-items-center gap-2">
-                          <span class="pr-badge"><i class="fa-solid fa-trophy"></i> {{ team.teamStats!.hackthonsWon || 0 }} Vittorie</span>
-                        </div>
-                      </div>
-      
-                      <div class="d-flex gap-2 mt-2 mt-md-0 flex-shrink-0 w-100 w-md-auto justify-content-end">
-                        <button class="pr-btn-outline flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="openTeamDetails(team)">
-                          <i class="fa-solid fa-circle-info me-1"></i> Dettagli
-                        </button>
-                      </div>
-      
                     </div>
+    
+                    <div class="flex-grow-1 border-start border-end border-0 border-md px-md-4 py-2 py-md-0" style="border-color: #e5e7eb !important;">
+                      <p class="pr-text-muted mb-2 text-truncate" style="max-width: 300px; font-size: 14px;">
+                        {{ team.description || 'Nessuna descrizione disponibile.' }}
+                      </p>
+                      <div class="d-flex align-items-center gap-2">
+                        <span class="pr-badge"><i class="fa-solid fa-trophy"></i> {{ team.teamStats!.hackthonsWon || 0 }} Vittorie</span>
+                      </div>
+                    </div>
+    
+                    <div class="d-flex gap-2 mt-2 mt-md-0 flex-shrink-0 w-100 w-md-auto justify-content-end">
+                      <button class="pr-btn-outline flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="openTeamDetails(team)">
+                        <i class="fa-solid fa-circle-info me-1"></i> Dettagli
+                      </button>
+                    </div>
+    
                   </div>
                 </div>
-              }
-            </div>
+              </div>
+            }
           </div>
-        }
+        </div>
       }
     }
   </div>

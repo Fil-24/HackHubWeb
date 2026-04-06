@@ -130,14 +130,15 @@ public class AccountController {
      *         with HTTP status 200 (OK)
      */
     @PatchMapping("/{id}/status")
-    public ResponseEntity<String> manageAccount(
+    public ResponseEntity<Map<String, String>> manageAccount(
             @PathVariable Long id,
             @RequestParam boolean disabled) {
 
         accountService.setDisabled(id, disabled);
         String status = disabled ? "disabled" : "active";
-        return ResponseEntity.ok("Account " + id + " " + status );
+        return ResponseEntity.ok(Map.of("message", "Account " + id + " " + status));
     }
+
     @GetMapping("/staff")
     public ResponseEntity<List<MentorResponse>> getStaff(){
         return  ResponseEntity.ok (accountService.getStaff().stream().map(MentorResponse::fromEntity).toList());

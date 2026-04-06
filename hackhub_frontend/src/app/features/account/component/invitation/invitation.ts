@@ -24,7 +24,7 @@ export class InvitationComponent implements OnInit {
   errorMessage = signal<string | null>(null);
   private messageTimeout: any;
 
-  constructor(private invitationService: InvitationService) {}
+  constructor(private invitationService: InvitationService, private authService : AuthService) {}
 
   ngOnInit() {
     this.loadInvitations();
@@ -57,34 +57,23 @@ export class InvitationComponent implements OnInit {
     });
   }
 
-  acceptInvitation(idInvitation: number) {
-    this.invitationService.acceptInvitation(idInvitation).subscribe({
-      next: () => {
-        //TODO Bisogna aggiornare l'idTeam di authService quando si accetta l'invito
-        this.handleResponse(idInvitation, 'accettato');
-      },
-      error: () => {
-        this.errorMessage.set('Errore nell\'accettare l\'invito.');
-        this.clearMessagesAfterDelay();
-      }
-
-    });
-  }
-
-  rejectInvitation(idInvitation: number) {
-   this.invitationService.rejectInvitation(idInvitation).subscribe({
-      next: () => {
-        this.handleResponse(idInvitation, 'rifiutato');
+  respond(idInvitation: number, accept: boolean) {
+    this.invitationService.respond(idInvitation, accept)
+    .subscribe({
+      next: (res: any) => {
+        if (accept && res.idTeam) {
+          this.authService.updateTeamId(res.idTeam);
+        }
         
+        this.handleResponse(idInvitation, accept? 'accettato' : 'rifiutato');
       },
       error: () => {
-        this.errorMessage.set('Errore nel rifiutare l\'invito.');
+        this.errorMessage.set("Errore nella gestione dell'invito.");
         this.clearMessagesAfterDelay();
       }
     });
   }
 
-  
 
   private handleResponse(id: number, action: 'accettato' | 'rifiutato') {
     // Mostra il messaggio di successo e fa partire il timer di 5 secondi

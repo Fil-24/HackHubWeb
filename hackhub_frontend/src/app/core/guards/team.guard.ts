@@ -32,7 +32,7 @@ export class TeamGuard implements CanActivate {
     if (teamId) {
       return this.router.createUrlTree([`/teams/my`]);
     }
-    else if(!this.auth.isUser()){
+    else if(!this.auth.isUser() && !this.auth.isAdmin()){
       return this.router.createUrlTree([`/dashboard`]);
     }
 
