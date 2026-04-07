@@ -15,7 +15,7 @@ export class HackathonService {
 
   constructor(private http: HttpClient) {}
 
-  getById(id: string): Observable<Hackathon> {
+  getById(id: number): Observable<Hackathon> {
     return this.http.get<Hackathon>(`${this.BASE_URL}/${id}`);
   }
   getAll(): Observable<Hackathon[]> {
@@ -24,7 +24,7 @@ export class HackathonService {
   }
 
 
-  register(id: string): Observable<void> {
+  register(id: number): Observable<void> {
     return this.http.post<void>(`${this.BASE_URL}/${id}/register`, {});
   }
 
@@ -38,4 +38,30 @@ export class HackathonService {
   updateHackathon(id: number, data: HackathonCreate): Observable<Hackathon> {
       return this.http.put<any>(`${this.BASE_URL}/${id}`, data);
     }
+
+// --- METODI DA AGGIUNGERE AL TUO HACKATHON SERVICE ---
+
+  assignMentor(hackathonId: number, email: string): Observable<any> {
+    // Sostituisci l'URL con quello corretto del tuo backend
+    return this.http.post<any>(`${this.BASE_URL}/${hackathonId}/mentors`, { email });
+  }
+
+  removeMentor(hackathonId: number, mentorId: number): Observable<any> {
+    return this.http.delete<any>(`${this.BASE_URL}/${hackathonId}/mentors/${mentorId}`);
+  }
+
+  unsubscribeTeam(teamId: number): Observable<void> {
+    // Sostituisci con l'endpoint corretto per disiscrivere un team
+    return this.http.delete<void>(`${this.BASE_URL}/teams/${teamId}/unsubscribe`);
+  }
+
+  addRule(hackathonId: number, ruleId: number): Observable<Rule> {
+    return this.http.post<Rule>(`${this.BASE_URL}/${hackathonId}/rules/${ruleId}`, {});
+  }
+
+  removeRule(hackathonId: number, ruleId: number): Observable<void> {
+    return this.http.delete<void>(`${this.BASE_URL}/${hackathonId}/rules/${ruleId}`);
+  }
+
+
 }

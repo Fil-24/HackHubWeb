@@ -13,7 +13,7 @@ export interface Hackathon {
     endDate: string;
     status: 'REGISTERED' | 'ONGOING' | 'EVALUATION' | 'COMPLETED';
     teams: Team[];
-    staff: Staff[];
+    staff: Staff;
     rules: Rule[];
 }
 

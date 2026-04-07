@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HackathonComponent } from './hackathon.component';
+import { HackathonDetailComponent } from './hackathon-detail';
 
-describe('Hackathon', () => {
-  let component: HackathonComponent;
-  let fixture: ComponentFixture<HackathonComponent>;
+describe('HackathonDetail', () => {
+  let component: HackathonDetailComponent;
+  let fixture: ComponentFixture<HackathonDetailComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HackathonComponent],
+      imports: [HackathonDetailComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HackathonComponent);
+    fixture = TestBed.createComponent(HackathonDetailComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
