@@ -77,7 +77,8 @@ export class CreaHackathon implements OnInit {
       this.regole = data;
     });
     this.StaffService.getStaff().subscribe(data => {
-
+      console.log('RAW data:', data);
+      this.accounts = data;
     });
 
   }
@@ -135,17 +136,17 @@ export class CreaHackathon implements OnInit {
   cancelEdit() {
     // Resetta i dati del form
     this.hackathonData = {
-            name: '',
-            location: '',
-            prize: 0,
-            maxTeamMembers: 1,
-            maxNumberTeams: 1,
-            startDate: this.minDate,
-            endDate: this.minDate,
-            judgeEmail: '',
-            mentorEmails: [],
-            idRules: []
-        };
+      name: '',
+      location: '',
+      prize: 0,
+      maxTeamMembers: 1,
+      maxNumberTeams: 1,
+      startDate: this.minDate,
+      endDate: this.minDate,
+      judgeEmail: '',
+      mentorEmails: [],
+      idRules: []
+    };
     this.giudiceSelezionato = null;
     this.mentoriSelezionati = [];
     this.regoleSelezionate = [];
@@ -179,8 +180,8 @@ export class CreaHackathon implements OnInit {
     const val = this.searchMentore.toLowerCase();
     this.mentoriFiltrati = this.accounts.filter(i =>
       (val === '' || i.email.toLowerCase().includes(val) ||
-            i.name.toLowerCase().includes(val)) &&
-            !this.mentoriSelezionati.find(m => m.idAccount === i.idAccount)
+        i.name.toLowerCase().includes(val)) &&
+      !this.mentoriSelezionati.find(m => m.idAccount === i.idAccount)
     );
     this.showMentori.set(true);
   }
