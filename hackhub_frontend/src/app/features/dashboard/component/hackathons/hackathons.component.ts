@@ -1,6 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Hackathon } from '../../models/hackathon.model';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../auth/service/auth.service';
 import { HackathonService } from '../../service/hackathon.service';
 import { FormsModule } from '@angular/forms';
 
@@ -18,7 +19,7 @@ export class HackathonsComponent implements OnInit {
   ordinamento = signal('data-asc');
   showFiltri = false;
 
-  constructor(private hackathonService: HackathonService) { }
+  constructor(private hackathonService: HackathonService, protected authService: AuthService) { }
   ngOnInit(): void {
     this.caricaHackathon();
   }
@@ -61,9 +62,9 @@ export class HackathonsComponent implements OnInit {
           return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
         case 'data-desc':
           return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
-        case 'nome-asc':
+        case 'az':
           return a.name.localeCompare(b.name);
-        case 'nome-desc':
+        case 'za':
           return b.name.localeCompare(a.name);
         default:
           return 0;

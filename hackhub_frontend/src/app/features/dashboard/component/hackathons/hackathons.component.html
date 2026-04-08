@@ -20,6 +20,7 @@
                     <span class="filter-toggle-arrow" [class.open]="showFiltri">▾</span>
                 </button>
             </div>
+            
         </div>
     </div>
 </section>
@@ -79,6 +80,14 @@
                 <div class="h-label">Hackathon</div>
                 <div class="h-count">// {{ hackathon()!.length }} results found</div>
             </div>
+             @if (this.authService.isStaff()) {
+                <div class="d-flex justify-content-end mb-3">q
+              <button class="pr-btn-primary flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" [routerLink]=" ['/hackathon/create'] ">
+                <i class="fa-solid fa-plus"></i>
+                <span> Crea Team</span>
+              </button>
+              </div>
+            }
             @if(filtro()!.length > 0) {
             <div class="h-grid">
                 @for (h of filtro()!; track $index) {
