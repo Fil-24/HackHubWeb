@@ -150,7 +150,7 @@
 
                   <div class="col-12 hd-field">
                     <label class="hd-field__label"><i class="fa-solid fa-gavel"></i> Judge Email</label>
-                    <input type="email" name="judgeEmail" class="hd-field__input" [(ngModel)]="modifiedHackathon()!.staff.judge.email" required/>
+                    <input type="email" name="judgeEmail" class="hd-field__input" [(ngModel)]="modifiedHackathon()!.staff.judgeEmail" required/>
                   </div>
                 </div>
 
@@ -318,24 +318,24 @@
                 <div class="hd-section-header mb-4">
                   <div class="hd-section-header__icon"><i class="fa-solid fa-id-badge"></i></div>
                   <h5 class="hd-section-header__title">Staff & Giudice</h5>
-                  <pre class="bg-dark text-white p-2 mt-2">{{ hackathon()?.staff | json }}</pre>
-<pre class="bg-dark text-warning p-2 mt-2">Mio ID utente: {{ authService.userId }}</pre>
+                 
                 </div>               
+                
                 <div class="mb-3">
-  <label class="hd-field__label text-muted">Organizzatore</label>
-  <div class="fw-bold">
-    <i class="fa-solid fa-user-gear me-2"></i> 
-    {{ hackathon()?.staff?.organizer?.email || hackathon()?.staff?.organizer?.nickname || 'ID: ' + hackathon()?.staff?.organizer?.idAccount }}
-  </div>
-</div>
+                  <label class="hd-field__label text-muted">Organizzatore</label>
+                  <div class="fw-bold">
+                    <i class="fa-solid fa-user-gear me-2"></i> 
+                    {{ hackathon()?.staff?.organizerEmail  || 'ID: ' + hackathon()?.staff?.organizerId }}
+                  </div>
+                </div>
 
-<div class="mb-3">
-  <label class="hd-field__label text-muted">Giudice Ufficiale</label>
-  <div class="fw-bold">
-    <i class="fa-solid fa-gavel me-2"></i> 
-    {{ hackathon()?.staff?.judge?.email || hackathon()?.staff?.judge?.nickname }}
-  </div>
-</div>
+                <div class="mb-3">
+                  <label class="hd-field__label text-muted">Giudice Ufficiale</label>
+                  <div class="fw-bold">
+                    <i class="fa-solid fa-gavel me-2"></i> 
+                    {{ hackathon()?.staff?.judgeEmail || 'ID: ' + hackathon()?.staff?.judgeId }}
+                  </div>
+                </div>
 
                 @if(hackathon()?.staff?.mentors?.length) {
                   <div>

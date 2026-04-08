@@ -1,6 +1,7 @@
 import { Team } from '../../teams/model/team.model';
 import { Staff } from './staff.model';
 import { Rule } from './rule.model';
+import { StaffResponse } from './staffResponse.model';
 
 export interface Hackathon {
     id: number;
@@ -13,7 +14,7 @@ export interface Hackathon {
     endDate: string;
     status: 'REGISTERED' | 'ONGOING' | 'EVALUATION' | 'COMPLETED';
     teams: Team[];
-    staff: Staff;
+    staff: StaffResponse;
     rules: Rule[];
 }
 

@@ -7,7 +7,8 @@ import { TeamService } from '../../../teams/service/team.service';
 import { catchError, map, Observable, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { Rule } from '../../models/rule.model';
-import { DatePipe, JsonPipe } from '@angular/common'; // <-- Assicurati che ci sia JsonPipe qui
+import { DatePipe, JsonPipe } from '@angular/common'; 
+
 @Component({
   selector: 'app-hackathon-detail',
   standalone: true,
@@ -98,7 +99,7 @@ export class HackathonDetailComponent implements OnInit {
     });
   }
 
-ngOnInit() {
+  ngOnInit() {
     const id = this.route.snapshot.params['id'];
 
     this.hackathonService.getById(id).subscribe({
@@ -111,21 +112,25 @@ ngOnInit() {
         const currentUserId = this.authService.userId;
         console.log('--- MIO ID UTENTE ---', currentUserId);
 
-        // 2. Controllo flessibile per isOrganizer (controlla sia idAccount che id)
+        // 2. Controllo aggiornato con la nuova interfaccia StaffResponse
         this.isOrganizer =
           currentUserId !== null &&
           data.staff && 
-          data.staff.organizer &&
-          (data.staff.organizer.idAccount === currentUserId || data.staff.organizer.id === currentUserId);
+          data.staff.organizerId === currentUserId;
 
         console.log('--- SONO ORGANIZZATORE? ---', this.isOrganizer);
 
-        // 3. FIX CRASH: Se non c'è un giudice, creiamo un oggetto vuoto per non far esplodere il form HTML
-        if (!data.staff.judge) {
-          data.staff.judge = { idAccount: null, email: '' };
-        }
-        if (!data.staff.organizer) {
-          data.staff.organizer = { idAccount: null, email: '' };
+        // 3. FIX CRASH: Inizializziamo l'oggetto staff se risulta completamente vuoto
+        if (!data.staff) {
+          data.staff = {
+            organizerId: null,
+            organizerEmail: '',
+            judgeId: null,
+            judgeEmail: '',
+            mentors: []
+          };
+        } else if (!data.staff.mentors) {
+          data.staff.mentors = [];
         }
 
         this.modifiedHackathon.set({ ...data });
@@ -211,7 +216,7 @@ ngOnInit() {
     );
   }
 
- /**
+  /**
    * Rimuove un mentore dall'hackathon.
    * @param idAccount L'ID del mentore (Account) da rimuovere
    */
@@ -233,7 +238,7 @@ ngOnInit() {
             staff: {
               ...h.staff,
               // Filtra usando idAccount invece di id
-              mentors: h.staff.mentors?.filter(m => m.idAccount !== idAccount) ?? []
+              mentors: h.staff.mentors?.filter((m: any) => m.idAccount !== idAccount) ?? []
             }
           };
         });
@@ -319,12 +324,11 @@ ngOnInit() {
       maxNumberTeams: modified.maxNumberTeams,
       startDate: modified.startDate,
       endDate: modified.endDate,
-      // CORREZIONE: Preleviamo l'ID dall'oggetto judge
-      idJudge: modified.staff.judge?.idAccount // <-- Modificato qui
+      // CORREZIONE: Preleviamo l'ID direttamente da judgeId invece dell'oggetto judge annidato
+      idJudge: modified.staff?.judgeId 
     };
 
     this.hackathonService.updateHackathon(modified.id, data).subscribe({
-      // ... resto del codice identico
       next: (hackathon) => {
         this.successMessage.set('Hackathon aggiornato');
         this.hackathon.set(hackathon);
