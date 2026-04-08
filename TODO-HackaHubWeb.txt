@@ -9,3 +9,4 @@ team problemi:
 -rimuovere mock su hackathon.service quando il db viene popolato e togliere i commenti/import
 
 -hackathons sistemare lo sfondo
+-controllo del mentore con l'email all'interno crea hackathon

@@ -82,7 +82,7 @@
                             autocomplete="off">
                         @if (showMentori() && mentoriFiltrati.length > 0) {
                         <div class="cr-dropdown">
-                            @for (item of mentoriFiltrati; track item.idAccount) {
+                            @for (item of mentoriFiltrati; track item.email) {
                             <div class="cr-dropdown-item" (mousedown)="selezionaMentore(item)">
                                 {{ item.email }}
                             </div>
@@ -90,7 +90,7 @@
                         </div>
                         }
                         <div class="cr-tags">
-                            @for (mentore of mentoriSelezionati; track mentore.idAccount) {
+                            @for (mentore of mentoriSelezionati; track mentore.email) {
                             <div class="cr-tag">
                                 {{ mentore.email }}
                                 <span (click)="rimuoviMentore(mentore)">✕</span>
@@ -118,7 +118,8 @@
                         <div class="cr-tags">
                             @for (regola of regoleSelezionate; track regola.id) {
                             <div class="cr-tag">
-                                {{ regola.description }}
+                                <div class="cr-tag-name">{{ regola.name }}</div>
+                                <div class="cr-tag-desc">{{ regola.description }}</div>
                                 <span (click)="rimuoviRegola(regola)">✕</span>
                             </div>
                             }

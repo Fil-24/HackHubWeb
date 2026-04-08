@@ -77,7 +77,6 @@ export class CreateHackathon implements OnInit {
       this.regole = data;
     });
     this.StaffService.getStaff().subscribe(data => {
-      console.log('RAW data:', data);
       this.accounts = data;
     });
 
@@ -161,7 +160,7 @@ export class CreateHackathon implements OnInit {
   }
 
 
-  //filtra e seleziona giudici, mentori e regole per i dropdown con ricerca
+  // ---- GIUDICI ----
   filtraGiudici() {
     const val = this.searchGiudice.toLowerCase();
     this.giudiciFiltrati = this.accounts.filter(i =>
@@ -176,26 +175,34 @@ export class CreateHackathon implements OnInit {
     this.showGiudici.set(false);
   }
 
-  filtraMentori() {
-    const val = this.searchMentore.toLowerCase();
-    this.mentoriFiltrati = this.accounts.filter(i =>
-      (val === '' || i.email.toLowerCase().includes(val) ||
-        i.name.toLowerCase().includes(val)) &&
-      !this.mentoriSelezionati.find(m => m.idAccount === i.idAccount)
-    );
-    this.showMentori.set(true);
-  }
+  // ---- MENTORI ----
+  
+filtraMentori() {
+  const val = this.searchMentore.toLowerCase();
+  this.mentoriFiltrati = this.accounts.filter(i =>
+    (val === '' || i.email.toLowerCase().includes(val) || i.name.toLowerCase().includes(val)) &&
+    !this.mentoriSelezionati.find(m => m.email === i.email)
+  );
+  this.showMentori.set(true);
+}
 
-  selezionaMentore(item: Account) {
-    this.mentoriSelezionati.push(item);
-    this.searchMentore = '';
-    this.showMentori.set(false);
-  }
+selezionaMentore(item: Account) {
+  this.mentoriSelezionati.push(item);
+  this.searchMentore = '';
+  this.showMentori.set(false);
+}
 
-  rimuoviMentore(item: Account) {
-    this.mentoriSelezionati = this.mentoriSelezionati.filter(m => m.idAccount !== item.idAccount);
-  }
+rimuoviMentore(item: Account) {
+  this.mentoriSelezionati = this.mentoriSelezionati.filter(m => m.email !== item.email);
+  const val = this.searchMentore.toLowerCase();
+  this.mentoriFiltrati = this.accounts.filter(i =>
+    (val === '' || i.email.toLowerCase().includes(val) || i.name.toLowerCase().includes(val)) &&
+    !this.mentoriSelezionati.find(m => m.email === i.email)
+  );
+}
 
+
+  // ---- REGOLE ----
   filtraRegole() {
     const val = this.searchRegola.toLowerCase();
     this.regoleFiltrate = this.regole.filter(r =>
@@ -208,19 +215,25 @@ export class CreateHackathon implements OnInit {
   selezionaRegola(item: Rule) {
     this.regoleSelezionate.push(item);
     this.searchRegola = '';
+    this.regoleFiltrate = this.regoleFiltrate.filter(r => r.id !== item.id);
     this.showRegole.set(false);
   }
 
-
   rimuoviRegola(item: Rule) {
-    this.regole = this.regoleSelezionate.filter(r => r.id !== item.id);
-  }
+    this.regoleSelezionate = this.regoleSelezionate.filter(r => r.id !== item.id);
 
-  // chiude il dropdown
-  chiudiDropdown(tipo: string) {
+    const val = this.searchRegola.toLowerCase();
+    this.regoleFiltrate = this.regole.filter(r =>
+      (val === '' || r.description.toLowerCase().includes(val)) &&
+      !this.regoleSelezionate.find(s => s.id === r.id)
+    );
+  }
+chiudiDropdown(tipo: string) {
+  setTimeout(() => {
     if (tipo === 'giudice') this.showGiudici.set(false);
     if (tipo === 'mentore') this.showMentori.set(false);
     if (tipo === 'regola') this.showRegole.set(false);
-  }
+  }, 150);
+}
 
 }

@@ -21,6 +21,9 @@ export class HackathonService {
   getAll(): Observable<Hackathon[]> {
     return this.http.get<Hackathon[]>(this.BASE_URL);
   }
+  getMyHackathons(): Observable<Hackathon[]> {
+    return this.http.get<Hackathon[]>(`${this.BASE_URL}/my`);
+  }
 
   // AGGIORNATO: il backend usa POST /api/hackathons/{id}/teams
   register(id: number): Observable<any> {
