@@ -4,8 +4,8 @@
     @if (successMessage()) {
       <div class="row justify-content-center mb-3">
         <div class="col-12 col-lg-10">
-          <div class="alert alert-success">
-            <i class="fa-solid fa-circle-check"></i>
+          <div class="alert alert-success d-flex align-items-center gap-2">
+            <i class="fa-solid fa-circle-check fs-5"></i>
             <span>{{ successMessage() }}</span>
           </div>
         </div>
@@ -14,8 +14,8 @@
     @if (errorMessage()) {
       <div class="row justify-content-center mb-3">
         <div class="col-12 col-lg-10">
-          <div class="alert alert-error">
-            <i class="fa-solid fa-triangle-exclamation"></i>
+          <div class="alert alert-error d-flex align-items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation fs-5"></i>
             <span>{{ errorMessage() }}</span>
           </div>
         </div>
@@ -35,31 +35,38 @@
                 </div>
                 <div>
                   <div class="hd-hero__eyebrow">
-                    <span [class.text-success]="hackathon()?.status === 'ONGOING'">{{ hackathon()?.status }}</span>
+                    <span [class.text-success]="hackathon()?.status === 'ONGOING'">
+                      {{ hackathon()?.status }}
+                    </span>
                   </div>
-                  <h2 class="hd-hero__name">{{ hackathon()?.name }}</h2>
-                  <p class="hd-hero__desc">
-                    <i class="fa-solid fa-location-dot me-1"></i> {{ hackathon()?.location }} <br>
-                    <i class="fa-solid fa-calendar-days me-1 mt-1"></i> {{ hackathon()?.startDate | date:'dd/MM/yyyy HH:mm' }} - {{ hackathon()?.endDate | date:'dd/MM/yyyy HH:mm' }}
+                  <h2 class="hd-hero__name mb-2">{{ hackathon()?.name }}</h2>
+                  <p class="hd-hero__desc mb-0">
+                    <i class="fa-solid fa-location-dot me-2"></i> {{ hackathon()?.location }} <br>
+                    <i class="fa-solid fa-calendar-days me-2 mt-2"></i> {{ hackathon()?.startDate | date:'dd/MM/yyyy HH:mm' }} - {{ hackathon()?.endDate | date:'dd/MM/yyyy HH:mm' }}
                   </p>
                 </div>
               </div>
 
-              <div class="d-flex gap-2 flex-shrink-0">
+              <div class="d-flex flex-wrap gap-2 flex-shrink-0 align-items-center">
                 @if(isOrganizer) {
-                  <button class="hd-hero__btn-edit" (click)="showModifyForm = !showModifyForm">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    <span>Modifica</span>
+                  <button class="hd-hero__btn-edit" [class.active-edit]="showModifyForm" (click)="showModifyForm = !showModifyForm">
+                    @if (!showModifyForm) {
+                      <i class="fa-solid fa-pen-to-square"></i>
+                      <span>Edit Mode</span>
+                    } @else {
+                      <i class="fa-solid fa-xmark"></i>
+                      <span>Close Edit</span>
+                    }
                   </button>
                 }
                 @if(leader() && (hackathon()?.maxNumberTeams ?? 0) - (hackathon()?.teams?.length ?? 0)) {
                   @if(!teamRegistered()) {
                     <button class="hd-btn-primary" (click)="registerTeam()">
-                      <i class="fa-solid fa-user-plus me-1"></i> Iscriviti
+                      <i class="fa-solid fa-user-plus me-1"></i> Join
                     </button>
                   } @else {
                     <button class="hd-hero__btn-leave" (click)="unsubscribeTeam()">
-                      <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> Disiscriviti
+                      <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> Leave
                     </button>
                   }
                 }
@@ -71,29 +78,29 @@
           <div class="hd-strip">
             <div class="hd-strip__item">
               <span class="hd-strip__value hd-strip__value--green">{{ hackathon()?.prize }}€</span>
-              <span class="hd-strip__label">Premio</span>
+              <span class="hd-strip__label">Prize</span>
             </div>
             <div class="hd-strip__sep" aria-hidden="true"></div>
             <div class="hd-strip__item">
               <span class="hd-strip__value">{{ hackathon()?.maxNumberTeams }}</span>
-              <span class="hd-strip__label">Max Team</span>
+              <span class="hd-strip__label">Max Teams</span>
             </div>
             <div class="hd-strip__sep" aria-hidden="true"></div>
             <div class="hd-strip__item">
               <span class="hd-strip__value">{{ hackathon()?.maxTeamMembers }}</span>
-              <span class="hd-strip__label">Membri/Team</span>
+              <span class="hd-strip__label">Members/Team</span>
             </div>
             <div class="hd-strip__sep" aria-hidden="true"></div>
             <div class="hd-strip__item">
               <span class="hd-strip__value hd-strip__value--green">
                 {{ (hackathon()?.maxNumberTeams ?? 0) - (hackathon()?.teams?.length ?? 0) }}
               </span>
-              <span class="hd-strip__label">Posti Liberi</span>
+              <span class="hd-strip__label">Available Spots</span>
             </div>
             <div class="hd-strip__sep" aria-hidden="true"></div>
             <div class="hd-strip__item">
               <span class="hd-strip__value">{{ getDuration() }}</span>
-              <span class="hd-strip__label">Durata</span>
+              <span class="hd-strip__label">Duration</span>
             </div>
           </div>
         </div>
@@ -101,24 +108,24 @@
     </div>
 
     @if (showModifyForm && isOrganizer) {
-      <div class="row justify-content-center mb-4">
+      
+      <div class="row justify-content-center mb-4" id="edit-section" style="position: relative;" [style.z-index]="judgeFocused() ? '100' : '1'">
         <div class="col-12 col-lg-10">
           <div class="hd-section-card hd-section-card--anim">
-            <div class="hd-section-card__bar"></div>
             <div class="hd-section-card__inner">
 
               <div class="hd-section-header mb-4">
                 <div class="hd-section-header__icon"><i class="fa-solid fa-pen-to-square"></i></div>
                 <div>
-                  <h5 class="hd-section-header__title">Modifica Hackathon</h5>
-                  <p class="hd-section-header__sub">Aggiorna le informazioni dell'evento</p>
+                  <h5 class="hd-section-header__title">Edit Hackathon</h5>
+                  <p class="hd-section-header__sub">Update the core event information</p>
                 </div>
               </div>
 
               <form (ngSubmit)="modifyHackathon()" #f="ngForm" ngNativeValidate>
                 <div class="row g-3">
                   <div class="col-12 col-md-6 hd-field">
-                    <label class="hd-field__label"><i class="fa-solid fa-tag"></i> Nome</label>
+                    <label class="hd-field__label"><i class="fa-solid fa-tag"></i> Name</label>
                     <input type="text" name="name" class="hd-field__input" [(ngModel)]="modifiedHackathon()!.name" required/>
                   </div>
                   <div class="col-12 col-md-6 hd-field">
@@ -148,15 +155,29 @@
                     <input type="datetime-local" name="endDate" class="hd-field__input" [(ngModel)]="modifiedHackathon()!.endDate" required/>
                   </div>
 
-                  <div class="col-12 hd-field">
+                  <div class="col-12 hd-field" [class.hd-field--focused]="judgeFocused()">
                     <label class="hd-field__label"><i class="fa-solid fa-gavel"></i> Judge Email</label>
-                    <input type="email" name="judgeEmail" class="hd-field__input" [(ngModel)]="modifiedHackathon()!.staff.judgeEmail" required/>
+                    <input type="text" name="judgeEmail" class="hd-field__input" 
+                           [(ngModel)]="modifiedHackathon()!.staff.judgeEmail" 
+                           (focus)="judgeFocused.set(true)"
+                           (input)="filterJudges()"
+                           placeholder="Search judge..." autocomplete="off" required/>
+                    
+                    @if (judgeFocused() && filteredJudges().length > 0) {
+                      <div class="hd-dropdown-menu show">
+                        @for (j of filteredJudges(); track j.idAccount || $index) {
+                          <div class="hd-dropdown-item" (click)="selectJudge(j)">
+                            {{ j.email }}
+                          </div>
+                        }
+                      </div>
+                    }
                   </div>
                 </div>
 
-                <div class="d-flex gap-2 mt-4 justify-content-end">
-                  <button type="button" class="hd-btn-ghost" (click)="showModifyForm=false">Annulla</button>
-                  <button type="submit" class="hd-btn-primary">Aggiorna Hackathon</button>
+                <div class="d-flex gap-3 mt-4 justify-content-end align-items-center">
+                  <button type="button" class="hd-btn-ghost" (click)="showModifyForm=false">Cancel</button>
+                  <button type="submit" class="hd-btn-primary">Save Changes</button>
                 </div>
               </form>
 
@@ -164,32 +185,34 @@
           </div>
         </div>
       </div>
-    }
 
-    @if (isOrganizer) {
-      <div class="row justify-content-center mb-4">
+      <div class="row justify-content-center mb-4" style="position: relative;" [style.z-index]="mentorFocused() ? '100' : '1'">
         <div class="col-12 col-lg-10">
           <div class="hd-section-card hd-section-card--anim">
             <div class="hd-section-card__inner">
               <div class="hd-section-header mb-4">
                 <div class="hd-section-header__icon"><i class="fa-solid fa-user-tie"></i></div>
                 <div>
-                  <h5 class="hd-section-header__title">Gestione Mentori</h5>
-                  <p class="hd-section-header__sub">Aggiungi o rimuovi i mentori di questo hackathon</p>
+                  <h5 class="hd-section-header__title">Manage Mentors</h5>
+                  <p class="hd-section-header__sub">Add or remove mentors for this hackathon</p>
                 </div>
               </div>
 
               <div class="mb-4">
+                <div style="background: #222; color: #00ff00; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-family: monospace;">
+  <h5>DEBUG STAFF:</h5>
+  <pre>{{ hackathon()?.staff | json }}</pre>
+</div>
                 @if (hackathon()?.staff?.mentors?.length) {
-                  <div class="row g-2">
-                    @for (mentor of hackathon()!.staff.mentors; track mentor.idAccount) {
+                  <div class="row g-3">
+                    @for (mentor of hackathon()!.staff.mentors; track mentor.id || $index) {
                       <div class="col-12 col-md-6">
-                        <div class="d-flex align-items-center justify-content-between p-3 border rounded bg-light">
-                          <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center justify-content-between p-3 border rounded">
+                          <div class="d-flex align-items-center gap-2 text-truncate me-3">
                             <i class="fa-solid fa-envelope text-muted"></i>
-                            <span>{{ mentor.email }}</span>
+                            <span class="text-truncate">{{ mentor.email }}</span>
                           </div>
-                          <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeMentor(mentor.idAccount)" title="Rimuovi Mentore">
+                          <button type="button" class="hd-btn-delete flex-shrink-0" (click)="removeMentor(mentor.id)" title="Remove Mentor">
                             <i class="fa-solid fa-trash"></i>
                           </button>
                         </div>
@@ -197,24 +220,42 @@
                     }
                   </div>
                 } @else {
-                  <div class="alert alert-secondary mb-0">Nessun mentore assegnato.</div>
+                  <div class="alert alert-secondary mb-0">
+                    No mentors assigned yet.
+                  </div>
                 }
               </div>
 
-              <div class="hd-field">
-                <label class="hd-field__label"><i class="fa-solid fa-plus"></i> Aggiungi un nuovo mentore</label>
+              <div class="hd-field" [class.hd-field--focused]="mentorFocused()">
+                <label class="hd-field__label"><i class="fa-solid fa-plus"></i> Add a new mentor</label>
                 <div class="d-flex gap-2">
-                  <input type="email" class="hd-field__input" [(ngModel)]="newMentorEmail" placeholder="Email del mentore..." />
-                  <button type="button" class="hd-btn-primary flex-shrink-0" (click)="addMentor()">Aggiungi</button>
+                  <input type="text" class="hd-field__input" 
+                         [(ngModel)]="mentorSearch" 
+                         name="mentorSearch"
+                         (focus)="mentorFocused.set(true)" 
+                         (input)="filterMentors()"
+                         placeholder="Search mentor by email..." autocomplete="off" />
+                  <button type="button" class="hd-btn-primary flex-shrink-0 px-4" (click)="addMentor()">Add</button>
                 </div>
+                
+                @if (mentorFocused() && filteredMentors().length > 0) {
+                  <div class="hd-dropdown-menu show">
+                    @for (m of filteredMentors(); track m.idAccount || $index) {
+                      <div class="hd-dropdown-item" (click)="selectMentor(m)">
+                        {{ m.email }}
+                      </div>
+                    }
+                  </div>
+                }
               </div>
+
             </div>
           </div>
         </div>
       </div>
     }
 
-    <div class="row justify-content-center mb-4">
+    <div class="row justify-content-center mb-4" style="position: relative;" [style.z-index]="ruleFocused() ? '100' : '1'">
       <div class="col-12 col-lg-10">
         <div class="hd-section-card hd-section-card--anim">
           <div class="hd-section-card__inner">
@@ -222,47 +263,48 @@
             <div class="hd-section-header mb-4">
               <div class="hd-section-header__icon"><i class="fa-solid fa-scroll"></i></div>
               <div>
-                <h5 class="hd-section-header__title">Regole dell'Hackathon</h5>
-                <p class="hd-section-header__sub">Linee guida e regolamento ufficiale</p>
+                <h5 class="hd-section-header__title">Hackathon Rules</h5>
+                <p class="hd-section-header__sub">Guidelines and official regulations</p>
               </div>
             </div>
 
             <ul class="list-group mb-4">
-              @for (rule of hackathon()?.rules; track rule.id) {
-                <li class="list-group-item d-flex justify-content-between align-items-start">
+              @for (rule of hackathon()?.rules; track rule.id || $index) {
+                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                   <div class="ms-2 me-auto">
-                    <div class="fw-bold">{{ rule.name }}</div>
-                    {{ rule.description }}
+                    <div class="fw-bold mb-1">{{ rule.name }}</div>
+                    <span class="text-muted">{{ rule.description }}</span>
                   </div>
-                  @if (isOrganizer) {
-                    <button class="btn btn-sm btn-danger rounded-pill mt-1" (click)="removeRule(rule.id)">
+                  @if (isOrganizer && showModifyForm) {
+                    <button type="button" class="hd-btn-delete flex-shrink-0 ms-3" (click)="removeRule(rule.id)" title="Remove Rule">
                       <i class="fa-solid fa-trash"></i>
                     </button>
                   }
                 </li>
               } @empty {
-                <div class="alert alert-secondary">Nessuna regola inserita.</div>
+                <li class="list-group-item text-muted text-center py-4">No rules added.</li>
               }
             </ul>
 
-            @if (isOrganizer) {
-              <form (ngSubmit)="addRule()" class="hd-field position-relative">
-                <label class="hd-field__label"><i class="fa-solid fa-plus"></i> Aggiungi Regola</label>
+            @if (isOrganizer && showModifyForm) {
+              <form (ngSubmit)="addRule()" class="hd-field" [class.hd-field--focused]="ruleFocused()">
+                <label class="hd-field__label"><i class="fa-solid fa-plus"></i> Link an existing Rule</label>
                 <div class="d-flex gap-2">
                   <input type="text" class="hd-field__input" 
                          [(ngModel)]="ruleSearch" 
                          name="ruleSearch" 
-                         (focus)="inputFocused.set(true)" 
-                         (blur)="inputFocused.set(false)"
-                         placeholder="Cerca e seleziona una regola..." autocomplete="off" />
-                  <button class="hd-btn-primary flex-shrink-0" type="submit">Aggiungi</button>
+                         (focus)="ruleFocused.set(true)" 
+                         (input)="filterRules()"
+                         placeholder="Search and select a rule..." autocomplete="off" />
+                  <button type="submit" class="hd-btn-primary flex-shrink-0 px-4">Link Rule</button>
                 </div>
 
-                @if (inputFocused() && filteredRules().length) {
-                  <div class="dropdown-menu show w-100 mt-1 shadow-sm position-absolute" style="z-index: 1000;">
-                    @for (r of filteredRules(); track r.id) {
-                      <div class="dropdown-item cursor-pointer" (mousedown)="selectRule(r)">
-                        <strong>{{ r.name }}</strong>: <small class="text-muted">{{ r.description }}</small>
+                @if (ruleFocused() && filteredRules().length > 0) {
+                  <div class="hd-dropdown-menu show">
+                    @for (r of filteredRules(); track r.id || $index) {
+                      <div class="hd-dropdown-item" (click)="selectRule(r)">
+                        <strong>{{ r.name }}</strong><br>
+                        <small class="text-muted">{{ r.description }}</small>
                       </div>
                     }
                   </div>
@@ -277,36 +319,42 @@
 
     <div class="row justify-content-center mb-4">
       <div class="col-12 col-lg-10">
-        
         <div class="row g-4">
+          
           <div class="col-12 col-md-8">
             <div class="hd-section-card hd-section-card--anim h-100">
               <div class="hd-section-card__inner">
                 <div class="hd-section-header mb-4">
                   <div class="hd-section-header__icon"><i class="fa-solid fa-users"></i></div>
-                  <h5 class="hd-section-header__title">Squadre Iscritte</h5>
+                  <h5 class="hd-section-header__title">Registered Teams</h5>
                 </div>
 
                 @if(hackathon()?.teams?.length) {
                   <div class="d-flex flex-column gap-3">
-                    @for(team of hackathon()?.teams; track team.id) {
-                      <div class="p-3 border rounded bg-light">
+                    @for(team of hackathon()?.teams; track team.id || $index) {
+                      <div class="p-3 border rounded">
                         <h6 class="mb-2 fw-bold text-success">{{ team.name }}</h6>
                         <div class="div-members">
-                          @for(member of team.members; track member.id) {
-                            <div class="member" [class.leader]="member.id === team.leader?.id">
-                                <i class="fa-solid fa-user me-1"></i> {{ member.email }}
-                                @if(member.id === team.leader?.id) {
-                                    <span class="badge bg-primary ms-2">Leader</span>
-                                }
-                            </div>
+                         @if(team.leader) {
+                              <div class="member leader"> <i class="fa-solid fa-user-tie me-1"></i> {{ team.leader.email }}
+                                  <span class="badge hd-badge-leader ms-2">Leader</span>
+                              </div>
+                          }
+
+                          @for(member of team.members; track member.id || $index) {
+                              <div class="member">
+                                  <i class="fa-solid fa-user me-1"></i> {{ member.email }}
+                                  </div>
                           }
                         </div>
                       </div>
                     }
                   </div>
                 } @else {
-                  <p class="text-muted mb-0">Ancora nessuna squadra iscritta a questo hackathon.</p>
+                  <div class="text-center py-5 rounded border">
+                    <i class="fa-solid fa-users-slash text-muted fs-1 mb-3"></i>
+                    <p class="text-muted mb-0">No teams registered for this hackathon yet.</p>
+                  </div>
                 }
               </div>
             </div>
@@ -317,32 +365,34 @@
               <div class="hd-section-card__inner">
                 <div class="hd-section-header mb-4">
                   <div class="hd-section-header__icon"><i class="fa-solid fa-id-badge"></i></div>
-                  <h5 class="hd-section-header__title">Staff & Giudice</h5>
-                 
+                  <h5 class="hd-section-header__title">Staff & Judge</h5>
                 </div>               
                 
                 <div class="mb-3">
-                  <label class="hd-field__label text-muted">Organizzatore</label>
-                  <div class="fw-bold">
-                    <i class="fa-solid fa-user-gear me-2"></i> 
-                    {{ hackathon()?.staff?.organizerEmail  || 'ID: ' + hackathon()?.staff?.organizerId }}
+                  <label class="hd-field__label text-muted">Organizer</label>
+                  <div class="fw-bold d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-user-gear"></i> 
+                    <span class="text-truncate">{{ hackathon()?.staff?.organizerEmail  || 'ID: ' + hackathon()?.staff?.organizerId }}</span>
                   </div>
                 </div>
 
                 <div class="mb-3">
-                  <label class="hd-field__label text-muted">Giudice Ufficiale</label>
-                  <div class="fw-bold">
-                    <i class="fa-solid fa-gavel me-2"></i> 
-                    {{ hackathon()?.staff?.judgeEmail || 'ID: ' + hackathon()?.staff?.judgeId }}
+                  <label class="hd-field__label text-muted">Official Judge</label>
+                  <div class="fw-bold d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-gavel"></i> 
+                    <span class="text-truncate">{{ hackathon()?.staff?.judgeEmail || 'ID: ' + hackathon()?.staff?.judgeId }}</span>
                   </div>
                 </div>
 
                 @if(hackathon()?.staff?.mentors?.length) {
                   <div>
-                    <label class="hd-field__label text-muted">Mentori ({{ hackathon()?.staff?.mentors?.length }})</label>
+                    <label class="hd-field__label text-muted">Mentors ({{ hackathon()?.staff?.mentors?.length }})</label>
                     <ul class="list-unstyled mb-0 mt-1">
-                      @for(mentor of hackathon()?.staff?.mentors; track mentor.idAccount) {
-                        <li class="mb-1"><i class="fa-solid fa-check text-success me-2"></i> {{ mentor.email }}</li>
+                      @for(mentor of hackathon()?.staff?.mentors; track mentor.id || $index) {
+                        <li class="mb-2 d-flex align-items-center gap-2">
+                          <i class="fa-solid fa-check text-success"></i> 
+                          <span class="text-truncate">{{ mentor.email }}</span>
+                        </li>
                       }
                     </ul>
                   </div>
@@ -352,7 +402,6 @@
           </div>
 
         </div>
-
       </div>
     </div>
 

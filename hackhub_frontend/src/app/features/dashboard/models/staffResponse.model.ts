@@ -5,7 +5,7 @@ export interface StaffResponse {
     judgeId: number;    
     judgeEmail: string;
     mentors: {
-        idAccount: number;
+        id: number;
         email: string;
     }[];
 }

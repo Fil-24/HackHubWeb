@@ -11,12 +11,12 @@ import { min } from 'rxjs';
 import { Hackathon } from '../../models/hackathon.model';
 import { Account } from '../../../account/models/account.model';
 @Component({
-  selector: 'app-crea-hackathon',
+  selector: 'app-create-hackathon',
   imports: [FormsModule],
-  templateUrl: './creaHackathon.component.html',
-  styleUrl: './creaHackathon.component.scss',
+  templateUrl: './createHackathon.component.html',
+  styleUrl: './createHackathon.component.scss',
 })
-export class CreaHackathon implements OnInit {
+export class CreateHackathon implements OnInit {
   // messaggi di errore/successo
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);

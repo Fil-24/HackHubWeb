@@ -9,12 +9,8 @@
 
 // ── HERO ──
 .hd-hero {
-  position: relative;
-  background: $bg-surface;
-  border: 1px solid $border-color;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: $shadow-card;
+  @extend %card-base; // 🔥 SEMPLIFICATO: include già bg, border, shadow, overflow e position!
+  border-radius: 8px; // Override leggero rispetto al 6px base
   animation: hdFadeUp 0.5s ease both;
 
   &__bg {
@@ -102,6 +98,14 @@
   }
 }
 
+// ── BADGES ──
+.hd-badge-leader {
+  background-color: rgba($color-green, 0.15);
+  color: $color-green;
+  border: 1px solid rgba($color-green, 0.3);
+  font-weight: 600;
+}
+
 // ── STATS STRIP ──
 .hd-strip {
   display: flex;
@@ -147,12 +151,20 @@
 .hd-section-card {
   @extend %card-base;
   animation: hdFadeUp 0.5s ease 0.08s both;
+  
+  // FIX SOVRAPPOSIZIONE
+  overflow: visible !important; 
+
+  &:focus-within {
+    z-index: 100;
+  }
 
   &--anim { animation-delay: 0s; }
-
   &__bar { @extend %card-top-bar; }
-
-  &__inner { padding: 28px; }
+  &__inner { 
+    padding: 28px; 
+    overflow: visible !important; 
+  }
 }
 
 // ── SECTION HEADER ──
@@ -189,11 +201,16 @@
   }
 }
 
-// ── FORM FIELDS ──
+// ── FORM FIELDS E DROPDOWN ──
 .hd-field {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  position: relative; 
+  
+  &--focused {
+    z-index: 999 !important;
+  }
 
   &__label {
     font-family: $font-mono;
@@ -208,13 +225,49 @@
 
   &__input {
     @extend %input-base;
-    background: transparent;
-    color: $text-primary;
-
+    // 🔥 SEMPLIFICATO: %input-base gestisce già il background bianco e il colore del testo!
+    
     &::placeholder {
-      color: $text-secondary;
-      font-style: italic;
+      // %input-base gestisce già il colore del placeholder ($text-secondary)
+      font-style: italic; // Mantieni solo lo stile specifico
     }
+  }
+}
+
+// ── DROPDOWN MENU ──
+.hd-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  z-index: 9999 !important;
+
+  &.show {
+    display: block;
+  }
+}
+
+.hd-dropdown-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: $text-primary;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  transition: background 0.2s ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: rgba($color-green, 0.08);
   }
 }
 
@@ -231,13 +284,26 @@
   padding: 10px 18px;
 }
 
+.hd-btn-delete {
+  @extend %btn-base;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #ef4444; 
+  border: 1px solid rgba(#ef4444, 0.3);
+
+  &:hover {
+    background: rgba(#ef4444, 0.08);
+    border-color: #ef4444;
+  }
+}
+
 @keyframes hdFadeUp {
-  0% {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
 }

@@ -1,18 +1,22 @@
 import { Component, OnInit, computed, effect, signal } from '@angular/core';
-import { Hackathon } from '../../models/hackathon.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, map, Observable, of } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { DatePipe, JsonPipe } from '@angular/common'; 
+
+import { Hackathon } from '../../models/hackathon.model';
+import { Rule } from '../../models/rule.model';
+import { Account } from '../../../account/models/account.model'; // Assicurati che il path sia corretto
+
 import { HackathonService } from '../../service/hackathon.service';
 import { AuthService } from '../../../auth/service/auth.service';
 import { TeamService } from '../../../teams/service/team.service';
-import { catchError, map, Observable, of } from 'rxjs';
-import { FormsModule } from '@angular/forms';
-import { Rule } from '../../models/rule.model';
-import { DatePipe, JsonPipe } from '@angular/common'; 
+import { StaffService } from '../../service/staff.service'; // Importato per caricare Account
 
 @Component({
   selector: 'app-hackathon-detail',
   standalone: true,
-  imports: [DatePipe, JsonPipe, FormsModule],
+  imports: [DatePipe,JsonPipe, FormsModule],
   templateUrl: './hackathon-detail.html',
   styleUrl: './hackathon-detail.scss'
 })
@@ -24,77 +28,60 @@ export class HackathonDetailComponent implements OnInit {
   hackathon = signal<Hackathon | null>(null);
   modifiedHackathon = signal<Hackathon | null>(null);
 
-  // True se l'utente corrente è l'organizzatore dell'hackathon
   isOrganizer = false;  
-
-  inputFocused = signal(false);
-
-  // Controlla la visibilità del form di modifica
   showModifyForm = false;
 
-  /**
-   * Computed value che controlla se il team dell'utente 
-   * è registrato nell'hackathon corrente.
-   */
   teamRegistered = computed(() => {
     const user = this.authService.user();
     const hackathon = this.hackathon();
-
     if (!user?.idTeam || !hackathon) return false;
-
     return hackathon.teams?.some(t => t.id === user.idTeam);
   });
 
-  newMentorEmail = signal('');
-
-  // Flag interno per tracciare se l'utente è leader del team
   private leaderInternal = signal(false);
   leader = computed(() => this.leaderInternal());
   
-  // Regole disponibili
+  // --- LISTE DATI ---
   rules = signal<Rule[]>([]);
-  ruleSearch = signal('');
+  accounts: Account[] = []; 
+
+  // --- STATI E RICERCA MENU A TENDINA ---
+  
+  // Regole
+  ruleSearch = '';
+  ruleFocused = signal(false);
+  filteredRules = signal<Rule[]>([]);
   selectedRule = signal<Rule | null>(null);
 
-  /**
-   * Lista calcolata di regole filtrate per la barra di ricerca.
-   */
-  filteredRules = computed(() => {
-    const search = this.ruleSearch().toLowerCase();
+  // Mentori
+  mentorSearch = '';
+  mentorFocused = signal(false);
+  filteredMentors = signal<Account[]>([]);
+  newMentorEmail = signal('');
 
-    if (!search) return [];
+  // Giudici
+  judgeFocused = signal(false);
+  filteredJudges = signal<Account[]>([]);
 
-    return this.rules().filter(r =>
-      r.name.toLowerCase().includes(search) ||
-      r.description.toLowerCase().includes(search)
-    );
-  });
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private hackathonService: HackathonService,
     private teamService: TeamService,
+    private staffService: StaffService, // Iniettato
     protected authService: AuthService
   ) {
-    // Effetto per calcolare se l'utente è leader del suo team
     effect(() => {
       const user = this.authService.user();
-    
       if (!user?.idTeam) {
         this.leaderInternal.set(false);
         return;
       }
 
       this.teamService.getTeamById(user.idTeam).subscribe({
-        next: team => {
-          this.leaderInternal.set(
-            team.leader?.id === user.idAccount
-          );
-        },
-        error: () => {
-          this.leaderInternal.set(false);
-        }
+        next: team => this.leaderInternal.set(team.leader?.id === user.idAccount),
+        error: () => this.leaderInternal.set(false)
       });
     });
   }
@@ -103,65 +90,68 @@ export class HackathonDetailComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
 
     this.hackathonService.getById(id).subscribe({
-      next: (data: any) => { // Uso 'any' temporaneamente per il debug
-        // 1. STAMPIAMO I DATI IN CONSOLE PER CAPIRE COSA MANDA IL BACKEND
-        console.log('--- DATI HACKATHON DAL BACKEND ---', data);
+      next: (data: any) => {
+        console.log('--- HACKATHON DATA FROM BACKEND ---', data);
         
         this.hackathon.set(data);
 
         const currentUserId = this.authService.userId;
-        console.log('--- MIO ID UTENTE ---', currentUserId);
 
-        // 2. Controllo aggiornato con la nuova interfaccia StaffResponse
+        // FIX: Usiamo "==" invece di "===" per evitare problemi se uno è String e l'altro è Number.
+        // Aggiungiamo anche un fallback al vecchio formato (organizer.idAccount) per sicurezza!
         this.isOrganizer =
-          currentUserId !== null &&
+          currentUserId != null &&
           data.staff && 
-          data.staff.organizerId === currentUserId;
+          (data.staff.organizerId == currentUserId || 
+           data.staff.organizer?.idAccount == currentUserId || 
+           data.staff.organizer?.id == currentUserId);
 
-        console.log('--- SONO ORGANIZZATORE? ---', this.isOrganizer);
+        console.log('MIO ID:', currentUserId, '| ORGANIZER ID:', data.staff?.organizerId, '| SONO ORGANIZZATORE?', this.isOrganizer);
 
-        // 3. FIX CRASH: Inizializziamo l'oggetto staff se risulta completamente vuoto
+        // Inizializzazione sicura dello staff se vuoto
         if (!data.staff) {
-          data.staff = {
-            organizerId: null,
-            organizerEmail: '',
-            judgeId: null,
-            judgeEmail: '',
-            mentors: []
-          };
+          data.staff = { organizerId: null, organizerEmail: '', judgeId: null, judgeEmail: '', mentors: [] };
         } else if (!data.staff.mentors) {
           data.staff.mentors = [];
         }
 
         this.modifiedHackathon.set({ ...data });
         
+        // Carica dati esterni
         this.loadRules();
+        this.loadAccounts();
       },
       error: () => {
         this.router.navigate(['/hackathons']);
       }
     });
   }
-  
-  /**
-   * Carica la lista delle regole dal backend.
-   */
   loadRules() {
     this.errorMessage.set(null);
-    this.hackathonService.getRules()
-      .subscribe({
-        next: data => this.rules.set(data),
-        error: err => this.errorMessage.set(err.message)
-      });
+    this.hackathonService.getRules().subscribe({
+      next: data => {
+        this.rules.set(data);
+        this.filteredRules.set(data); // Inizializza la lista filtrata
+      },
+      error: err => this.errorMessage.set(err.message)
+    });
   }
 
-  /**
-   * Ritorna la durata dell'hackathon in giorni e ore.
-   */
+  loadAccounts() {
+    // NOTA: Assicurati che il metodo del service si chiami getAll() o getAccounts()
+    this.staffService.getStaff().subscribe({
+      next: (data: Account[]) => {
+        this.accounts = data;
+        this.filteredMentors.set(data);
+        this.filteredJudges.set(data);
+      },
+      error: err => console.error("Impossibile caricare gli account", err)
+    });
+  }
+
   getDuration(): string {
     const start = new Date(this.hackathon()?.startDate ?? '');
     const end = new Date(this.hackathon()?.endDate ?? '');
-
     const diff = end.getTime() - start.getTime();
 
     if (diff <= 0) return '0h';
@@ -170,36 +160,23 @@ export class HackathonDetailComponent implements OnInit {
     const days = Math.floor(totalHours / 24);
     const hours = totalHours % 24;
 
-    return days === 0
-      ? `${hours}h`
-      : `${days}gg ${hours}h`;
+    return days === 0 ? `${hours}h` : `${days}d ${hours}h`; 
   }
 
-  /**
-   * Registra il team dell'utente all'hackathon.
-   */
   registerTeam() {
     this.errorMessage.set(null);
     const id = this.hackathon()?.id!;
     
     this.hackathonService.register(id).subscribe({
-      next: (res) => {
-        alert(res);
-        
-        // Ricarica i dati dell'hackathon
-        this.hackathonService.getById(id).subscribe(h => {
-          this.hackathon.set(h);
-        });
+      next: (res: any) => {
+        this.successMessage.set(res.message || "Team registered successfully!");
+        this.hackathonService.getById(id).subscribe(h => this.hackathon.set(h));
+        setTimeout(() => this.successMessage.set(null), 3000);
       },
-      error: err => {
-        this.errorMessage.set(err.message);
-      }
+      error: err => this.errorMessage.set(err.error?.message || err.message)
     });
   }
 
-  /**
-   * Controlla se l'utente corrente è leader del team (Restituisce Observable).
-   */
   isLeader(): Observable<boolean> {
     const teamId = this.authService.currentUser?.idTeam;
     if (!teamId) return of(false);
@@ -210,50 +187,131 @@ export class HackathonDetailComponent implements OnInit {
         return currentUserId !== null && data.leader?.id === currentUserId;
       }),
       catchError(() => {
-        this.errorMessage.set("You cannot register");
+        this.errorMessage.set("You cannot register.");
         return of(false);
       })
     );
   }
 
-  /**
-   * Rimuove un mentore dall'hackathon.
-   * @param idAccount L'ID del mentore (Account) da rimuovere
-   */
-  removeMentor(idAccount: number) {
-    this.errorMessage.set(null);
-    const hackathonId = this.hackathon()?.id;
-
-    if (!hackathonId) return;
-
-    this.hackathonService.removeMentor(hackathonId, idAccount).subscribe({
+  unsubscribeTeam(){
+    const id = this.hackathon()?.id!;
+    this.hackathonService.unsubscribeTeam(id).subscribe({
       next: () => {
-        this.successMessage.set("Mentore rimosso con successo!");
-
-        // Aggiorna il signal locale rimuovendo il mentore dalla lista
-        this.hackathon.update(h => {
-          if (!h) return h;
-          return {
-            ...h,
-            staff: {
-              ...h.staff,
-              // Filtra usando idAccount invece di id
-              mentors: h.staff.mentors?.filter((m: any) => m.idAccount !== idAccount) ?? []
-            }
-          };
-        });
-
+        this.successMessage.set("Team removed successfully!");
+        this.hackathonService.getById(id).subscribe(h => this.hackathon.set(h));
         setTimeout(() => this.successMessage.set(null), 3000);
       },
-      error: err => {
-        this.errorMessage.set(err.message);
+      error: err => this.errorMessage.set(err.error?.message || err.message)
+    });
+  }
+
+  modifyHackathon(){
+    this.errorMessage.set(null);
+    const modified = this.modifiedHackathon();
+    if (!modified) return;
+
+    const data: any = { 
+      idHackathon: modified.id, 
+      name: modified.name,
+      location: modified.location,
+      prize: modified.prize,
+      maxTeamMembers: modified.maxTeamMembers,
+      maxNumberTeams: modified.maxNumberTeams,
+      startDate: modified.startDate,
+      endDate: modified.endDate,
+      idJudge: modified.staff?.judgeId 
+    };
+
+    this.hackathonService.updateHackathon(data).subscribe({
+      next: (hackathon) => {
+        this.successMessage.set('Hackathon updated successfully!');
+        this.hackathon.set(hackathon);
+        this.modifiedHackathon.set({ ...hackathon });
+        this.showModifyForm = false;
+        setTimeout(() => this.successMessage.set(null), 3000);
+      },
+      error: err => this.errorMessage.set(err.message)
+    });
+  }
+
+  // --- SEZIONE REGOLE ---
+
+  filterRules() {
+    const val = this.ruleSearch.toLowerCase();
+    this.filteredRules.set(
+      this.rules().filter(r => val === '' || r.name.toLowerCase().includes(val) || r.description.toLowerCase().includes(val))
+    );
+  }
+
+  selectRule(r: Rule) {
+    this.ruleSearch = r.name;
+    this.selectedRule.set(r);
+    this.ruleFocused.set(false);
+  }
+
+  addRule() {
+    const rule = this.selectedRule();
+    if (!rule) return;
+
+    this.hackathonService.addRule(this.hackathon()!.id, rule.id).subscribe({
+      next: (ruleData) => {
+        this.successMessage.set('Rule added successfully!');
+        this.hackathon.update(h => {
+          if (!h) return h;
+          return { ...h, rules: [...(h.rules ?? []), ruleData] };
+        });
+        this.selectedRule.set(null);
+        this.ruleSearch = '';
+        setTimeout(() => this.successMessage.set(null), 3000);
       }
     });
   }
 
-  /**
-   * Aggiunge un mentore all'hackathon.
-   */
+  removeRule(id: number){
+    this.errorMessage.set(null);
+    this.hackathonService.removeRule(this.hackathon()!.id, id).subscribe({
+      next: () => {
+        this.successMessage.set('Rule removed successfully!');
+        this.hackathon.update(h => {
+          if (!h) return h;
+          return { ...h, rules: h.rules?.filter(r => r.id !== id) ?? [] };
+        });
+        setTimeout(() => this.successMessage.set(null), 3000);
+      },
+      error: err => this.errorMessage.set(err.message)
+    });
+  }
+
+  // --- SEZIONE GIUDICI ---
+
+  filterJudges() {
+    const val = this.modifiedHackathon()?.staff.judgeEmail?.toLowerCase() || '';
+    this.filteredJudges.set(
+      this.accounts.filter(a => val === '' || a.email.toLowerCase().includes(val))
+    );
+  }
+
+  selectJudge(j: Account) {
+    this.modifiedHackathon()!.staff.judgeEmail = j.email;
+    this.modifiedHackathon()!.staff.judgeId = j.idAccount; // Salva l'ID corretto
+    this.judgeFocused.set(false);
+  }
+
+  // --- SEZIONE MENTORI ---
+
+  filterMentors() {
+    const val = this.mentorSearch.toLowerCase();
+    this.filteredMentors.set(
+      this.accounts.filter(a => val === '' || a.email.toLowerCase().includes(val))
+    );
+  }
+
+  selectMentor(m: Account) {
+    this.mentorSearch = m.email; 
+    this.newMentorEmail.set(m.email); 
+    this.mentorFocused.set(false);
+  }
+
   addMentor() {
     this.errorMessage.set(null);
     if (!this.newMentorEmail()) return;
@@ -265,146 +323,49 @@ export class HackathonDetailComponent implements OnInit {
           return;
         }
 
-        this.successMessage.set("Mentor added!");
-   
+        this.successMessage.set("Mentor added successfully!");
         this.hackathon.update(h => {
           if (!h) return h;
-          return {
-            ...h,
-            staff: {
-              ...h.staff,
-              mentors: [...(h.staff.mentors ?? []), res]
-            }
-          };
+          return { ...h, staff: { ...h.staff, mentors: [...(h.staff.mentors ?? []), res] } };
         });
-
+        
         setTimeout(() => this.successMessage.set(null), 3000);
         this.newMentorEmail.set('');
+        this.mentorSearch = '';
       },
-      error: err => {
-        this.errorMessage.set(err.message);
-      }
+      error: err => this.errorMessage.set(err.message)
     });
   }
 
-  /**
-   * Disiscrive il team dell'utente dall'hackathon.
-   */
-  unsubscribeTeam(){
-    const id = this.hackathon()?.id!;
+ removeMentor(idAccount: number) { // <--- Il parametro si chiama idAccount
+  this.errorMessage.set(null);
+  const hackathonId = this.hackathon()?.id;
+  if (!hackathonId) return;
 
-    this.hackathonService.unsubscribeTeam(this.authService.teamId!).subscribe({
-      next: () => {
-        this.successMessage.set("Team removed");
-        
-        // Ricarica i dati dell'hackathon
-        this.hackathonService.getById(id).subscribe(h => {
-          this.hackathon.set(h);
-        });
-
-        setTimeout(() => this.successMessage.set(null), 3000);
-      }
-    });
-  }
-
-  /**
-   * Salva le modifiche fatte all'hackathon (solo per gli organizzatori).
-   */
-  modifyHackathon(){
-    this.errorMessage.set(null);
-    const modified = this.modifiedHackathon();
-    
-    if (!modified) return;
-
-    const data: any = { 
-      name: modified.name,
-      location: modified.location,
-      prize: modified.prize,
-      maxTeamMembers: modified.maxTeamMembers,
-      maxNumberTeams: modified.maxNumberTeams,
-      startDate: modified.startDate,
-      endDate: modified.endDate,
-      // CORREZIONE: Preleviamo l'ID direttamente da judgeId invece dell'oggetto judge annidato
-      idJudge: modified.staff?.judgeId 
-    };
-
-    this.hackathonService.updateHackathon(modified.id, data).subscribe({
-      next: (hackathon) => {
-        this.successMessage.set('Hackathon aggiornato');
-        this.hackathon.set(hackathon);
-        this.modifiedHackathon.set({ ...hackathon });
-        this.showModifyForm = false;
-        setTimeout(() => this.successMessage.set(null), 3000);
-      },
-      error: err => {
-        this.errorMessage.set(err.message);
-      }
-    });
-  }
-
-  /**
-   * Aggiunge una regola all'hackathon.
-   */
-  addRule() {
-    const rule = this.selectedRule();
-    if (!rule) return;
-
-    this.hackathonService.addRule(this.hackathon()!.id, rule.id).subscribe({
-      next: (ruleData) => {
-        this.successMessage.set('Rule added');
-
-        this.hackathon.update(h => {
-          if (!h) return h;
-          return {
-            ...h,
-            rules: [...(h.rules ?? []), ruleData]
-          };
-        });
-
-        this.selectedRule.set(null);
-        this.ruleSearch.set('');
-        setTimeout(() => this.successMessage.set(null), 3000);
-      }
-    });
-  }
-
-  /**
-   * Rimuove una regola dall'hackathon.
-   */
-  removeRule(id: number){
-    this.errorMessage.set(null);
-    this.hackathonService.removeRule(this.hackathon()!.id, id).subscribe({
-      next: () => {
-        this.successMessage.set('Rule removed');
-
-        this.hackathon.update(h => {
-          if (!h) return h;
-          return {
-            ...h,
-            rules: h.rules?.filter(r => r.id !== id) ?? []
-          };
-        });
-        
-        setTimeout(() => this.successMessage.set(null), 3000);
-      },
-      error: err => {
-        this.errorMessage.set(err.message);
-      }
-    });
-  }
-
-  get ruleSearchValue(): string {
-    const rule = this.selectedRule();
-    return rule ? `${rule.name}: ${rule.description}` : this.ruleSearch();
-  }
-
-  set ruleSearchValue(value: string) {
-    this.ruleSearch.set(value);
-    this.selectedRule.set(null);
-  }
-
-  selectRule(rule: Rule) {
-    this.selectedRule.set(rule);
-    this.ruleSearch.set(rule.name);
-  }
+  // Passiamo idAccount al servizio
+  this.hackathonService.removeMentor(hackathonId, idAccount).subscribe({
+    next: () => {
+      this.successMessage.set("Mentor removed successfully!");
+      
+      // Aggiorniamo il segnale locale per riflettere la modifica nella UI senza ricaricare la pagina
+      this.hackathon.update(h => {
+        if (!h || !h.staff) return h;
+        return {
+          ...h,
+          staff: { 
+            ...h.staff, 
+            // Filtriamo i mentori usando idAccount
+            mentors: h.staff.mentors?.filter((m: any) => m.idAccount !== idAccount) ?? [] 
+          }
+        };
+      });
+      
+      setTimeout(() => this.successMessage.set(null), 3000);
+    },
+    error: err => {
+      console.error(err);
+      this.errorMessage.set("Error removing mentor");
+    }
+  });
+}
 }
