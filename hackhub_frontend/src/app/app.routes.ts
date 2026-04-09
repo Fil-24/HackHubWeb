@@ -26,7 +26,7 @@ export const routes: Routes = [
   { path: 'hackathon/:id', component: HackathonDetailComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'invitations', component: InvitationComponent, canActivate: [AuthGuard]},
-  { path: 'teams', component:TeamComponent, canActivate: [TeamGuard]},
+  { path: 'teams', component:TeamComponent, /*canActivate: [TeamGuard]*/},
   { path: 'teams/my', component:MyTeamComponent, canActivate: [AuthGuard]},
   { path: 'hackathons/my', component:MyHackathonComponent, canActivate: [AuthGuard]},
  

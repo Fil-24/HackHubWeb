@@ -12,12 +12,12 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/hackathons" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Hackathons</a>
         </li>
-        @if(isAuthenticated() && !authService.isStaff())
-        {
+       <!-- @if(isAuthenticated() && !authService.isStaff())
+      {-->
           <li class="nav-item">
             <a class="nav-link" routerLink="/teams" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Teams</a>
           </li>
-        }
+        <!--}-->
         @if(authService.isAdmin())
         {
           <li class="nav-item">

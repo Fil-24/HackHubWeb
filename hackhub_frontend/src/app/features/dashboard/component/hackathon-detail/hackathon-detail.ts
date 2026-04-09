@@ -16,7 +16,7 @@ import { StaffService } from '../../service/staff.service';
 @Component({
   selector: 'app-hackathon-detail',
   standalone: true,
-  imports: [DatePipe, JsonPipe, FormsModule],
+  imports: [DatePipe, FormsModule],
   templateUrl: './hackathon-detail.html',
   styleUrl: './hackathon-detail.scss'
 })
