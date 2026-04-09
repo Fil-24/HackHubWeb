@@ -14,12 +14,17 @@ import { FormsModule } from '@angular/forms';
 export class HackathonsComponent implements OnInit {
   hackathon = signal<Hackathon[]>([]);
   errorMessage = signal<string | null>(null);
+  
+  // Segnali dei filtri
   searchTerm = signal<string>('');
   filtroTempo = signal('tutti');
+  filtroPartecipazione = signal('tutti'); // NUOVO SEGNALE
   ordinamento = signal('data-asc');
+  
   showFiltri = false;
 
   constructor(private hackathonService: HackathonService, protected authService: AuthService) { }
+  
   ngOnInit(): void {
     this.caricaHackathon();
   }
@@ -27,8 +32,6 @@ export class HackathonsComponent implements OnInit {
   caricaHackathon(): void {
     this.hackathonService.getAll().subscribe({
       next: (data) => {
-        // ordina i hackathon in base alla data di inizio
-        const ora = new Date();
         const ordinati = data
           .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
         this.hackathon.set(ordinati);
@@ -38,25 +41,58 @@ export class HackathonsComponent implements OnInit {
       }
     });
   }
+
   filtro(): Hackathon[] {
-    if (!this.hackathon()) {
-      return [];
+  if (!this.hackathon()) {
+    return [];
+  }
+  const dataAttuale = new Date();
+  
+  // Otteniamo l'utente corrente dal segnale dell'AuthService
+  const currentUser = this.authService.user(); 
+
+  return this.hackathon()!.filter(hackathon => {
+    
+    // 1. Filtro Nome
+    const termine = this.searchTerm();
+    const nomeMatch = !termine || hackathon.name.toLowerCase().includes(termine.toLowerCase());
+    
+    // 2. Filtro Tempo
+    let tempoMatch = true;
+    if (this.filtroTempo() === 'futuri') {
+      tempoMatch = new Date(hackathon.startDate) > dataAttuale;
+    } else if (this.filtroTempo() === 'passati') {
+      tempoMatch = new Date(hackathon.endDate) < dataAttuale;
     }
-    const dataAttuale = new Date();
-    return this.hackathon()!.filter(hackathon => {
-      // Verifica se il nome del hackathon corrisponde al termine di ricerca
-      const nomeMatch = !this.searchTerm() || hackathon.name.toLowerCase().includes(this.searchTerm().toLowerCase());
-      // Verifica il filtro di tempo
-      switch (this.filtroTempo()) {
-        case 'futuri':
-          return nomeMatch && new Date(hackathon.startDate) > dataAttuale;
-        case 'passati':
-          return nomeMatch && new Date(hackathon.endDate) < dataAttuale;
-        default:
-          return nomeMatch;
-      }
-    }).sort((a, b) => {
-      // Ordina i hackathon in base all'ordinamento selezionato
+
+    // 3. Filtro Partecipazione (Logica integrata dal Componente 2)
+    let partecipazioneMatch = true;
+    if (this.filtroPartecipazione() === 'miei') {
+        if (!currentUser) {
+            partecipazioneMatch = false; 
+        } else if (this.authService.isStaff()) {
+            partecipazioneMatch = hackathon.staff.organizerId === currentUser.idAccount 
+                                      || hackathon.staff.judgeId === currentUser.idAccount 
+                                        || hackathon.staff.mentors.some(m => m.idAccount === currentUser.idAccount) 
+        } else {
+            partecipazioneMatch = !!hackathon.teams?.some((team: any) => {
+          // Caso A: L'utente ha un idTeam e corrisponde a quello del team
+          if (currentUser.idTeam && team.idTeam === currentUser.idTeam) return true;
+          
+          // Caso B: L'utente è il leader del team
+          if (team.leader && team.leader.idTeamMember === currentUser.idAccount) return true;
+          
+          // Caso C: L'utente è un membro all'interno dell'array members
+          if (team.members && team.members.some((m: any) => m.idTeamMember === currentUser.idAccount)) return true;
+          
+          return false;
+        });
+        }
+    }
+
+    return nomeMatch && tempoMatch && partecipazioneMatch;
+
+  }).sort((a, b) => {
       switch (this.ordinamento()) {
         case 'data-asc':
           return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
@@ -72,19 +108,21 @@ export class HackathonsComponent implements OnInit {
     });
   }
 
+  setFiltroPartecipazione(filtro: string) {
+    this.filtroPartecipazione.set(filtro);
+  }
 
-setFiltroTempo(filtro: string) {
+  setFiltroTempo(filtro: string) {
     this.filtroTempo.set(filtro);
-    console.log('Filtro tempo impostato su:', filtro);
-}
+  }
 
-setOrdinamento(ord: string) {
+  setOrdinamento(ord: string) {
     this.ordinamento.set(ord);
-}
+  }
+
   formatDate(dateStr: string): string {
     return new Date(dateStr).toLocaleDateString('it-IT', {
         day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
     });
   }
-
 }

@@ -11,7 +11,6 @@ import { MyTeamComponent } from './features/teams/components/my-team/my-team.com
 import { CreateHackathon } from './features/dashboard/component/createHackathon/createHackathon.component';
 import { HackathonsComponent } from './features/dashboard/component/hackathons/hackathons.component';
 import { UserComponent } from './features/users/component/user.component';
-import { MyHackathonComponent } from './features/dashboard/component/my-hackathon/my-hackathon.component';
 import { AdminGuard } from './core/guards/admin.guard';
 import { HackathonDetailComponent } from './features/dashboard/component/hackathon-detail/hackathon-detail';
 
@@ -28,7 +27,6 @@ export const routes: Routes = [
   { path: 'invitations', component: InvitationComponent, canActivate: [AuthGuard]},
   { path: 'teams', component:TeamComponent, /*canActivate: [TeamGuard]*/},
   { path: 'teams/my', component:MyTeamComponent, canActivate: [AuthGuard]},
-  { path: 'hackathons/my', component:MyHackathonComponent, canActivate: [AuthGuard]},
  
  {path: 'hackathons', component: HackathonsComponent},
   { path: '**', redirectTo: 'home' }

@@ -50,6 +50,10 @@ export class TeamComponent {
       
       if (user) {
         this.isLoggedIn.set(true);
+        if (user.idTeam) { 
+          this.loadMyTeam();
+          return; 
+        }
         this.myTeam.set(null); 
         this.loadTeams();
       } else {

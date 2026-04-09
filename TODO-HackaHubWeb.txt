@@ -1,6 +1,5 @@
 team problemi:
  - se un utente accetta un invito deve ricaricare la pagine per poter visualizzare l aggiornamento
-- farei vedere il bottone teams a tutti 
 - l'eliminazione di un membro è troppo facile, metterei un bottone piuttosto che una semplice x e un pop up di conferma
 
 -sistemare i model all'interno del home
@@ -9,4 +8,6 @@ team problemi:
 -rimuovere mock su hackathon.service quando il db viene popolato e togliere i commenti/import
 
 -hackathons sistemare lo sfondo
--controllo del mentore con l'email all'interno crea hackathon
+
+-ricerca:
+	- past e ordinamento per nome non funzionano

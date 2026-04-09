@@ -66,6 +66,16 @@
                 </div>
             </div>
 
+            <div class="filter-group">
+                <span class="filter-label">Participation</span>
+                <div class="filter-chips">
+                    <button class="filter-chip" [class.active]="filtroPartecipazione() === 'tutti'"
+                        (click)="setFiltroPartecipazione('tutti')">All</button>
+                    <button class="filter-chip" [class.active]="filtroPartecipazione() === 'miei'"
+                        (click)="setFiltroPartecipazione('miei')">My Hackathons</button>
+                </div>
+            </div>
+
             <!-- Ordina -->
             <div class="filter-group">
                 <span class="filter-label">Sort by</span>
@@ -86,7 +96,7 @@
     <div class="container">
         <div class="h-header">
             <div class="h-label">Hackathon</div>
-            <div class="h-count">// {{ hackathon()!.length }} results found</div>
+            <div class="h-count">// {{ filtro().length }} results found</div>
         </div>
         
        
