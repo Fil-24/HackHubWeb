@@ -51,22 +51,22 @@
                 @if(isOrganizer) {
                   <button class="hd-hero__btn-edit" [class.active-edit]="showModifyForm" (click)="showModifyForm = !showModifyForm">
                     @if (!showModifyForm) {
-                      <i class="fa-solid fa-pen-to-square"></i>
-                      <span>Edit Mode</span>
+                      <i class="fa-solid fa-pen-to-square"></i> <span>Edit Mode</span>
                     } @else {
-                      <i class="fa-solid fa-xmark"></i>
-                      <span>Close Edit</span>
+                      <i class="fa-solid fa-xmark"></i> <span>Close Edit</span>
                     }
                   </button>
                 }
-                @if(leader() && (hackathon()?.maxNumberTeams ?? 0) - (hackathon()?.teams?.length ?? 0)) {
-                  @if(!teamRegistered()) {
-                    <button class="hd-btn-primary" (click)="registerTeam()">
-                      <i class="fa-solid fa-user-plus me-1"></i> Join
-                    </button>
-                  } @else {
+
+                @if(leader()) { 
+                  @if(teamRegistered()) {
                     <button class="hd-hero__btn-leave" (click)="unsubscribeTeam()">
                       <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> Leave
+                    </button>
+                  } 
+                  @else if ((hackathon()?.maxNumberTeams ?? 0) - (hackathon()?.teams?.length ?? 0) > 0) {
+                    <button class="hd-btn-primary" (click)="registerTeam()">
+                      <i class="fa-solid fa-user-plus me-1"></i> Join
                     </button>
                   }
                 }
@@ -199,20 +199,17 @@
               </div>
 
               <div class="mb-4">
-                <div style="background: #222; color: #00ff00; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-family: monospace;">
-  <h5>DEBUG STAFF:</h5>
-  <pre>{{ hackathon()?.staff | json }}</pre>
-</div>
+             
                 @if (hackathon()?.staff?.mentors?.length) {
                   <div class="row g-3">
-                    @for (mentor of hackathon()!.staff.mentors; track mentor.id || $index) {
+                    @for (mentor of hackathon()!.staff.mentors; track mentor.idAccount || $index) {
                       <div class="col-12 col-md-6">
                         <div class="d-flex align-items-center justify-content-between p-3 border rounded">
                           <div class="d-flex align-items-center gap-2 text-truncate me-3">
                             <i class="fa-solid fa-envelope text-muted"></i>
                             <span class="text-truncate">{{ mentor.email }}</span>
                           </div>
-                          <button type="button" class="hd-btn-delete flex-shrink-0" (click)="removeMentor(mentor.id)" title="Remove Mentor">
+                          <button type="button" class="hd-btn-delete flex-shrink-0" (click)="removeMentor(mentor.idAccount)" title="Remove Mentor">
                             <i class="fa-solid fa-trash"></i>
                           </button>
                         </div>
@@ -341,7 +338,7 @@
                               </div>
                           }
 
-                          @for(member of team.members; track member.id || $index) {
+                          @for(member of team.members; track member.idAccount || $index) {
                               <div class="member">
                                   <i class="fa-solid fa-user me-1"></i> {{ member.email }}
                                   </div>
@@ -361,45 +358,45 @@
           </div>
 
           <div class="col-12 col-md-4">
-            <div class="hd-section-card hd-section-card--anim h-100">
-              <div class="hd-section-card__inner">
-                <div class="hd-section-header mb-4">
-                  <div class="hd-section-header__icon"><i class="fa-solid fa-id-badge"></i></div>
-                  <h5 class="hd-section-header__title">Staff & Judge</h5>
-                </div>               
-                
-                <div class="mb-3">
-                  <label class="hd-field__label text-muted">Organizer</label>
-                  <div class="fw-bold d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-user-gear"></i> 
-                    <span class="text-truncate">{{ hackathon()?.staff?.organizerEmail  || 'ID: ' + hackathon()?.staff?.organizerId }}</span>
-                  </div>
-                </div>
+  <div class="hd-section-card hd-section-card--anim h-100">
+    <div class="hd-section-card__inner">
+      <div class="hd-section-header mb-4">
+        <div class="hd-section-header__icon"><i class="fa-solid fa-id-badge"></i></div>
+        <h5 class="hd-section-header__title">Staff & Judge</h5>
+      </div>               
+      
+      <div class="mb-3">
+        <label class="hd-field__label text-muted">Organizer</label>
+        <div class="fw-bold d-flex align-items-center gap-2">
+          <i class="fa-solid fa-user-gear"></i> 
+          <span class="text-truncate">{{ hackathon()?.staff?.organizerEmail  || 'ID: ' + hackathon()?.staff?.organizerId }}</span>
+        </div>
+      </div>
 
-                <div class="mb-3">
-                  <label class="hd-field__label text-muted">Official Judge</label>
-                  <div class="fw-bold d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-gavel"></i> 
-                    <span class="text-truncate">{{ hackathon()?.staff?.judgeEmail || 'ID: ' + hackathon()?.staff?.judgeId }}</span>
-                  </div>
-                </div>
+      <div class="mb-3">
+        <label class="hd-field__label text-muted">Official Judge</label>
+        <div class="fw-bold d-flex align-items-center gap-2">
+          <i class="fa-solid fa-gavel"></i> 
+          <span class="text-truncate">{{ hackathon()?.staff?.judgeEmail || 'ID: ' + hackathon()?.staff?.judgeId }}</span>
+        </div>
+      </div>
 
-                @if(hackathon()?.staff?.mentors?.length) {
-                  <div>
-                    <label class="hd-field__label text-muted">Mentors ({{ hackathon()?.staff?.mentors?.length }})</label>
-                    <ul class="list-unstyled mb-0 mt-1">
-                      @for(mentor of hackathon()?.staff?.mentors; track mentor.id || $index) {
-                        <li class="mb-2 d-flex align-items-center gap-2">
-                          <i class="fa-solid fa-check text-success"></i> 
-                          <span class="text-truncate">{{ mentor.email }}</span>
-                        </li>
-                      }
-                    </ul>
-                  </div>
-                }
-              </div>
-            </div>
-          </div>
+      @if(hackathon()?.staff?.mentors?.length) {
+        <div>
+          <label class="hd-field__label text-muted">Mentors ({{ hackathon()?.staff?.mentors?.length }})</label>
+          <ul class="list-unstyled mb-0 mt-1">
+            @for (mentor of hackathon()?.staff?.mentors; track mentor.idAccount || $index) {
+              <li class="mb-2 d-flex align-items-center gap-2">
+                <i class="fa-solid fa-check text-success"></i> 
+                <span class="text-truncate">{{ mentor.email }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </div>
+</div>
 
         </div>
       </div>

@@ -28,11 +28,11 @@ import it.unicam.cs.hackhub.model.Account;
  * This record is used to expose limited mentor information
  * (identifier and email) through REST responses.
  *
- * @param id    the unique identifier of the mentor account
+ * @param idAccount    the unique identifier of the mentor account
  * @param email the email address of the mentor
  */
 public record MentorResponse(
-        Long id,
+        Long idAccount,
         String email
 ) {
     /**

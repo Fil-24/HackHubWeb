@@ -74,7 +74,7 @@ public class AccountController {
      * @return a {@link ResponseEntity} containing:
      *         <ul>
      *             <li>the requested account with status 200 (OK), if found</li>
-     *             <li>status 404 (Not Found), if no account exists with the given id</li>
+     *             <li>status 404 (Not Found), if no account exists with the given idAccount</li>
      *         </ul>
      */
     @GetMapping("/{id}")

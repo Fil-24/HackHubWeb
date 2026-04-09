@@ -1,5 +1,5 @@
 export interface TeamMember {
-    id: number;
+    idAccount: number;
     nickname: string;
     email: string;
 }

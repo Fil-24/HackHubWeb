@@ -58,7 +58,7 @@ export class MyTeamComponent {
 
         this.isLeader =
           currentUserId !== null &&
-          data.leader?.id === currentUserId;
+          data.leader?.idAccount === currentUserId;
 
         this.name = this.team()!.name;
         this.description = this.team()!.description;
@@ -175,7 +175,7 @@ export class MyTeamComponent {
         const team = this.team();
         if (team) {
           team.members = (team.members ?? []).filter(
-            m => m.id !== id
+            m => m.idAccount !== id
           );
         }
         this.cdr.detectChanges();
@@ -224,7 +224,7 @@ export class MyTeamComponent {
     }
   }
 
-  askRemoveMember(member: { id: number; nickname: string }) {
+  askRemoveMember(member: { idAccount: number; nickname: string }) {
     this.confirmDialog.set({
       type: 'danger',
       icon: 'fa-solid fa-user-xmark',
@@ -233,7 +233,7 @@ export class MyTeamComponent {
       confirmLabel: 'Rimuovi',
       onConfirm: () => {
         this.closeDialog();
-        this.removeMember(member.id);
+        this.removeMember(member.idAccount);
       }
     });
   }

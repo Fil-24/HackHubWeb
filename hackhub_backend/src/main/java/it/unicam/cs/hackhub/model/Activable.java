@@ -25,7 +25,7 @@ package it.unicam.cs.hackhub.model;
  * or deactivation logic.
  *
  * <p>
- * Implementations define how a model instance, identified by its id,
+ * Implementations define how a model instance, identified by its idAccount,
  * can be marked as enabled or disabled within the system.
  * </p>
  *
@@ -33,7 +33,7 @@ package it.unicam.cs.hackhub.model;
  */
 public interface Activable<T> {
     /**
-     * Updates the activation state of the model identified by the given id.
+     * Updates the activation state of the model identified by the given idAccount.
      *
      * @param id       the unique identifier of the model
      * @param disabled {@code true} to disable the model,

@@ -316,9 +316,9 @@ public class Hackathon implements Activable<Long> {
     }
 
     /**
-     * Retrieves a rule by id.
+     * Retrieves a rule by idAccount.
      *
-     * @param id the rule id
+     * @param id the rule idAccount
      * @return the matching {@link Rule}, or {@code null} if not found
      */
     public Rule getRule(Long id) {

@@ -66,14 +66,14 @@ private mapToTeamModel(backendObj: any): Team {
       name: backendObj.name || '',
       description: backendObj.description || '',
       leader: {
-        id: backendObj.leader?.idTeamMember || 0,
+        idAccount: backendObj.leader?.idTeamMember || 0,
         nickname: backendObj.leader?.nickname || 'Leader',
         email: backendObj.leader?.email || ''
       },
       // Mappatura sicura dei membri verso l'interfaccia TeamMember
       members: backendObj.members && Array.isArray(backendObj.members) 
         ? backendObj.members.map((m: any) => ({
-            id: m.idTeamMember || 0,
+            idAccount: m.idTeamMember || 0,
             nickname: m.nickname || 'Membro sconosciuto' ,
             email: m.email || ''
           }))

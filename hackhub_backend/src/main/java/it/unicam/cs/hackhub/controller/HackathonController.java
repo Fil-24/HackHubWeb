@@ -84,7 +84,7 @@ public class HackathonController {
      * @return a {@link ResponseEntity} containing:
      *         <ul>
      *             <li>the {@link HackathonResponse} if found (200 OK)</li>
-     *             <li>HTTP 404 (Not Found) if no hackathon exists with the given id</li>
+     *             <li>HTTP 404 (Not Found) if no hackathon exists with the given idAccount</li>
      *         </ul>
      */
     @GetMapping("/{id}")
@@ -281,7 +281,7 @@ public class HackathonController {
      * Adds a rule to the specified hackathon.
      *
      * @param id   the hackathon identifier
-     * @param idRule the id of the rule to add
+     * @param idRule the idAccount of the rule to add
      * @return HTTP 200 (OK) if addition succeeds,
      *         HTTP 400 (Bad Request) otherwise
      */
@@ -321,7 +321,7 @@ public class HackathonController {
      * Removes a rule from the specified hackathon.
      *
      * @param id   the hackathon identifier
-     * @param idRule the id of the rule to remove
+     * @param idRule the idAccount of the rule to remove
      * @return HTTP 200 (OK) if removal succeeds,
      *         HTTP 400 (Bad Request) otherwise
      */

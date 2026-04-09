@@ -45,7 +45,7 @@ import java.util.List;
 public interface HackathonRepository extends JpaRepository<Hackathon, Long> {
 
     /**
-     * Determines whether the account identified by the given id is assigned to the staff
+     * Determines whether the account identified by the given idAccount is assigned to the staff
      * of at least one hackathon.
      *
      * <p>
@@ -66,7 +66,7 @@ public interface HackathonRepository extends JpaRepository<Hackathon, Long> {
     boolean isAccountInStaff(@Param("id") Long idAccount);
 
     /**
-     * Retrieves all hackathons in which the team identified by the given id is registered.
+     * Retrieves all hackathons in which the team identified by the given idAccount is registered.
      *
      * <p>
      * Returns the list of {@link Hackathon} entities associated with the team whose identifier

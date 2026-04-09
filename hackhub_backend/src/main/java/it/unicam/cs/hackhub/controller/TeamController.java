@@ -81,7 +81,7 @@ public class TeamController {
      * @return a {@link ResponseEntity} containing:
      *         <ul>
      *             <li>the {@link TeamResponse} if found (200 OK)</li>
-     *             <li>HTTP 404 (Not Found) if no team exists with the given id</li>
+     *             <li>HTTP 404 (Not Found) if no team exists with the given idAccount</li>
      *         </ul>
      */
     @GetMapping("/{id}")

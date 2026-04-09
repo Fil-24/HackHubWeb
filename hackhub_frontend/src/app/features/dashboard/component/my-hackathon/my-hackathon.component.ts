@@ -6,7 +6,7 @@ import { HackathonService } from '../../service/hackathon.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-hackathons',
+  selector: 'app-my-hackathon',
   imports: [RouterLink, FormsModule],
   templateUrl: './my-hackathon.component.html',
   styleUrl: './my-hackathon.component.scss',

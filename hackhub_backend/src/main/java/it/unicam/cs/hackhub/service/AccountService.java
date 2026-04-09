@@ -106,7 +106,7 @@ public class AccountService implements Activable<Long> {
      *
      * <p>
      * This method returns the {@link Account} associated with the given identifier.
-     * If no account exists with the specified id, an exception is thrown.
+     * If no account exists with the specified idAccount, an exception is thrown.
      * </p>
      *
      * @param idAccount the unique identifier of the account
@@ -181,7 +181,7 @@ public class AccountService implements Activable<Long> {
     }
 
     /**
-     * Disables or enables an account identified by the given id, according to business rules based on the account role.
+     * Disables or enables an account identified by the given idAccount, according to business rules based on the account role.
      *
      * <p>
      * For {@link Role#STAFF} accounts, disabling is allowed only if the staff member is not currently assigned

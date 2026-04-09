@@ -258,7 +258,7 @@ HackathonService {
      * </p>
      *
      * @param idHackathon the unique identifier of the hackathon
-     * @param idRule the id of the rule to add
+     * @param idRule the idAccount of the rule to add
      * @return {@code true} if the rule was added; {@code false} if it was already present
      * @throws IllegalArgumentException if the hackathon does not exist or the rule cannot be found
      * @throws AccessDeniedException if the authenticated user is not the hackathon organizer
@@ -393,7 +393,7 @@ HackathonService {
      * </p>
      *
      * @param idHackathon the unique identifier of the hackathon
-     * @param idRule the id of the rule to remove
+     * @param idRule the idAccount of the rule to remove
      * @return {@code true} if the rule was removed; {@code false} if it was not present
      * @throws NullPointerException if the hackathon does not exist
      * @throws AccessDeniedException if the authenticated user is not the hackathon organizer
