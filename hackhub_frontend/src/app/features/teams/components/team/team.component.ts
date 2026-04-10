@@ -61,7 +61,7 @@ export class TeamComponent {
         this.myTeam.set(null);
         this.loadTeams();
       }
-    }, { allowSignalWrites: true }); 
+    }); 
   }
 
 

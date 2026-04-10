@@ -13,6 +13,7 @@ import { HackathonsComponent } from './features/dashboard/component/hackathons/h
 import { UserComponent } from './features/users/component/user.component';
 import { AdminGuard } from './core/guards/admin.guard';
 import { HackathonDetailComponent } from './features/dashboard/component/hackathon-detail/hackathon-detail';
+import { SubmissionComponent } from './features/dashboard/component/submission/submission.component';
 
 export const routes: Routes = [
 { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,6 +28,7 @@ export const routes: Routes = [
   { path: 'invitations', component: InvitationComponent, canActivate: [AuthGuard]},
   { path: 'teams', component:TeamComponent, /*canActivate: [TeamGuard]*/},
   { path: 'teams/my', component:MyTeamComponent, canActivate: [AuthGuard]},
+  { path: 'hackathons/:id/submissions', component:SubmissionComponent, canActivate: [AuthGuard]},
  
  {path: 'hackathons', component: HackathonsComponent},
   { path: '**', redirectTo: 'home' }

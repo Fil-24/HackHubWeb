@@ -225,7 +225,6 @@
 
   &__input {
     @extend %input-base;
-    // 🔥 SEMPLIFICATO: %input-base gestisce già il background bianco e il colore del testo!
     
     &::placeholder {
       // %input-base gestisce già il colore del placeholder ($text-secondary)

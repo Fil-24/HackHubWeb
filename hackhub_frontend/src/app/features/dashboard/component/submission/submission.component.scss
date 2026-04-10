@@ -1,0 +1,146 @@
+@use "../../../../../colors" as *;
+@use "../../../../../styles" as *;
+
+// ── ANIMATIONS ──
+@keyframes hdFadeUp {
+  0% { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+// ── TABLES ──
+.hd-table {
+  thead {
+    background-color: rgba(0, 0, 0, 0.02); // Leggero sfondo grigio per l'header
+  }
+  
+  thead th {
+    font-family: $font-mono;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: $text-secondary;
+    font-weight: 600;
+    border-bottom: 1px solid $border-color;
+    vertical-align: middle;
+  }
+}
+// ── LAYOUT ──
+.profile-section {
+  background: $bg-main;
+  min-height: calc(100vh - 80px);
+}
+
+// ── SECTION CARD ──
+.hd-section-card {
+  @extend %card-base; // Eredita lo stile base delle tue card
+  background: #ffffff;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  overflow: visible !important; // Evita che dropdown o outline vengano tagliati
+  transition: box-shadow 0.3s ease;
+
+  &:focus-within {
+    z-index: 100;
+  }
+
+  &--anim { 
+    animation: hdFadeUp 0.5s ease both;
+  }
+
+  &__inner { 
+    padding: 28px; 
+    overflow: visible !important; 
+  }
+}
+
+// ── SECTION HEADER ──
+.hd-section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: rgba($color-green, 0.1);
+    color: $color-green;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba($color-green, 0.2);
+  }
+
+  &__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0 0 4px;
+  }
+
+  &__sub {
+    font-size: 0.85rem;
+    color: $text-secondary;
+    margin: 0;
+  }
+}
+
+// ── FORM FIELDS ──
+.hd-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative; 
+
+  &__label {
+    font-family: $font-mono;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: $text-secondary;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 0;
+    font-weight: 600;
+  }
+
+  &__input {
+    @extend %input-base; // Eredita i tuoi input base
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    background-color: #fff;
+    color: $text-primary;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $color-green;
+      box-shadow: 0 0 0 3px rgba($color-green, 0.15);
+    }
+
+    &::placeholder {
+      color: lighten($text-secondary, 15%);
+      font-style: italic;
+    }
+  }
+}
+
+// ── BUTTONS ──
+.hd-btn-primary {
+  @extend %btn-primary;
+    padding: 10px 22px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.hd-btn-ghost {
+  @extend %btn-outline;
+    padding: 10px 22px;
+  display: inline-flex;
+  align-items: center;
+}

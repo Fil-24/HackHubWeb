@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, map, Observable, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { DatePipe, JsonPipe } from '@angular/common'; 
-
+import { RouterLink } from '@angular/router';
 import { Hackathon } from '../../models/hackathon.model';
 import { Rule } from '../../models/rule.model';
 import { Account } from '../../../account/models/account.model';
@@ -16,7 +16,7 @@ import { StaffService } from '../../service/staff.service';
 @Component({
   selector: 'app-hackathon-detail',
   standalone: true,
-  imports: [DatePipe, FormsModule],
+  imports: [RouterLink,DatePipe, FormsModule],
   templateUrl: './hackathon-detail.html',
   styleUrl: './hackathon-detail.scss'
 })
