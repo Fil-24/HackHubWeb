@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal, effect, computed } from '@angular/co
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-
+import { RouterLink } from '@angular/router';
 import { SubmissionService } from '../../service/submission.service';
 import { SubmissionResponse } from '../../models/submission.model';
 import { Team } from '../../../teams/model/team.model';
@@ -11,48 +11,46 @@ import { AuthService } from '../../../auth/service/auth.service';
 @Component({
   selector: 'app-submission',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './submission.component.html',
   styleUrl: './submission.component.scss',
 })
 export class SubmissionComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private submissionService = inject(SubmissionService);
-  protected authService = inject(AuthService); // Usiamo protected se serve nell'HTML
+  protected authService = inject(AuthService); // Protected for HTML template use
 
   hackathonId = signal<number | null>(null);
 
-  // --- STATI DEI DATI ---
-  submissions = signal<SubmissionResponse[]>([]); // Solo per lo staff
-  winner = signal<Team | null>(null);     // Per tutti
+  // --- DATA STATES ---
+  submissions = signal<SubmissionResponse[]>([]); // Staff only
+  winner = signal<Team | null>(null);     // Everyone
   
-  // --- STATI DEL FORM E UI ---
+  // --- FORM & UI STATES ---
   githubUrl = signal<string>('');
   mySubmissionId = signal<number | null>(null); 
   isSubmitting = signal<boolean>(false);
   isUpdating = signal<boolean>(false);
   
-  // --- GESTIONE MESSAGGI (Stile HackathonDetail) ---
+  // --- MESSAGE HANDLING ---
   successMessage = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
   private successTimeoutId: any;
   private errorTimeoutId: any;
 
-  // --- RUOLI REATTIVI ---
-  // Invece di usare boolean statici, usiamo i Signal derivati per i ruoli
+  // --- REACTIVE ROLES ---
   isTeamMember = signal<boolean>(false);
   isStaff = signal<boolean>(false);
 
   constructor() {
-    // Reagiamo ai cambiamenti dell'utente loggato come nel tuo altro componente
     effect(() => {
       const user = this.authService.user();
       
       if (user) {
-        // Logica Team: se l'utente ha un idTeam associato
+        // Team logic: if the user has an associated idTeam
         this.isTeamMember.set(!!user.idTeam);
         
-        // Logica Staff: da adattare in base a come salvi il ruolo (es. user.role === 'STAFF')
+        // Staff logic: adjust based on how you save the role
         this.isStaff.set(user.role === 'STAFF');
       } else {
         this.isTeamMember.set(false);
@@ -66,7 +64,7 @@ export class SubmissionComponent implements OnInit {
     if (id) {
       const numId = +id;
       this.hackathonId.set(numId);
-      this.checkWinner(numId);
+     //ng serve this.checkWinner(numId);
 
       if (this.isStaff()) {
         this.loadStaffDashboard(numId);
@@ -78,7 +76,7 @@ export class SubmissionComponent implements OnInit {
     }
   }
 
-  // --- METODI HELPER PER MESSAGGI (5 Secondi) ---
+  // --- HELPER METHODS FOR MESSAGES (5 Seconds) ---
   private showSuccess(message: string) {
     this.successMessage.set(message);
     if (this.successTimeoutId) clearTimeout(this.successTimeoutId);
@@ -86,37 +84,37 @@ export class SubmissionComponent implements OnInit {
   }
 
   private showError(err: any) {
-    const backendMessage = err?.error?.message || err?.error || err?.message || 'Si è verificato un errore imprevisto';
+    const backendMessage = err?.error?.message || err?.error || err?.message || 'An unexpected error occurred';
     this.errorMessage.set(backendMessage);
     
     if (this.errorTimeoutId) clearTimeout(this.errorTimeoutId);
     this.errorTimeoutId = setTimeout(() => this.errorMessage.set(null), 5000);
   }
 
-  // --- METODI PER LO STAFF ---
+  // --- STAFF METHODS ---
   loadStaffDashboard(idHackathon: number) {
-    // NOTA BENE: Nel SubmissionService che mi hai inviato manca ancora questo metodo per prendere
-    // TUTTE le sottomissioni. Dovrai aggiungerlo nel Service, ad esempio: getSubmissionsByHackathon(id)
-    
-    /* this.submissionService.getSubmissionsByHackathon(idHackathon).subscribe({
-      next: (data) => this.submissions.set(data),
+    // Using the newly added method to fetch ALL submissions for the hackathon
+    this.submissionService.getSubmissionsByHackathon(idHackathon).subscribe({
+      next: (data) => {
+        console.log('Submissions for Hackathon ID', idHackathon, ':', data);
+        this.submissions.set(data);
+      },
       error: (err) => this.showError(err)
     });
-    */
   }
 
-  // --- METODI PER TUTTI ---
+  // --- GENERAL METHODS ---
   checkWinner(idHackathon: number) {
     this.submissionService.getWinner(idHackathon).subscribe({
       next: (winnerTeam) => this.winner.set(winnerTeam),
-      error: () => this.winner.set(null) // Nessun vincitore o 404
+      error: () => this.winner.set(null) // No winner yet or 404
     });
   }
 
-  // --- METODI PER IL TEAM ---
+  // --- TEAM METHODS ---
   checkMySubmission() {
-    // Qui andrà la logica per capire se il team ha già fatto una sottomissione.
-    // Se la trovi, fai: this.mySubmissionId.set(sottomissioneTrovata.id);
+    // TODO: Add logic to fetch the specific team's submission for this hackathon.
+    // If found: this.mySubmissionId.set(foundSubmission.id);
   }
 
   submitGithubRepo() {
@@ -131,9 +129,9 @@ export class SubmissionComponent implements OnInit {
 
     this.submissionService.submitProject(payload).subscribe({
       next: () => {
-        this.showSuccess('Repository GitHub collegata con successo!');
+        this.showSuccess('GitHub repository linked successfully!');
         this.isSubmitting.set(false);
-        // Qui potresti chiamare di nuovo this.checkMySubmission() per aggiornare l'UI
+        // We can call this.checkMySubmission() here to update the UI once the endpoint is ready
       },
       error: (err) => {
         this.showError(err);
@@ -152,7 +150,7 @@ export class SubmissionComponent implements OnInit {
 
     this.submissionService.updateSubmission(subId).subscribe({
       next: () => {
-        this.showSuccess('Ultimo commit recuperato dal server con successo!');
+        this.showSuccess('Latest commit fetched from the server successfully!');
         this.isUpdating.set(false);
       },
       error: (err) => {

@@ -129,6 +129,31 @@ public class SubmissionService {
 
         submissionRepository.save(submission);
     }
+    /**
+     * Retrieves all submissions for a specific hackathon.
+     * Verifies that the authenticated account is assigned to the hackathon staff.
+     *
+     * @param idHackathon the unique identifier of the hackathon
+     * @return a list of {@link Submission} for the hackathon
+     * @throws NullPointerException if the hackathon does not exist
+     * @throws AccessDeniedException if the authenticated staff account is not assigned to the hackathon
+     */
+    @PreAuthorize("hasRole('STAFF')")
+    public List<Submission> getSubmissionsByHackathonStaff(Long idHackathon) {
+        Hackathon h = hackathonService.getHackathon(idHackathon);
+        if (h == null) {
+            throw new NullPointerException("Hackathon not found");
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account a = accountService.findByEmail(auth.getName()).get();
+
+        if (!h.checkStaff(a.getIdAccount())) {
+            throw new AccessDeniedException("Staff not assigned to this hackathon");
+        }
+
+        return submissionRepository.findByHackathonIdHackathon(idHackathon);
+    }
 
     /**
      * Updates the specified submission if it is still editable and the associated team is not disabled.

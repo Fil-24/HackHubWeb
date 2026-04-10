@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EvaluationPayload, SubmissionResponse, SubmitProjectPayload } from '../models/submission.model';
 import { Team } from '../../teams/model/team.model';
+import { environment } from '../../../../environments/environment';
  
 
 @Injectable({
@@ -10,7 +11,7 @@ import { Team } from '../../teams/model/team.model';
 })
 export class SubmissionService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/submissions'; // Modifica con la tua base URL
+  private apiUrl = environment.apiUrl+'/submissions'; // Modifica con la tua base URL
 
   submitProject(payload: SubmitProjectPayload): Observable<string> {
     // Il backend restituisce una stringa, usiamo responseType: 'text'
@@ -35,6 +36,10 @@ export class SubmissionService {
 
   getWinner(idHackathon: number): Observable<Team> {
     return this.http.get<Team>(`${this.apiUrl}/winner/hackathons/${idHackathon}`);
+  }
+  
+  getSubmissionsByHackathon(idHackathon: number): Observable<SubmissionResponse[]> {
+    return this.http.get<SubmissionResponse[]>(`${this.apiUrl}/hackathons/${idHackathon}/staff`);
   }
 
 }

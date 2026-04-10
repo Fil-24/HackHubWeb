@@ -30,6 +30,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -130,6 +131,23 @@ public class SubmissionController {
         return ResponseEntity.ok(SubmissionResponse.fromEntity(s));
     }
 
+    /**
+     * Retrieves all submissions for a specific hackathon.
+     * Restricted to staff members assigned to the hackathon.
+     *
+     * @param idHackathon the hackathon identifier
+     * @return a {@link ResponseEntity} containing a list of {@link SubmissionResponse}
+     */
+    @GetMapping("/hackathons/{idHackathon}/staff")
+    public ResponseEntity<List<SubmissionResponse>> getSubmissionsForHackathon(@PathVariable Long idHackathon) {
+        List<Submission> submissions = submissionService.getSubmissionsByHackathonStaff(idHackathon);
+
+        List<SubmissionResponse> responseList = submissions.stream()
+                .map(SubmissionResponse::fromEntity)
+                .toList();
+
+        return ResponseEntity.ok(responseList);
+    }
     /**
      * Evaluates a submission by assigning a score and written judgment.
      *
