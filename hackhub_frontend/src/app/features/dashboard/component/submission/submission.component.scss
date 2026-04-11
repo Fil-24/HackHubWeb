@@ -211,3 +211,97 @@
   text-transform: uppercase;
   color: $text-secondary;
 }
+.submission-card {
+    border: 1px solid $border-color;
+    border-radius: 12px;
+    background: $bg-surface;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    box-shadow: $shadow-card;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $text-primary;
+        font-family: $font-display;
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        background: $bg-main;
+        border: 1px solid $border-color;
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+    }
+
+    &__row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    &__label {
+        font-family: $font-mono;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: $text-secondary;
+        min-width: 110px;
+        white-space: nowrap;
+    }
+
+    &__link {
+        font-weight: 600;
+        color: $color-accent;
+        max-width: 400px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-decoration: none;
+
+        &:hover {
+            color: $color-primary;
+            text-decoration: underline;
+        }
+    }
+
+    &__value {
+        font-size: 0.9rem;
+        color: $text-secondary;
+    }
+
+    &__actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    &__edit {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        background: $bg-main;
+        border: 1px solid $border-color;
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+    }
+
+    &__edit-label {
+        font-family: $font-mono;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: $text-secondary;
+        margin-bottom: 6px;
+    }
+}

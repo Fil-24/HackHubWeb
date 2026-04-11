@@ -42,7 +42,8 @@
             </div>
             <div class="text-center text-md-start">
               <h4 class="mb-1 fw-bold text-success">Hackathon Concluded!</h4>
-              <p class="mb-0 text-muted fs-5">The winning team is: <strong class="text-dark">{{ winner()?.name }}</strong></p>
+              <p class="mb-0 text-muted fs-5">The winning team is: <strong class="text-dark">{{ winner()?.name
+                  }}</strong></p>
             </div>
           </div>
         </div>
@@ -59,7 +60,7 @@
             <div class="hd-section-header mb-4">
               <div class="hd-section-header__icon"><i class="fa-solid fa-clipboard-list"></i></div>
               <div>
-                <h5 class="hd-section-header__title">Submissions Dashboard (Staff)</h5>
+                <h5 class="hd-section-header__title">Submissions Hub</h5>
                 <p class="hd-section-header__sub">Manage and evaluate projects submitted by teams</p>
               </div>
             </div>
@@ -68,40 +69,58 @@
               <table class="table table-hover align-middle mb-0 hd-table">
                 <thead>
                   <tr>
-                    <th class="py-3 px-3">ID</th>
                     <th class="py-3 px-3">TEAM</th>
-                    <th class="py-3 px-3">REPOSITORY (REF)</th>
+                    <th class="py-3 px-3">REPOSITORY</th>
                     <th class="py-3 px-3">SUBMISSION DATE</th>
+                    @if (canDoAction()) {
                     <th class="py-3 px-3 text-center">ACTIONS</th>
+                    }
                   </tr>
                 </thead>
                 <tbody>
                   @for (sub of submissions(); track sub.id) {
                   <tr>
-                    <td class="px-3 font-monospace text-muted">#{{ sub.id }}</td>
                     <td class="px-3 fw-bold">{{ sub.team }}</td>
                     <td class="px-3">
                       <a [href]="sub.repositoryUrl" target="_blank"
                         class="text-decoration-none d-inline-flex align-items-center gap-2">
                         <i class="fa-brands fa-github text-dark"></i>
-                        <span class="text-truncate" style="max-width: 200px;">{{ sub.repositoryUrl }}</span>
+                        <span class="text-truncate" style="max-width: 200px;">
+                          {{ sub.repositoryUrl }}
+                        </span>
                       </a>
                     </td>
-                    <td class="px-3 text-muted" style="font-size: 0.9rem;">{{ sub.submittedAt | date:'dd/MM/yyyy HH:mm' }}</td>
-                    <td class="px-3 text-center d-flex justify-content-center gap-1">
-                      <button class="hd-btn-ghost py-1 px-2" style="font-size: 0.75rem;"
-                        (click)="openReport(sub)">
-                        <i class="fa-solid fa-flag"></i> Report
-                      </button>
-                      <button class="hd-btn-ghost py-1 px-2" style="font-size: 0.75rem;"
-                        (click)="openEvaluate(sub)">
-                        <i class="fa-solid fa-star"></i> Evaluate
-                      </button>
+                    <td class="px-3 text-muted" style="font-size: 0.9rem;">
+                      {{ sub.submittedAt | date:'dd/MM/yyyy HH:mm' }}
                     </td>
+                    @if (canDoAction()) {
+                    <td class="px-3 text-center">
+
+                      @if (isJudge() && hackathon()?.status === 'EVALUATION') {
+                      <button class="hd-btn-ghost py-1 px-3" style="font-size: 0.85rem;"
+                        (click)="evaluateSubmission(sub)">
+                        <i class="fa-solid fa-star me-1"></i> Evaluate
+                      </button>
+                      }
+
+                      @if (isMentor() && hackathon()?.status === 'ONGOING') {
+                      <button class="hd-btn-ghost py-1 px-3" style="font-size: 0.85rem;" (click)="flagSubmission(sub)">
+                        <i class="fa-solid fa-flag me-1"></i> Flag
+                      </button>
+                      }
+
+                      @if (isOrganizer() && hackathon()?.status === 'EVALUATION' && allEvaluated()) {
+                      <button class="hd-btn-primary py-1 px-3" style="font-size: 0.85rem;" (click)="declareWinner(sub)">
+                        <i class="fa-solid fa-trophy me-1"></i> Declare Winner
+                      </button>
+                      }
+
+                    </td>
+                    }
                   </tr>
                   } @empty {
                   <tr>
-                    <td colspan="5" class="text-center py-5 text-muted">
+                    <td [attr.colspan]="canDoAction() ? 4 : 3" class="text-center py-5 text-muted">
                       <i class="fa-solid fa-inbox fs-2 mb-3 d-block opacity-50"></i>
                       No projects submitted by teams yet.
                     </td>
@@ -128,20 +147,23 @@
                 <i class="fa-solid fa-code-branch"></i>
               </div>
               <div>
-                <h5 class="hd-section-header__title">Team Project Management</h5>
-                <p class="hd-section-header__sub">Connect your repository and keep your project synced</p>
+                <h5 class="hd-section-header__title">Team Project Submission</h5>
+                <p class="hd-section-header__sub">Connect your GitHub repository and track your submission</p>
+
               </div>
             </div>
 
             @if (!mySubmissionId()) {
             <form (ngSubmit)="submitGithubRepo()">
               <div class="hd-field mb-4">
-                <label for="githubUrl" class="hd-field__label"><i class="fa-brands fa-github"></i> GitHub Repository URL</label>
+                <label for="githubUrl" class="hd-field__label"><i class="fa-brands fa-github"></i> GitHub Repository
+                  URL</label>
                 <input type="url" class="hd-field__input" id="githubUrl" [ngModel]="githubUrl()"
                   (ngModelChange)="githubUrl.set($event)" name="githubUrl"
                   placeholder="https://github.com/your-team/project" required>
                 <div class="text-muted mt-2" style="font-size: 0.85rem;">
-                  <i class="fa-solid fa-circle-info me-1"></i> Enter the repository link. The server will automatically fetch the latest commit.
+                  <i class="fa-solid fa-circle-info me-1"></i> Enter the repository link. The server will automatically
+                  fetch the latest commit.
                 </div>
               </div>
 
@@ -157,23 +179,29 @@
             }
 
             @else {
-            <div class="p-4 border rounded d-flex flex-column gap-3"
-              style="background-color: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2) !important;">
+            <div class="submission-card">
 
-              <h6 class="fw-bold text-success mb-0">
-                <i class="fa-solid fa-check-circle me-1"></i> Repository submitted successfully!
-              </h6>
+              <div class="submission-card__header">
+                <i class="fa-solid fa-code-branch"></i>
+                Project submitted
+              </div>
 
-              <div class="d-flex flex-column gap-2">
-                <div class="d-flex align-items-center gap-2">
-                  <i class="fa-brands fa-github text-dark"></i>
-                  <a [href]="githubUrl()" target="_blank" class="text-decoration-none fw-bold text-dark">
+              <div class="submission-card__info">
+                <div class="submission-card__row">
+                  <span class="submission-card__label">
+                    <i class="fa-brands fa-github me-1"></i> Repository
+                  </span>
+                  <a [href]="githubUrl()" target="_blank" class="submission-card__link">
                     {{ githubUrl() }}
                   </a>
                 </div>
-                <div class="text-muted" style="font-size: 0.85rem;">
-                  <i class="fa-regular fa-clock me-1"></i>
-                  Submitted at: {{ submittedAt() | date:'dd/MM/yyyy HH:mm' }}
+                <div class="submission-card__row">
+                  <span class="submission-card__label">
+                    <i class="fa-regular fa-clock me-1"></i> Submitted at
+                  </span>
+                  <span class="submission-card__value">
+                    {{ submittedAt() | date:'dd/MM/yyyy HH:mm' }}
+                  </span>
                 </div>
               </div>
 
@@ -184,18 +212,26 @@
               </div>
 
               @if (editMode()) {
-              <form (ngSubmit)="updateCommit()" class="d-flex gap-2 mt-2">
-                <input type="url" class="hd-field__input flex-grow-1" [ngModel]="githubUrl()"
-                  (ngModelChange)="githubUrl.set($event)" name="githubUrl"
-                  placeholder="https://github.com/your-team/project">
-                <button type="submit" class="hd-btn-primary flex-shrink-0">
-                  <i class="fa-solid fa-check me-1"></i> Save
-                </button>
-                <button type="button" class="hd-btn-ghost flex-shrink-0" (click)="editMode.set(false)">
-                  Cancel
-                </button>
+              <form (ngSubmit)="saveEdit()" class="submission-card__edit">
+                <div>
+                  <p class="submission-card__edit-label">
+                    <i class="fa-brands fa-github me-1"></i> Edit repository URL
+                  </p>
+                  <input type="url" class="hd-field__input" [ngModel]="editUrlTemp()"
+                    (ngModelChange)="editUrlTemp.set($event)" name="editUrl"
+                    placeholder="https://github.com/your-team/project">
+                </div>
+                <div class="d-flex gap-2">
+                  <button type="submit" class="hd-btn-primary flex-shrink-0">
+                    <i class="fa-solid fa-check me-1"></i> Save
+                  </button>
+                  <button type="button" class="hd-btn-ghost flex-shrink-0" (click)="cancelEdit()">
+                    Cancel
+                  </button>
+                </div>
               </form>
-              }
+}
+
             </div>
             }
 
@@ -216,8 +252,7 @@
 
       <div class="d-flex justify-content-between align-items-start mb-4">
         <div class="d-flex align-items-center gap-3">
-          <div class="hd-section-header__icon"
-            style="background: rgba(255,59,107,0.1); color: #ff3b6b;">
+          <div class="hd-section-header__icon" style="background: rgba(255,59,107,0.1); color: #ff3b6b;">
             <i class="fa-solid fa-flag"></i>
           </div>
           <div>
@@ -234,32 +269,26 @@
         <label class="hd-field__label">
           <i class="fa-solid fa-tag"></i> Category
         </label>
-        <input type="text" class="hd-field__input"
-          placeholder="E.g. Misconduct, Plagiarism..."
-          [ngModel]="reportReason()"
-          (ngModelChange)="reportReason.set($event)">
+        <input type="text" class="hd-field__input" placeholder="E.g. Misconduct, Plagiarism..."
+          [ngModel]="reportReason()" (ngModelChange)="reportReason.set($event)">
       </div>
 
       <div class="hd-field mb-4">
         <label class="hd-field__label">
           <i class="fa-solid fa-align-left"></i> Description
         </label>
-        <textarea class="hd-field__input" rows="4"
-          style="resize: vertical; min-height: 100px; line-height: 1.6;"
-          placeholder="Describe the issue in detail..."
-          [ngModel]="reportDescription()"
+        <textarea class="hd-field__input" rows="4" style="resize: vertical; min-height: 100px; line-height: 1.6;"
+          placeholder="Describe the issue in detail..." [ngModel]="reportDescription()"
           (ngModelChange)="reportDescription.set($event)">
         </textarea>
       </div>
 
       <div class="d-flex gap-2 justify-content-end">
         <button class="hd-btn-ghost" (click)="closeModals()">Cancel</button>
-        <button class="hd-btn-primary"
-          style="background: #ff3b6b; border-color: #ff3b6b;"
-          [disabled]="isReporting() || !reportReason() || !reportDescription().trim()"
-          (click)="submitReport()">
+        <button class="hd-btn-primary" style="background: #ff3b6b; border-color: #ff3b6b;"
+          [disabled]="isReporting() || !reportReason() || !reportDescription().trim()" (click)="submitReport()">
           @if (isReporting()) {
-            <span class="spinner-border spinner-border-sm me-2"></span>
+          <span class="spinner-border spinner-border-sm me-2"></span>
           }
           <i class="fa-solid fa-flag me-1"></i> Submit Report
         </button>
@@ -278,8 +307,7 @@
 
       <div class="d-flex justify-content-between align-items-start mb-4">
         <div class="d-flex align-items-center gap-3">
-          <div class="hd-section-header__icon"
-            style="background: rgba(0,200,150,0.15); color: #00c896;">
+          <div class="hd-section-header__icon" style="background: rgba(0,200,150,0.15); color: #00c896;">
             <i class="fa-solid fa-star"></i>
           </div>
           <div>
@@ -297,9 +325,7 @@
           <i class="fa-solid fa-chart-bar"></i> Score
         </label>
         <div class="d-flex align-items-center gap-3 mt-2">
-          <input type="range" min="0" max="10" step="0.5"
-            class="flex-grow-1"
-            [ngModel]="evalScore()"
+          <input type="range" min="0" max="10" step="0.5" class="flex-grow-1" [ngModel]="evalScore()"
             (ngModelChange)="evalScore.set($event)">
           <span class="fw-bold font-monospace fs-5" style="min-width: 42px; color: #00c896;">
             {{ evalScore() | number:'1.1-1' }}
@@ -315,21 +341,18 @@
         <label class="hd-field__label">
           <i class="fa-solid fa-pen-nib"></i> Written judgment
         </label>
-        <textarea class="hd-field__input" rows="4"
-          style="resize: vertical; min-height: 100px; line-height: 1.6;"
-          placeholder="Motivate your evaluation: originality, code quality, presentation..."
-          [ngModel]="evalJudgment()"
+        <textarea class="hd-field__input" rows="4" style="resize: vertical; min-height: 100px; line-height: 1.6;"
+          placeholder="Motivate your evaluation: originality, code quality, presentation..." [ngModel]="evalJudgment()"
           (ngModelChange)="evalJudgment.set($event)">
         </textarea>
       </div>
 
       <div class="d-flex gap-2 justify-content-end">
         <button class="hd-btn-ghost" (click)="closeModals()">Cancel</button>
-        <button class="hd-btn-primary"
-          [disabled]="isEvaluating() || !evalJudgment().trim()"
+        <button class="hd-btn-primary" [disabled]="isEvaluating() || !evalJudgment().trim()"
           (click)="submitEvaluation()">
           @if (isEvaluating()) {
-            <span class="spinner-border spinner-border-sm me-2"></span>
+          <span class="spinner-border spinner-border-sm me-2"></span>
           }
           <i class="fa-solid fa-star me-1"></i> Submit Evaluation
         </button>

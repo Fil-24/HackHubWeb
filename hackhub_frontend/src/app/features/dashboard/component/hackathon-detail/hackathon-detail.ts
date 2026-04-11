@@ -2,7 +2,7 @@ import { Component, OnInit, computed, effect, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, map, Observable, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { DatePipe, JsonPipe } from '@angular/common'; 
+import { DatePipe, JsonPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Hackathon } from '../../models/hackathon.model';
 import { Rule } from '../../models/rule.model';
@@ -17,7 +17,7 @@ import { StaffService } from '../../service/staff.service';
 @Component({
   selector: 'app-hackathon-detail',
   standalone: true,
-  imports: [RouterLink,DatePipe, FormsModule],
+  imports: [RouterLink, DatePipe, FormsModule],
   templateUrl: './hackathon-detail.html',
   styleUrl: './hackathon-detail.scss'
 })
@@ -25,23 +25,22 @@ export class HackathonDetailComponent implements OnInit {
 
   successMessage = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
-  
+
   // Timer per evitare sovrapposizioni se l'utente clicca più volte
   private successTimeoutId: any;
   private errorTimeoutId: any;
-  
+
   hackathon = signal<Hackathon | null>(null);
   modifiedHackathon = signal<Hackathon | null>(null);
 
-  isStaff = signal<boolean>(false);
 
-  isOrganizer = false;  
+  isOrganizer = false;
   showModifyForm = false;
 
   teamRegistered = computed(() => {
     const user = this.authService.user();
     const hackathon = this.hackathon();
-    
+
     if (!user || !hackathon || !hackathon.teams) return false;
 
     return hackathon.teams.some((team: any) => {
@@ -51,13 +50,26 @@ export class HackathonDetailComponent implements OnInit {
       return false;
     });
   });
-  
+  isStaff = computed(() => {
+    const user = this.authService.user();
+    const hackathon = this.hackathon();
+    console.log('user.idAccount:', user?.idAccount);
+    console.log('staff:', hackathon?.staff);
+    if (!user || !hackathon || !hackathon.staff) return false;
+
+    return (
+      hackathon.staff.organizerId === user.idAccount ||
+      hackathon.staff.judgeId === user.idAccount ||
+      hackathon.staff.mentors?.some((m: any) => m.idAccount === user.idAccount)
+    );
+  });
+
   private leaderInternal = signal(false);
   leader = computed(() => this.leaderInternal());
-  
+
   // --- LISTE DATI ---
   rules = signal<Rule[]>([]);
-  accounts: Account[] = []; 
+  accounts: Account[] = [];
 
   // --- STATI E RICERCA MENU A TENDINA ---
   ruleSearch = '';
@@ -101,16 +113,16 @@ export class HackathonDetailComponent implements OnInit {
     this.hackathonService.getById(id).subscribe({
       next: (data: any) => {
         console.log('--- HACKATHON DATA FROM BACKEND ---', data);
-        
+
         this.hackathon.set(data);
         const currentUserId = this.authService.userId;
 
         this.isOrganizer =
           currentUserId != null &&
-          data.staff && 
-          (data.staff.organizerId == currentUserId || 
-           data.staff.organizer?.idAccount == currentUserId || 
-           data.staff.organizer?.id == currentUserId);
+          data.staff &&
+          (data.staff.organizerId == currentUserId ||
+            data.staff.organizer?.idAccount == currentUserId ||
+            data.staff.organizer?.id == currentUserId);
 
         if (!data.staff) {
           data.staff = { organizerId: null, organizerEmail: '', judgeId: null, judgeEmail: '', mentors: [] };
@@ -120,13 +132,13 @@ export class HackathonDetailComponent implements OnInit {
 
         this.modifiedHackathon.set({ ...data });
 
-        this.isStaff.set(this.isOrganizer ||
+        /*this.isStaff.set(this.isOrganizer ||
                   data.staff.judgeId === currentUserId ||
                   data.staff.mentors.some((s: any) => s.idAccount === this.authService.userId)
                   ? true : false); 
-        
+        */
         this.loadRules();
-        
+
         if (this.isOrganizer) {
           this.loadAccounts();
         }
@@ -138,7 +150,7 @@ export class HackathonDetailComponent implements OnInit {
   }
 
   // --- METODI HELPER PER MESSAGGI (5 Secondi) ---
-  
+
   private showSuccess(message: string) {
     this.successMessage.set(message);
     if (this.successTimeoutId) clearTimeout(this.successTimeoutId);
@@ -149,7 +161,7 @@ export class HackathonDetailComponent implements OnInit {
     // Estrae il messaggio di errore dall'API, gestendo vari formati standard
     const backendMessage = err?.error?.message || err?.error || err?.message || 'Si è verificato un errore imprevisto';
     this.errorMessage.set(backendMessage);
-    
+
     if (this.errorTimeoutId) clearTimeout(this.errorTimeoutId);
     this.errorTimeoutId = setTimeout(() => this.errorMessage.set(null), 5000);
   }
@@ -189,13 +201,13 @@ export class HackathonDetailComponent implements OnInit {
     const days = Math.floor(totalHours / 24);
     const hours = totalHours % 24;
 
-    return days === 0 ? `${hours}h` : `${days}d ${hours}h`; 
+    return days === 0 ? `${hours}h` : `${days}d ${hours}h`;
   }
 
   registerTeam() {
     this.errorMessage.set(null);
     const id = this.hackathon()?.id!;
-    
+
     this.hackathonService.register(id).subscribe({
       next: (res: any) => {
         this.showSuccess(res.message || "Team registered successfully!");
@@ -221,7 +233,7 @@ export class HackathonDetailComponent implements OnInit {
     );
   }
 
-  unsubscribeTeam(){
+  unsubscribeTeam() {
     const id = this.hackathon()?.id!;
     this.hackathonService.unsubscribeTeam(id).subscribe({
       next: () => {
@@ -232,13 +244,13 @@ export class HackathonDetailComponent implements OnInit {
     });
   }
 
-  modifyHackathon(){
+  modifyHackathon() {
     this.errorMessage.set(null);
     const modified = this.modifiedHackathon();
     if (!modified) return;
 
-    const data: any = { 
-      idHackathon: modified.id, 
+    const data: any = {
+      idHackathon: modified.id,
       name: modified.name,
       location: modified.location,
       prize: modified.prize,
@@ -246,7 +258,7 @@ export class HackathonDetailComponent implements OnInit {
       maxNumberTeams: modified.maxNumberTeams,
       startDate: modified.startDate,
       endDate: modified.endDate,
-      idJudge: modified.staff?.judgeId 
+      idJudge: modified.staff?.judgeId
     };
 
     this.hackathonService.updateHackathon(data).subscribe({
@@ -293,7 +305,7 @@ export class HackathonDetailComponent implements OnInit {
     });
   }
 
-  removeRule(id: number){
+  removeRule(id: number) {
     this.errorMessage.set(null);
     this.hackathonService.removeRule(this.hackathon()!.id, id).subscribe({
       next: () => {
@@ -318,7 +330,7 @@ export class HackathonDetailComponent implements OnInit {
 
   selectJudge(j: Account) {
     this.modifiedHackathon()!.staff.judgeEmail = j.email;
-    this.modifiedHackathon()!.staff.judgeId = j.idAccount; 
+    this.modifiedHackathon()!.staff.judgeId = j.idAccount;
     this.judgeFocused.set(false);
   }
 
@@ -332,8 +344,8 @@ export class HackathonDetailComponent implements OnInit {
   }
 
   selectMentor(m: Account) {
-    this.mentorSearch = m.email; 
-    this.newMentorEmail.set(m.email); 
+    this.mentorSearch = m.email;
+    this.newMentorEmail.set(m.email);
     this.mentorFocused.set(false);
   }
 
@@ -353,7 +365,7 @@ export class HackathonDetailComponent implements OnInit {
           if (!h) return h;
           return { ...h, staff: { ...h.staff, mentors: [...(h.staff.mentors ?? []), res] } };
         });
-        
+
         this.newMentorEmail.set('');
         this.mentorSearch = '';
       },
@@ -372,14 +384,14 @@ export class HackathonDetailComponent implements OnInit {
     this.hackathonService.removeMentor(hackathonId, idAccount).subscribe({
       next: () => {
         this.showSuccess("Mentor removed successfully!");
-        
+
         this.hackathon.update(h => {
           if (!h || !h.staff) return h;
           return {
             ...h,
-            staff: { 
-              ...h.staff, 
-              mentors: h.staff.mentors?.filter((m: any) => m.idAccount !== idAccount) ?? [] 
+            staff: {
+              ...h.staff,
+              mentors: h.staff.mentors?.filter((m: any) => m.idAccount !== idAccount) ?? []
             }
           };
         });

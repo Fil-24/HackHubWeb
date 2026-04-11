@@ -8,7 +8,8 @@ import { SubmissionResponse } from '../../models/submission.model';
 import { Team } from '../../../teams/model/team.model';
 import { AuthService } from '../../../auth/service/auth.service';
 import { ReportService } from '../../../reports/service/report.service';
-
+import { HackathonService } from '../../service/hackathon.service';
+import { Hackathon } from '../../models/hackathon.model';
 @Component({
   selector: 'app-submission',
   standalone: true,
@@ -23,6 +24,7 @@ export class SubmissionComponent implements OnInit {
   private reportService = inject(ReportService);
 
   hackathonId = signal<number | null>(null);
+  hackathon = signal<Hackathon | null>(null);
 
   // --- DATA STATES ---
   submissions = signal<SubmissionResponse[]>([]); // Staff only
@@ -35,6 +37,7 @@ export class SubmissionComponent implements OnInit {
   isSubmitting = signal<boolean>(false);
   isUpdating = signal<boolean>(false);
   editMode = signal<boolean>(false);
+  editUrlTemp = signal<string>('');
 
   // --- MESSAGE HANDLING ---
   successMessage = signal<string | null>(null);
@@ -62,7 +65,7 @@ export class SubmissionComponent implements OnInit {
   evalJudgment = signal('');
   isEvaluating = signal(false);
 
-  constructor() {
+  constructor(private hackathonService: HackathonService) {
     effect(() => {
       const user = this.authService.user();
       console.log('User in effect:', user);
@@ -93,6 +96,11 @@ export class SubmissionComponent implements OnInit {
       const numId = +id;
       this.hackathonId.set(numId);
     }
+    this.hackathonService.getById(this.hackathonId()!).subscribe({
+      next: (hackathon) => this.hackathon.set(hackathon),
+      error: (err) => this.showError(err)
+    });
+
   }
 
   // --- HELPER METHODS FOR MESSAGES (5 seconds) ---
@@ -251,4 +259,60 @@ export class SubmissionComponent implements OnInit {
       }
     });
   }
+  startEdit() {
+    this.editUrlTemp.set(this.githubUrl());
+    this.editMode.set(true);
+  }
+
+  saveEdit() {
+    this.githubUrl.set(this.editUrlTemp());
+    this.editMode.set(false);
+    this.updateCommit();
+  }
+
+  cancelEdit() {
+    this.editUrlTemp.set('');
+    this.editMode.set(false);
+  }
+
+  //staff method to set winner
+  isOrganizer = computed(() => {
+    const user = this.authService.user();
+    const hackathon = this.hackathon();
+    if (!user || !hackathon?.staff) return false;
+    return hackathon.staff.organizerId === user.idAccount;
+  });
+
+  isJudge = computed(() => {
+    const user = this.authService.user();
+    const hackathon = this.hackathon();
+    if (!user || !hackathon?.staff) return false;
+    return hackathon.staff.judgeId === user.idAccount;
+  });
+
+  isMentor = computed(() => {
+    const user = this.authService.user();
+    const hackathon = this.hackathon();
+    if (!user || !hackathon?.staff) return false;
+    return hackathon.staff.mentors?.some((m: any) => m.idAccount === user.idAccount);
+  });
+
+  allEvaluated = computed(() => {
+    return this.submissions().length > 0 &&
+      this.submissions().every(s => (s.score ?? 0) > 0)
+  });
+  canDoAction = computed(() => {
+    const status = this.hackathon()?.status;
+    if (this.isJudge() && status === 'EVALUATION') return true;
+    if (this.isMentor() && status === 'ONGOING') return true;
+    if (this.isOrganizer() && status === 'EVALUATION') return true;
+    return false;
+  });
+
+
+  //TODO: metodi da implementare
+  evaluateSubmission(sub: SubmissionResponse) { }
+
+  flagSubmission(sub: SubmissionResponse) { }
+  declareWinner(sub: SubmissionResponse) { }
 }
