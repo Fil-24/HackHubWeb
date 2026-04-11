@@ -118,7 +118,7 @@ export class SubmissionComponent implements OnInit {
     this.submissionService.getSubmissionForTeam(this.hackathonId()!).subscribe({
         next: (submission) => {
             console.log('My submission:', submission);
-            this.githubUrl.set(submission.submittedAt ?? '');
+            this.githubUrl.set(submission.repositoryUrl ?? '');
             this.mySubmissionId.set(submission.id ?? null);
             this.submittedAt.set(submission.submittedAt ?? '');
             this.isUpdating.set(false);
