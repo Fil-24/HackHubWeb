@@ -42,4 +42,6 @@ export class SubmissionService {
     return this.http.get<SubmissionResponse[]>(`${this.apiUrl}/hackathons/${idHackathon}/staff`);
   }
 
+  
+
 }

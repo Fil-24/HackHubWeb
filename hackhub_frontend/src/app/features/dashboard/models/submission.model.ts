@@ -2,7 +2,7 @@ export interface SubmissionResponse {
   id: number;
   team: string;
   hackathon: string;
-  submittedAt: string; 
+  submittedAt: string;
   immutableReference: string;
   writtenJudgment?: string; // Opzionale perché potrebbe non essere ancora valutato
   score?: number; // Opzionale

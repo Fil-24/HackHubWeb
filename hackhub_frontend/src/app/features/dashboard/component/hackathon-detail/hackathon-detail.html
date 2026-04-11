@@ -57,10 +57,12 @@
                     }
                   </button>
                 }
-              
+                @if(teamRegistered()){
                   <a [routerLink]="['/hackathons', hackathon()?.id, 'submissions']" class="hd-btn-primary" style="text-decoration-line: none !important;">
                     <i class="fa-solid fa-ranking-star me-1"></i> Submissions & Hub
                   </a>
+                }
+
                   
 
                 @if(leader()) { 

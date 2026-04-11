@@ -13,6 +13,7 @@ import { AuthService } from '../../../auth/service/auth.service';
 import { TeamService } from '../../../teams/service/team.service';
 import { StaffService } from '../../service/staff.service';
 
+
 @Component({
   selector: 'app-hackathon-detail',
   standalone: true,

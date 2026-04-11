@@ -25,13 +25,15 @@ export class SubmissionComponent implements OnInit {
   // --- DATA STATES ---
   submissions = signal<SubmissionResponse[]>([]); // Staff only
   winner = signal<Team | null>(null);     // Everyone
-  
+
   // --- FORM & UI STATES ---
   githubUrl = signal<string>('');
-  mySubmissionId = signal<number | null>(null); 
+  submittedAt = signal<string>('');
+  mySubmissionId = signal<number | null>(null);
   isSubmitting = signal<boolean>(false);
   isUpdating = signal<boolean>(false);
-  
+  editMode = signal<boolean>(false);
+
   // --- MESSAGE HANDLING ---
   successMessage = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
@@ -45,13 +47,22 @@ export class SubmissionComponent implements OnInit {
   constructor() {
     effect(() => {
       const user = this.authService.user();
-      
+      console.log('User in effect:', user);
+
       if (user) {
-        // Team logic: if the user has an associated idTeam
         this.isTeamMember.set(!!user.idTeam);
-        
-        // Staff logic: adjust based on how you save the role
         this.isStaff.set(user.role === 'STAFF');
+
+        // sposta qui la logica che dipende dai valori
+        const id = this.hackathonId();
+        if (id) {
+          if (this.isStaff()) {
+            this.loadStaffDashboard(id);
+          }
+          if (this.isTeamMember()) {
+            this.checkMySubmission();
+          }
+        }
       } else {
         this.isTeamMember.set(false);
         this.isStaff.set(false);
@@ -64,15 +75,6 @@ export class SubmissionComponent implements OnInit {
     if (id) {
       const numId = +id;
       this.hackathonId.set(numId);
-     //ng serve this.checkWinner(numId);
-
-      if (this.isStaff()) {
-        this.loadStaffDashboard(numId);
-      }
-      
-      if (this.isTeamMember()) {
-        this.checkMySubmission();
-      }
     }
   }
 
@@ -86,7 +88,7 @@ export class SubmissionComponent implements OnInit {
   private showError(err: any) {
     const backendMessage = err?.error?.message || err?.error || err?.message || 'An unexpected error occurred';
     this.errorMessage.set(backendMessage);
-    
+
     if (this.errorTimeoutId) clearTimeout(this.errorTimeoutId);
     this.errorTimeoutId = setTimeout(() => this.errorMessage.set(null), 5000);
   }
@@ -113,8 +115,20 @@ export class SubmissionComponent implements OnInit {
 
   // --- TEAM METHODS ---
   checkMySubmission() {
-    // TODO: Add logic to fetch the specific team's submission for this hackathon.
-    // If found: this.mySubmissionId.set(foundSubmission.id);
+    this.submissionService.getSubmissionForTeam(this.hackathonId()!).subscribe({
+        next: (submission) => {
+            console.log('My submission:', submission);
+            this.githubUrl.set(submission.submittedAt ?? '');
+            this.mySubmissionId.set(submission.id ?? null);
+            this.submittedAt.set(submission.submittedAt ?? '');
+            this.isUpdating.set(false);
+        },
+        error: (err) => {
+            if (err.status === 400 || err.status === 404) {
+                this.isUpdating.set(false);
+            }
+        }
+    });
   }
 
   submitGithubRepo() {

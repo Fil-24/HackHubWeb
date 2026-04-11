@@ -235,10 +235,11 @@ public class SubmissionService {
      * @throws org.springframework.security.access.AccessDeniedException if the caller is not authorized
      */
     @PreAuthorize("hasRole('USER')")
-    public Submission getSubmissionTeamMembers(Long idSubmission){
-        Submission submission = getSubmission(idSubmission);
+    public Submission getSubmissionTeamMembers(Long idHackathon){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account a=accountService.findByEmail(auth.getName()).get();
+        Team t=teamService.findMemberById(a.getIdAccount()).orElseThrow(() -> new NullPointerException("You doesn't belong to any team"));
+        Submission submission = submissionRepository.findByTeamAndHackathon(t, hackathonService.getHackathon(idHackathon)).orElse(null);
         if(submission==null)
             throw new NullPointerException("Submission not found");
         if(!submission.getTeam().checkTeamMember(a.getIdAccount()))
