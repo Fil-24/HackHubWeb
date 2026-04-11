@@ -1,4 +1,4 @@
-import { Component, signal, effect } from '@angular/core';
+import { Component, signal, effect, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../auth/service/auth.service';
@@ -17,26 +17,29 @@ export class ProfileComponent {
   isEditing = signal(false);
   isSaving = signal(false); // Gestisce lo stato di caricamento del bottone
   passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-  editName = '';
-  editSurname = '';
-  editNickname = '';
-  editEmail = '';
-  editOldPassword = '';
-  editNewPassword = '';
-  editConfirmPassword = '';
+  editName = signal('');
+  editSurname = signal('');
+  editNickname = signal('');
+  editEmail = signal('');
+  editOldPassword = signal('');
+  editNewPassword = signal('');
+  editConfirmPassword = signal('');
+
+  // computed — si aggiorna automaticamente quando user() cambia
+  private user = computed(() => this.authService.user());
 
   constructor(public authService: AuthService) {
     effect(() => {
-      const user = this.authService.user();
+      const user = this.user();
       if (user && !this.isEditing()) {
-        this.editName = user.name || '';
-        this.editSurname = user.surname || '';
-        this.editNickname = user.nickname || '';
-        this.editEmail = user.email || '';
-
+        this.editName.set(user.name || '');
+        this.editSurname.set(user.surname || '');
+        this.editNickname.set(user.nickname || '');
+        this.editEmail.set(user.email || '');
       }
     });
   }
+  
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);
   isPasswordVisible: boolean = false;
@@ -62,10 +65,10 @@ export class ProfileComponent {
   cancelEdit() {
     const user = this.authService.user();
     if (user) {
-      this.editName = user.name || '';
-      this.editSurname = user.surname || '';
-      this.editNickname = user.nickname || '';
-      this.editEmail = user.email || '';
+      this.editName.set(user.name || '');
+      this.editSurname.set(user.surname || '');
+      this.editNickname.set(user.nickname || '');
+      this.editEmail.set(user.email || '');
     }
     this.isEditing.set(false);
   }
@@ -103,7 +106,7 @@ export class ProfileComponent {
         }
 
         // Controlla che la nuova password rispetti la Regex
-        if (!this.passwordRegex.test(this.editNewPassword)) {
+        if (!this.passwordRegex.test(this.editNewPassword())) {
           this.errorMessage.set('La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola, una minuscola e un numero.');
          this.isSaving.set(false);
           return;
@@ -122,9 +125,9 @@ export class ProfileComponent {
         this.isSaving.set(false);
         this.isEditing.set(false); // Chiude la modalità modifica
           this.clearMessagesAfterDelay(); // Imposta il timer per cancellare i messaggi
-        this.editOldPassword = '';
-        this.editNewPassword = '';
-        this.editConfirmPassword = '';
+        this.editOldPassword.set('');
+        this.editNewPassword.set('');
+        this.editConfirmPassword.set('');
       
       },
       error: (err) => {

@@ -126,7 +126,8 @@ export class SubmissionComponent implements OnInit {
     this.errorMessage.set(null);
 
     const payload = { idHackathon: id, type: 'github', source: this.githubUrl() };
-
+    console.log(payload);
+    
     this.submissionService.submitProject(payload).subscribe({
       next: () => {
         this.showSuccess('GitHub repository linked successfully!');

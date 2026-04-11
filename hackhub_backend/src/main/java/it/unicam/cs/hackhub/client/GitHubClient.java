@@ -26,6 +26,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 /**
  * Lightweight utility class for accessing selected endpoints of the GitHub REST API.
@@ -68,28 +69,29 @@ public class GitHubClient {
     public static String getLastCommit(String repositoryUrl) {
         try {
             RepoResponse repo = GitHubRepoParser.parse(repositoryUrl);
-
-            String url = GITHUB_API + "/repos/" +
-                    repo.owner() + "/" +
-                    repo.repo() + "/commits/main";
-
             HttpClient client = HttpClient.newHttpClient();
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .header("Accept", "application/vnd.github+json")
-                    .GET()
-                    .build();
+            for (String branch : List.of("main", "master")) {
+                String url = GITHUB_API + "/repos/" +
+                        repo.owner() + "/" +
+                        repo.repo() + "/commits/" + branch;
 
-            HttpResponse<String> response =
-                    client.send(request, HttpResponse.BodyHandlers.ofString());
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(url))
+                        .header("Accept", "application/vnd.github+json")
+                        .GET()
+                        .build();
 
-            if (response.statusCode() != 200) {
-                throw new RuntimeException(
-                        "GitHub API error: " + response.statusCode()
-                );
+                HttpResponse<String> response =
+                        client.send(request, HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 200) {
+                    return extractSha(response.body());
+                }
             }
-            return extractSha(response.body());
+            throw new RuntimeException("Branch principale non trovato (provati: main, master)");
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException("Unable to retrieve commit", e);
         }
@@ -113,10 +115,8 @@ public class GitHubClient {
         int index = json.indexOf("\"sha\":\"");
         if (index == -1)
             throw new RuntimeException("Invalid GitHub response");
-
         int start = index + 7;
         int end = json.indexOf("\"", start);
-
         return json.substring(start, end);
     }
 }

@@ -104,22 +104,17 @@ public class InvitationController {
      *         and a confirmation message
      */
     @PatchMapping("/{id}/response")
-    public ResponseEntity<Map<String,Object>> invitationResponse(
+    public ResponseEntity<InvitationResponse> invitationResponse(
             @PathVariable Long id,
             @RequestParam boolean accept) {
 
-        invitationService.invitationResponse(id, accept);
-        Long idTeam = null;
-
-        if (accept) {
-            idTeam = invitationService.getTeamIdByInvitation(id);
-        }
-
+        /*InvitationResponse invitation =
+                InvitationResponse.fromEntity(invitationService.invitationResponse(id, accept));
         Map<String, Object> body = new HashMap<>();
         body.put("message", "Invitation " + (accept ? "accepted" : "refused") + " successfully.");
         if (accept)
-            body.put("idTeam", idTeam);
+            body.put("idTeam", invita);*/
 
-        return ResponseEntity.ok(body);
+        return ResponseEntity.ok(InvitationResponse.fromEntity(invitationService.invitationResponse(id, accept)));
     }
 }

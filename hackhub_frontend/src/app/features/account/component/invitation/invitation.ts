@@ -61,8 +61,10 @@ export class InvitationComponent implements OnInit {
     this.invitationService.respond(idInvitation, accept)
     .subscribe({
       next: (res: any) => {
-        if (accept && res.idTeam) {
-          this.authService.updateTeamId(res.idTeam);
+        console.log(res);
+        if (accept && res.idInvitingTeam) {
+          this.authService.updateTeamId(res.idInvitingTeam);
+          this.authService.updateTeamName(res.invitingTeamName);
         }
         
         this.handleResponse(idInvitation, accept? 'accettato' : 'rifiutato');

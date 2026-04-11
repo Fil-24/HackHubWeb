@@ -2,6 +2,10 @@
 // _shared.scss
 @use "colors" as *;
 
+body{
+  background-color: $bg-main !important;
+}
+
 // ── TYPOGRAPHY ──
 %title-display {
   font-family: $font-display;
