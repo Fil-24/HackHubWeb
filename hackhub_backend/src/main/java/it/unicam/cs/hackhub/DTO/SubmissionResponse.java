@@ -21,9 +21,11 @@
  */
 package it.unicam.cs.hackhub.DTO;
 
+import it.unicam.cs.hackhub.model.GitHubSubmission;
 import it.unicam.cs.hackhub.model.Submission;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * Data Transfer Object (DTO) representing a hackathon submission.
@@ -45,6 +47,7 @@ public record SubmissionResponse(
         String team,
         String hackathon,
         LocalDateTime submittedAt,
+        Optional<String> repositoryUrl,
         String immutableReference,
         String writtenJudgment,
         Double score
@@ -72,6 +75,10 @@ public record SubmissionResponse(
             score = s.getEvaluation().score();
         }
 
+        Optional<String> repositoryUrl = s instanceof GitHubSubmission gh
+                ? Optional.of(gh.getRepositoryUrl())
+                : Optional.empty();
+
         return new SubmissionResponse(
                 s.getIdSubmission(),
 
@@ -80,6 +87,7 @@ public record SubmissionResponse(
                 s.getHackathon() != null ? s.getHackathon().getName() : null,
 
                 s.getSubmittedAt(),
+                repositoryUrl,
                 s.getImmutableReference(),
 
                 judgment,
