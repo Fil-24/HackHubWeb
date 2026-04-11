@@ -21,6 +21,7 @@
  */
 package it.unicam.cs.hackhub.controller;
 
+import it.unicam.cs.hackhub.DTO.ReportRequest;
 import it.unicam.cs.hackhub.service.ReportService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,16 +70,15 @@ public class ReportController {
      *         and a confirmation message
      */
     @PostMapping
-    public ResponseEntity<String> reportTeam(@RequestBody Map<String, Object> payload) {
-        Long idTeam = ((Number) payload.get("idTeam")).longValue();
-        Long idHackathon = ((Number) payload.get("idHackathon")).longValue();
+    public ResponseEntity<Map<String, String>> reportTeam(@RequestBody ReportRequest request) {
         reportService.reportTeam(
-                idTeam,
-                idHackathon,
-                (String) payload.get("description"),
-                (String) payload.get("reason")
+                request.idTeam(),
+                request.idHackathon(),
+                request.description(),
+                request.reason()
         );
-        return ResponseEntity.status(HttpStatus.CREATED).body("Report submitted successfully.");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("message", "Report submitted successfully."));
     }
 
     /**

@@ -41,7 +41,4 @@ export class SubmissionService {
   getSubmissionsByHackathon(idHackathon: number): Observable<SubmissionResponse[]> {
     return this.http.get<SubmissionResponse[]>(`${this.apiUrl}/hackathons/${idHackathon}/staff`);
   }
-
-  
-
 }

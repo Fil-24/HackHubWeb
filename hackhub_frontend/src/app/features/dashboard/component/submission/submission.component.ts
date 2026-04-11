@@ -7,6 +7,7 @@ import { SubmissionService } from '../../service/submission.service';
 import { SubmissionResponse } from '../../models/submission.model';
 import { Team } from '../../../teams/model/team.model';
 import { AuthService } from '../../../auth/service/auth.service';
+import { ReportService } from '../../../reports/service/report.service';
 
 @Component({
   selector: 'app-submission',
@@ -19,12 +20,13 @@ export class SubmissionComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private submissionService = inject(SubmissionService);
   protected authService = inject(AuthService); // Protected for HTML template use
+  private reportService = inject(ReportService);
 
   hackathonId = signal<number | null>(null);
 
   // --- DATA STATES ---
   submissions = signal<SubmissionResponse[]>([]); // Staff only
-  winner = signal<Team | null>(null);     // Everyone
+  winner = signal<Team | null>(null);             // Everyone
 
   // --- FORM & UI STATES ---
   githubUrl = signal<string>('');
@@ -44,6 +46,22 @@ export class SubmissionComponent implements OnInit {
   isTeamMember = signal<boolean>(false);
   isStaff = signal<boolean>(false);
 
+  // --- EVALUATION & REPORT ---
+  // Popup state
+  showReportModal = signal(false);
+  showEvaluateModal = signal(false);
+  activeSubmission = signal<any>(null);
+
+  // Report form
+  reportReason = signal('');
+  reportDescription = signal('');
+  isReporting = signal(false);
+
+  // Evaluate form
+  evalScore = signal(7.5);
+  evalJudgment = signal('');
+  isEvaluating = signal(false);
+
   constructor() {
     effect(() => {
       const user = this.authService.user();
@@ -53,7 +71,6 @@ export class SubmissionComponent implements OnInit {
         this.isTeamMember.set(!!user.idTeam);
         this.isStaff.set(user.role === 'STAFF');
 
-        // sposta qui la logica che dipende dai valori
         const id = this.hackathonId();
         if (id) {
           if (this.isStaff()) {
@@ -78,7 +95,7 @@ export class SubmissionComponent implements OnInit {
     }
   }
 
-  // --- HELPER METHODS FOR MESSAGES (5 Seconds) ---
+  // --- HELPER METHODS FOR MESSAGES (5 seconds) ---
   private showSuccess(message: string) {
     this.successMessage.set(message);
     if (this.successTimeoutId) clearTimeout(this.successTimeoutId);
@@ -95,7 +112,6 @@ export class SubmissionComponent implements OnInit {
 
   // --- STAFF METHODS ---
   loadStaffDashboard(idHackathon: number) {
-    // Using the newly added method to fetch ALL submissions for the hackathon
     this.submissionService.getSubmissionsByHackathon(idHackathon).subscribe({
       next: (data) => {
         console.log('Submissions for Hackathon ID', idHackathon, ':', data);
@@ -116,18 +132,18 @@ export class SubmissionComponent implements OnInit {
   // --- TEAM METHODS ---
   checkMySubmission() {
     this.submissionService.getSubmissionForTeam(this.hackathonId()!).subscribe({
-        next: (submission) => {
-            console.log('My submission:', submission);
-            this.githubUrl.set(submission.repositoryUrl ?? '');
-            this.mySubmissionId.set(submission.id ?? null);
-            this.submittedAt.set(submission.submittedAt ?? '');
-            this.isUpdating.set(false);
-        },
-        error: (err) => {
-            if (err.status === 400 || err.status === 404) {
-                this.isUpdating.set(false);
-            }
+      next: (submission) => {
+        console.log('My submission:', submission);
+        this.githubUrl.set(submission.repositoryUrl ?? '');
+        this.mySubmissionId.set(submission.id ?? null);
+        this.submittedAt.set(submission.submittedAt ?? '');
+        this.isUpdating.set(false);
+      },
+      error: (err) => {
+        if (err.status === 400 || err.status === 404) {
+          this.isUpdating.set(false);
         }
+      }
     });
   }
 
@@ -141,12 +157,11 @@ export class SubmissionComponent implements OnInit {
 
     const payload = { idHackathon: id, type: 'github', source: this.githubUrl() };
     console.log(payload);
-    
+
     this.submissionService.submitProject(payload).subscribe({
       next: () => {
         this.showSuccess('GitHub repository linked successfully!');
         this.isSubmitting.set(false);
-        // We can call this.checkMySubmission() here to update the UI once the endpoint is ready
       },
       error: (err) => {
         this.showError(err);
@@ -171,6 +186,68 @@ export class SubmissionComponent implements OnInit {
       error: (err) => {
         this.showError(err);
         this.isUpdating.set(false);
+      }
+    });
+  }
+
+  openReport(sub: any) {
+    console.log(sub);
+    this.activeSubmission.set(sub);
+    this.reportReason.set('');
+    this.reportDescription.set('');
+    this.showReportModal.set(true);
+  }
+
+  openEvaluate(sub: any) {
+    this.activeSubmission.set(sub);
+    this.evalScore.set(7.5);
+    this.evalJudgment.set('');
+    this.showEvaluateModal.set(true);
+  }
+
+  closeModals() {
+    this.showReportModal.set(false);
+    this.showEvaluateModal.set(false);
+    this.activeSubmission.set(null);
+  }
+
+  submitReport() {
+    this.isReporting.set(true);
+    const payload = {
+      idTeam: this.activeSubmission()?.teamId,
+      idHackathon: this.hackathonId()!,
+      reason: this.reportReason(),
+      description: this.reportDescription()
+    };
+    console.log('Report payload:', payload);
+    this.reportService.reportTeam(payload).subscribe({
+      next: () => {
+        this.showSuccess('Report submitted successfully.');
+        this.closeModals();
+        this.isReporting.set(false);
+      },
+      error: (err) => {
+        this.showError(err);
+        this.isReporting.set(false);
+      }
+    });
+  }
+
+  submitEvaluation() {
+    this.isEvaluating.set(true);
+    console.log(this.evalJudgment() + " " + this.evalScore() + " " + this.activeSubmission()?.id)
+    this.submissionService.evaluateSubmission(
+      this.activeSubmission()?.id,
+      { writtenJudgment: this.evalJudgment(), score: this.evalScore() }
+    ).subscribe({
+      next: () => {
+        this.showSuccess('Evaluation submitted successfully.');
+        this.closeModals();
+        this.isEvaluating.set(false);
+      },
+      error: (err) => {
+        this.showError(err);
+        this.isEvaluating.set(false);
       }
     });
   }

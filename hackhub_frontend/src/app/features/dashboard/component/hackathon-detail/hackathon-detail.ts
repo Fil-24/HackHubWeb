@@ -33,6 +33,8 @@ export class HackathonDetailComponent implements OnInit {
   hackathon = signal<Hackathon | null>(null);
   modifiedHackathon = signal<Hackathon | null>(null);
 
+  isStaff = signal<boolean>(false);
+
   isOrganizer = false;  
   showModifyForm = false;
 
@@ -117,6 +119,11 @@ export class HackathonDetailComponent implements OnInit {
         }
 
         this.modifiedHackathon.set({ ...data });
+
+        this.isStaff.set(this.isOrganizer ||
+                  data.staff.judgeId === currentUserId ||
+                  data.staff.mentors.some((s: any) => s.idAccount === this.authService.userId)
+                  ? true : false); 
         
         this.loadRules();
         
