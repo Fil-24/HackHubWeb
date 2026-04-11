@@ -93,6 +93,14 @@ export class AuthService {
     }
   }
 
+  updateTeamName(teamName: string | null) {
+    const current = this.currentUser;
+    if (current) {
+      const updated = { ...current, teamName: teamName };
+      this.userSignal.set(updated);
+    }
+  }
+
   get currentUser(): Account | null {
     return this.userSignal();
   }
@@ -102,6 +110,10 @@ export class AuthService {
   }
 
   get teamId(): number | null {
+    return this.currentUser?.idTeam ?? null;
+  }
+
+  get teamName(): number | null {
     return this.currentUser?.idTeam ?? null;
   }
 

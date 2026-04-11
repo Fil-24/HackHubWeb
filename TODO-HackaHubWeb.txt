@@ -1,6 +1,4 @@
 team problemi:
- - se un utente accetta un invito deve ricaricare la pagine per poter visualizzare l aggiornamento
-- l'eliminazione di un membro è troppo facile, metterei un bottone piuttosto che una semplice x e un pop up di conferma
 
 -sistemare i model all'interno del home
 
@@ -9,5 +7,7 @@ team problemi:
 
 -hackathons sistemare lo sfondo
 
--ricerca:
-	- past e ordinamento per nome non funzionano
+Cose da fare [almeno non mi scordo :)]
+- valutazione tramite tabella submission con pop-up per inserimento voto e descrizione (+ bottone modifica)
+- proclamazione vincitore (da sistemare completamente anche lato back-end)
+- sempre sulla stessa tabella per la proclamazione inserire su action il bottone per la segnalazione (al posto di valuta o insieme in caso si è entrambi)

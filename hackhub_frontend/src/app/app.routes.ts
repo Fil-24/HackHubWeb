@@ -6,7 +6,6 @@ import { ProfileComponent } from './features/account/component/profile/profile';
 import { AuthGuard } from './core/guards/auth.guard';
 import { InvitationComponent } from './features/account/component/invitation/invitation';
 import { TeamComponent } from './features/teams/components/team/team.component';
-import { TeamGuard } from './core/guards/team.guard';
 import { MyTeamComponent } from './features/teams/components/my-team/my-team.component';
 import { CreateHackathon } from './features/dashboard/component/createHackathon/createHackathon.component';
 import { HackathonsComponent } from './features/dashboard/component/hackathons/hackathons.component';
@@ -26,9 +25,9 @@ export const routes: Routes = [
   { path: 'hackathon/:id', component: HackathonDetailComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'invitations', component: InvitationComponent, canActivate: [AuthGuard]},
-  { path: 'teams', component:TeamComponent, /*canActivate: [TeamGuard]*/},
+  { path: 'teams', component:TeamComponent},
   { path: 'teams/my', component:MyTeamComponent, canActivate: [AuthGuard]},
   { path: 'hackathons/:id/submissions', component:SubmissionComponent, /*canActivate: [AuthGuard]*/},
-  {path: 'hackathons', component: HackathonsComponent},
+  { path: 'hackathons', component: HackathonsComponent},
   { path: '**', redirectTo: 'home' }
 ];

@@ -128,7 +128,7 @@ public class InvitationService {
      * @throws org.springframework.security.access.AccessDeniedException if the caller is not authorized
      */
     @PreAuthorize("hasRole('USER')")
-    public void invitationResponse(Long idInvitation, boolean response) {
+    public Invitation invitationResponse(Long idInvitation, boolean response) {
         Invitation invitation = getInvitation(idInvitation);
 
         if (invitation == null) {
@@ -154,6 +154,7 @@ public class InvitationService {
             invitation.setState(InvitationState.REFUSED);
 
         invitationRepository.save(invitation);
+        return invitation;
     }
 
     /**
