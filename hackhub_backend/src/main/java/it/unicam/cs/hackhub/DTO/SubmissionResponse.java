@@ -34,6 +34,7 @@ import java.util.Optional;
  * and contextual information about the related team and hackathon.
  *
  * @param id                the unique identifier of the submission
+ * @param idTeam            the unique identifier of the team
  * @param team              the name of the team that submitted the project
  * @param hackathon         the name of the related hackathon
  * @param submittedAt       the date and time when the submission was created
@@ -44,13 +45,15 @@ import java.util.Optional;
  */
 public record SubmissionResponse(
         Long id,
+        Long idTeam,
         String team,
         String hackathon,
         LocalDateTime submittedAt,
         Optional<String> repositoryUrl,
         String immutableReference,
         String writtenJudgment,
-        Double score
+        Double score,
+        boolean teamDisabled
 ) {
     /**
      * Converts a {@link Submission} entity into a {@link SubmissionResponse}.
@@ -79,9 +82,15 @@ public record SubmissionResponse(
                 ? Optional.of(gh.getRepositoryUrl())
                 : Optional.empty();
 
+        boolean teamDisabled = false;
+        if (s.getHackathon() != null && s.getTeam() != null) {
+            teamDisabled = s.getHackathon().getTeams()
+                    .getOrDefault(s.getTeam(), false);
+        }
+
         return new SubmissionResponse(
                 s.getIdSubmission(),
-
+                s.getTeam() != null ? s.getTeam().getIdTeam() : null,
                 s.getTeam() != null ? s.getTeam().getName() : null,
 
                 s.getHackathon() != null ? s.getHackathon().getName() : null,
@@ -91,7 +100,8 @@ public record SubmissionResponse(
                 s.getImmutableReference(),
 
                 judgment,
-                score
+                score,
+                teamDisabled
         );
     }
 }

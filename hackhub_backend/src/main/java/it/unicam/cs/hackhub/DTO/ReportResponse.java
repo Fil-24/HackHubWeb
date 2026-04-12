@@ -21,6 +21,9 @@
  */
 package it.unicam.cs.hackhub.DTO;
 
+import it.unicam.cs.hackhub.model.Report;
+import it.unicam.cs.hackhub.model.Rule;
+
 import java.time.LocalDateTime;
 
 /**
@@ -47,4 +50,17 @@ public record ReportResponse(Long id,
      String description,
      String reason,
      LocalDateTime date) {
+
+    public static ReportResponse fromEntity(Report report) {
+        return new ReportResponse(
+                report.getIdReport(),
+                report.getTeam().getIdTeam(),
+                report.getTeam().getName(),
+                report.getMentor().getIdAccount(),
+                report.getMentor().getName(),
+                report.getDescription(),
+                report.getReason(),
+                report.getDate()
+        );
+    }
 }

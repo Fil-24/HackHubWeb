@@ -21,8 +21,12 @@
  */
 package it.unicam.cs.hackhub.repository;
 
+import it.unicam.cs.hackhub.model.Hackathon;
 import it.unicam.cs.hackhub.model.Report;
+import it.unicam.cs.hackhub.model.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 /**
  * Repository interface for managing persistence operations related to {@link Report} entities.
@@ -38,4 +42,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * </p>
  */
 public interface ReportRepository extends JpaRepository<Report, Long> {
+    List<Report> findByTeamAndHackathon(Team team, Hackathon hackathon);
 }

@@ -22,11 +22,14 @@
 package it.unicam.cs.hackhub.controller;
 
 import it.unicam.cs.hackhub.DTO.ReportRequest;
+import it.unicam.cs.hackhub.DTO.ReportResponse;
+import it.unicam.cs.hackhub.DTO.SubmissionResponse;
 import it.unicam.cs.hackhub.service.ReportService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,7 +68,7 @@ public class ReportController {
      *     <li>{@code reason} – short reason/category of the report</li>
      * </ul>
      *
-     * @param payload a map containing the report parameters
+     * @param request report parameters
      * @return a {@link ResponseEntity} with HTTP status 201 (Created)
      *         and a confirmation message
      */
@@ -95,13 +98,23 @@ public class ReportController {
      *         and a confirmation message
      */
     @PatchMapping("/management/hackathons/{idHackathon}/teams/{idTeam}")
-    public ResponseEntity<String> reportManagement(
+    public ResponseEntity<Map<String, String>> reportManagement(
             @PathVariable Long idHackathon,
             @PathVariable Long idTeam,
             @RequestParam boolean disabled) {
         reportService.reportManagement(disabled, idHackathon, idTeam);
         String action = disabled ? "disabled" : "enabled";
-        return ResponseEntity.ok("Team " + idTeam + " has been " + action + " successfully.");
+        return ResponseEntity.ok(Map.of("message",
+                "Team " + idTeam + " has been " + action + " " +
+                "successfully."));
     }
 
+    @GetMapping("hackathons/{idHackathon}/teams/{idTeam}")
+    public ResponseEntity<List<ReportResponse>> getReportsByTeam( @PathVariable Long idHackathon,
+                                                                  @PathVariable Long idTeam)
+    {
+        return ResponseEntity.ok(reportService.getReportsByTeam(idHackathon, idTeam).stream()
+                .map(ReportResponse::fromEntity)
+                .toList());
+    }
 }

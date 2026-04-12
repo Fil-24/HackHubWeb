@@ -98,14 +98,21 @@
 
                       @if (isJudge() && hackathon()?.status === 'EVALUATION') {
                       <button class="hd-btn-ghost py-1 px-3" style="font-size: 0.85rem;"
-                        (click)="evaluateSubmission(sub)">
+                        (click)="openEvaluate(sub)">
                         <i class="fa-solid fa-star me-1"></i> Evaluate
                       </button>
                       }
 
                       @if (isMentor() && hackathon()?.status === 'ONGOING') {
-                      <button class="hd-btn-ghost py-1 px-3" style="font-size: 0.85rem;" (click)="flagSubmission(sub)">
+                      <button class="hd-btn-ghost py-1 px-3" style="font-size: 0.85rem;" (click)="openReport(sub)">
                         <i class="fa-solid fa-flag me-1"></i> Flag
+                      </button>
+                      }
+
+                      @if (isOrganizer() && hackathon()?.status === 'ONGOING') {
+                      <button class="hd-btn-ghost py-1 px-3" style="font-size: 0.85rem;"
+                        (click)="openReportList(sub)">
+                        <i class="fa-solid fa-shield-halved me-1"></i> Reports
                       </button>
                       }
 
@@ -244,6 +251,7 @@
   </div>
 </section>
 
+<!--- FLAG for report team --->
 @if (showReportModal()) {
 <div class="pr-modal-overlay" (click)="closeModals()">
   <div class="pr-modal-content pr-card" (click)="$event.stopPropagation()">
@@ -299,6 +307,7 @@
 </div>
 }
 
+<!--- EVALUATION form --->
 @if (showEvaluateModal()) {
 <div class="pr-modal-overlay" (click)="closeModals()">
   <div class="pr-modal-content pr-card" (click)="$event.stopPropagation()">
@@ -355,6 +364,75 @@
           <span class="spinner-border spinner-border-sm me-2"></span>
           }
           <i class="fa-solid fa-star me-1"></i> Submit Evaluation
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+}
+
+<!--- List of reports for the management --->
+@if (showReportListModal() && isOrganizer()) {
+<div class="pr-modal-overlay" (click)="closeModals()">
+  <div class="pr-modal-content pr-card" (click)="$event.stopPropagation()">
+    <div class="pr-card-bar" style="background: #ff3b6b;"></div>
+    <div class="pr-card-body p-4 p-md-5">
+
+      <div class="d-flex justify-content-between align-items-start mb-4">
+        <div class="d-flex align-items-center gap-3">
+          <div class="hd-section-header__icon" style="background: rgba(255,59,107,0.1); color: #ff3b6b;">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h4 class="pr-value m-0">Team Reports</h4>
+            <span class="pr-label">{{ activeSubmission()?.team }}</span>
+          </div>
+        </div>
+        <button class="btn-close-custom" (click)="closeModals()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      @if (isLoadingReports()) {
+      <div class="text-center py-4">
+        <span class="spinner-border spinner-border-sm me-2"></span>
+        Loading reports...
+      </div>
+      } @else if (teamReports().length === 0) {
+      <div class="text-center py-4 text-muted">
+        <i class="fa-solid fa-inbox fs-3 d-block mb-2 opacity-50"></i>
+        No reports filed for this team.
+      </div>
+      } @else {
+      <div class="d-flex flex-column gap-3 mb-4">
+        @for (report of teamReports(); track report.id) {
+        <div class="p-3 border rounded" style="border-color: rgba(255,59,107,0.2) !important; background: rgba(255,59,107,0.03);">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <span class="pr-badge" style="color: #ff3b6b; background: rgba(255,59,107,0.1);">
+              {{ report.reason }}
+            </span>
+            <span class="pr-label">{{ report.date | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <p class="mb-2" style="font-size: 0.9rem;">{{ report.description }}</p>
+          <span class="pr-label">
+            <i class="fa-solid fa-user me-1"></i> {{ report.mentorName }}
+          </span>
+        </div>
+        }
+      </div>
+      }
+
+      <div class="d-flex gap-2 justify-content-end">
+        <button class="hd-btn-ghost" (click)="closeModals()">Close</button>
+        <button class="hd-btn-primary"
+          [style.background]="activeSubmission()?.team?.disabled ? '#00c896' : '#ff3b6b'"
+          [style.border-color]="activeSubmission()?.team?.disabled ? '#00c896' : '#ff3b6b'"
+          (click)="toggleTeamStatus(activeSubmission())">
+          <i class="fa-solid"
+            [class.fa-lock-open]="activeSubmission()?.team?.disabled"
+            [class.fa-lock]="!activeSubmission()?.team?.disabled"></i>
+          {{ activeSubmission()?.team?.disabled ? 'Enable Team' : 'Disable Team' }}
         </button>
       </div>
 

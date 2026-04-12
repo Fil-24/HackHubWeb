@@ -1,5 +1,6 @@
 export interface SubmissionResponse {
   id: number;
+  idTeam: number;
   team: string;
   hackathon: string;
   submittedAt: string;
@@ -7,6 +8,7 @@ export interface SubmissionResponse {
   immutableReference: string;
   writtenJudgment?: string; // Opzionale perché potrebbe non essere ancora valutato
   score?: number; // Opzionale
+  teamDisabled: boolean;
 }
 
 export interface RepoResponse {

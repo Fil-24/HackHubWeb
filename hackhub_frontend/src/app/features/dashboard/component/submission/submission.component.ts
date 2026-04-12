@@ -10,6 +10,7 @@ import { AuthService } from '../../../auth/service/auth.service';
 import { ReportService } from '../../../reports/service/report.service';
 import { HackathonService } from '../../service/hackathon.service';
 import { Hackathon } from '../../models/hackathon.model';
+import { Report } from '../../../reports/model/report.model';
 @Component({
   selector: 'app-submission',
   standalone: true,
@@ -53,12 +54,15 @@ export class SubmissionComponent implements OnInit {
   // Popup state
   showReportModal = signal(false);
   showEvaluateModal = signal(false);
+  showReportListModal = signal(false);
   activeSubmission = signal<any>(null);
 
   // Report form
   reportReason = signal('');
   reportDescription = signal('');
   isReporting = signal(false);
+  teamReports = signal<Report[]>([]);
+  isLoadingReports = signal(false);
 
   // Evaluate form
   evalScore = signal(7.5);
@@ -213,16 +217,35 @@ export class SubmissionComponent implements OnInit {
     this.showEvaluateModal.set(true);
   }
 
+  openReportList(sub: SubmissionResponse) {
+    this.activeSubmission.set(sub);
+    this.teamReports.set([]);
+    this.isLoadingReports.set(true);
+    this.showReportListModal.set(true);
+
+    this.reportService.getReportsByTeam(this.hackathonId()!, sub.idTeam).subscribe({
+      next: (reports) => {
+        this.teamReports.set(reports);
+        this.isLoadingReports.set(false);
+      },
+      error: (err) => {
+        this.showError(err);
+        this.isLoadingReports.set(false);
+      }
+    });
+  }
+
   closeModals() {
     this.showReportModal.set(false);
     this.showEvaluateModal.set(false);
+    this.showReportListModal.set(false);
     this.activeSubmission.set(null);
   }
 
   submitReport() {
     this.isReporting.set(true);
     const payload = {
-      idTeam: this.activeSubmission()?.teamId,
+      idTeam: this.activeSubmission()?.idTeam,
       idHackathon: this.hackathonId()!,
       reason: this.reportReason(),
       description: this.reportDescription()
@@ -259,6 +282,23 @@ export class SubmissionComponent implements OnInit {
       }
     });
   }
+
+  toggleTeamStatus(sub: any) {
+    const newStatus = !sub.teamDisabled;
+    this.reportService.reportManagement(
+      this.hackathonId()!,
+      sub.idTeam,
+      newStatus
+    ).subscribe({
+      next: () => {
+        this.showSuccess(`Team ${newStatus ? 'disabled' : 'enabled'} successfully.`);
+        this.closeModals();
+        this.loadStaffDashboard(this.hackathonId()!);
+      },
+      error: (err) => this.showError(err)
+    });
+  }
+
   startEdit() {
     this.editUrlTemp.set(this.githubUrl());
     this.editMode.set(true);
@@ -309,10 +349,5 @@ export class SubmissionComponent implements OnInit {
     return false;
   });
 
-
-  //TODO: metodi da implementare
-  evaluateSubmission(sub: SubmissionResponse) { }
-
-  flagSubmission(sub: SubmissionResponse) { }
   declareWinner(sub: SubmissionResponse) { }
 }

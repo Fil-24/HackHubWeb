@@ -30,6 +30,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Service layer component responsible for managing {@link Report} entities and report-related workflows.
  *
@@ -118,4 +121,10 @@ public class ReportService {
         reportRepository.save(report);
     }
 
+    @PreAuthorize("hasRole('STAFF')")
+    public List<Report> getReportsByTeam(Long idHackathon, Long idTeam) {
+        Hackathon hackathon = hackathonService.getHackathon(idHackathon);
+        Team team = hackathon.getTeamById(idTeam);
+        return reportRepository.findByTeamAndHackathon(team, hackathon);
+    }
 }
