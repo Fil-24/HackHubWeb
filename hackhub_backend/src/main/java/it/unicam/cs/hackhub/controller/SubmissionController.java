@@ -166,7 +166,7 @@ public class SubmissionController {
         submissionService.evaluateSubmission(
                 id,
                 (String) payload.get("writtenJudgment"),
-                (double) payload.get("score")
+                ((Number) payload.get("score")).doubleValue()
         );
         return ResponseEntity.ok("Evaluation submitted.");
     }

@@ -67,7 +67,7 @@
                   </button>
                 }
                 
-                @if(leader()) { 
+                @if(leader() && hackathon()?.status === 'REGISTRATION') { 
                   @if(teamRegistered()) {
                     <button class="hd-hero__btn-leave" (click)="unsubscribeTeam()">
                       <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> Leave

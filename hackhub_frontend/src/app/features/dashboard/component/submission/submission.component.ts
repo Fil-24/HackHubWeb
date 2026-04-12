@@ -63,11 +63,14 @@ export class SubmissionComponent implements OnInit {
   isReporting = signal(false);
   teamReports = signal<Report[]>([]);
   isLoadingReports = signal(false);
+  myTeamDisabled = signal<boolean>(false);
 
   // Evaluate form
   evalScore = signal(7.5);
   evalJudgment = signal('');
   isEvaluating = signal(false);
+  myScore = signal<number | null>(null);
+  myJudgment = signal<string | null>(null);
 
   constructor(private hackathonService: HackathonService) {
     effect(() => {
@@ -145,10 +148,12 @@ export class SubmissionComponent implements OnInit {
   checkMySubmission() {
     this.submissionService.getSubmissionForTeam(this.hackathonId()!).subscribe({
       next: (submission) => {
-        console.log('My submission:', submission);
         this.githubUrl.set(submission.repositoryUrl ?? '');
         this.mySubmissionId.set(submission.id ?? null);
         this.submittedAt.set(submission.submittedAt ?? '');
+        this.myTeamDisabled.set(submission.teamDisabled ?? false);
+        this.myScore.set(submission.score ?? null);
+        this.myJudgment.set(submission.writtenJudgment ?? null); 
         this.isUpdating.set(false);
       },
       error: (err) => {
@@ -275,6 +280,7 @@ export class SubmissionComponent implements OnInit {
         this.showSuccess('Evaluation submitted successfully.');
         this.closeModals();
         this.isEvaluating.set(false);
+        this.loadStaffDashboard(this.hackathonId()!);
       },
       error: (err) => {
         this.showError(err);
@@ -338,9 +344,10 @@ export class SubmissionComponent implements OnInit {
   });
 
   allEvaluated = computed(() => {
-    return this.submissions().length > 0 &&
-      this.submissions().every(s => (s.score ?? 0) > 0)
+    const active = this.submissions().filter(s => !s.teamDisabled);
+    return active.length > 0 && active.every(s => (s.score ?? 0) > 0);
   });
+
   canDoAction = computed(() => {
     const status = this.hackathon()?.status;
     if (this.isJudge() && status === 'EVALUATION') return true;
