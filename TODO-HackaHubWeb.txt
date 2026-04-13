@@ -11,3 +11,8 @@ Cose da fare [almeno non mi scordo :)]
 - valutazione tramite tabella submission con pop-up per inserimento voto e descrizione (+ bottone modifica)
 - proclamazione vincitore (da sistemare completamente anche lato back-end)
 - sempre sulla stessa tabella per la proclamazione inserire su action il bottone per la segnalazione (al posto di valuta o insieme in caso si è entrambi)
+
+imprecisioni da correggere se c'è tempo
+- una volta salvata la submission non si aggiorna automaticamente la pagina
+- mi sembra manchi il bottone per aggiornare la sottomissione, c'è solo quello per l edit
+- bisognerebbe mettere su tutte le pagine di dettaglio un bottone per tornare in dietro, al momento la navigabilità è un po caotica
