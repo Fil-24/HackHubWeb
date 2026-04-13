@@ -11,10 +11,9 @@ import { environment } from '../../../../environments/environment';
 })
 export class SubmissionService {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl+'/submissions'; // Modifica con la tua base URL
+  private apiUrl = environment.apiUrl+'/submissions';
 
   submitProject(payload: SubmitProjectPayload): Observable<string> {
-    // Il backend restituisce una stringa, usiamo responseType: 'text'
     return this.http.post(this.apiUrl, payload, { responseType: 'text' });
   }
 

@@ -4,13 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { SubmissionService } from '../../service/submission.service';
-import { SubmissionResponse } from '../../models/submission.model';
+import { SubmissionResponse, SubmitProjectPayload } from '../../models/submission.model';
 import { Team } from '../../../teams/model/team.model';
 import { AuthService } from '../../../auth/service/auth.service';
 import { ReportService } from '../../../reports/service/report.service';
 import { HackathonService } from '../../service/hackathon.service';
 import { Hackathon } from '../../models/hackathon.model';
 import { Report } from '../../../reports/model/report.model';
+
 @Component({
   selector: 'app-submission',
   standalone: true,
@@ -97,19 +98,19 @@ export class SubmissionComponent implements OnInit {
     });
   }
 
-ngOnInit() {
+  ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const numId = +id;
       this.hackathonId.set(numId);
     }
     
-    // Recupera i dati dell'hackathon
+    // Retrieve hackathon data
     this.hackathonService.getById(this.hackathonId()!).subscribe({
       next: (hackathon) => {
         this.hackathon.set(hackathon);
         
-        // Non appena ho l'hackathon, controllo se c'è già un vincitore
+        // As soon as I have the hackathon, check if there's already a winner
         this.checkWinner(this.hackathonId()!); 
       },
       error: (err) => this.showError(err)
@@ -120,11 +121,11 @@ ngOnInit() {
   checkWinner(idHackathon: number) {
     this.hackathonService.getWinner(idHackathon).subscribe({
       next: (winnerTeam) => {
-        console.log('Vincitore trovato:', winnerTeam);
+        console.log('Winner found:', winnerTeam);
         this.winner.set(winnerTeam);
       },
       error: (err) => {
-        // Se riceve 404, significa che il vincitore non è ancora stato proclamato
+        // If it receives 404, it means the winner hasn't been proclaimed yet
         if (err.status === 404) {
            this.winner.set(null);
         } else {
@@ -142,11 +143,11 @@ ngOnInit() {
 
     this.submissionService.proclaimWinner(id).subscribe({
       next: (message) => {
-        // Mostra il messaggio di successo dal backend
-        this.showSuccess(message || 'Vincitore proclamato con successo!');
+        // Show success message from backend
+        this.showSuccess(message || 'Winner proclaimed successfully!');
         
-        // Ora che è stato proclamato, facciamo la GET per recuperare i dati 
-        // del team e aggiornare l'interfaccia utente in tempo reale
+        // Now that it has been proclaimed, make a GET request to retrieve team data 
+        // and update the UI in real-time
         this.checkWinner(id);
       },
       error: (err) => this.showError(err)
@@ -179,7 +180,6 @@ ngOnInit() {
     });
   }
 
- 
   // --- TEAM METHODS ---
   checkMySubmission() {
     this.submissionService.getSubmissionForTeam(this.hackathonId()!).subscribe({
@@ -208,7 +208,7 @@ ngOnInit() {
     this.successMessage.set(null);
     this.errorMessage.set(null);
 
-    const payload = { idHackathon: id, type: 'github', source: this.githubUrl() };
+    const payload : SubmitProjectPayload = { idHackathon: id, type: 'github', source: this.githubUrl() };
     console.log(payload);
 
     this.submissionService.submitProject(payload).subscribe({
@@ -346,18 +346,48 @@ ngOnInit() {
     this.editMode.set(true);
   }
 
-  saveEdit() {
-    this.githubUrl.set(this.editUrlTemp());
-    this.editMode.set(false);
-    this.updateCommit();
+
+saveEdit() {
+  const newUrl = this.editUrlTemp();
+  const id = this.hackathonId();
+
+  if (!id || !newUrl || newUrl.trim() === '') {
+    this.errorMessage.set('Please enter a valid repository URL.');
+    return;
   }
 
-  cancelEdit() {
-    this.editUrlTemp.set('');
-    this.editMode.set(false);
-  }
+  const payload: SubmitProjectPayload = {
+    idHackathon: id, 
+    type: 'github', 
+    source: newUrl
+  };
 
-  //staff method to set winner
+  // If you have a loading signal, you can activate it here
+  this.isSubmitting.set(true);
+
+  this.submissionService.submitProject(payload).subscribe({
+    next: (response) => {
+      this.showSuccess('Project URL updated successfully.');
+     
+      
+      this.githubUrl.set(newUrl); 
+      
+      this.editMode.set(false);
+      
+    },
+    error: (err) => {
+      this.showError('Error saving the new URL.');
+      console.error('Error saving edit:', err);
+    }
+  });
+}
+
+cancelEdit() {
+  this.editMode.set(false);
+  this.editUrlTemp.set(this.githubUrl());
+}
+
+  // Staff method to set winner
   isOrganizer = computed(() => {
     const user = this.authService.user();
     const hackathon = this.hackathon();
