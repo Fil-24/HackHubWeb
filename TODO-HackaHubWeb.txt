@@ -6,7 +6,7 @@ team problemi:
 -rimuovere mock su hackathon.service quando il db viene popolato e togliere i commenti/import
 -NON FUNZIONA IL CALCOLO DELLE STATS DEI TEAM (backend)
 -hackathons sistemare lo sfondo
-
+-la durata degl'hackathon non tengono conto delle ore 
 Cose da fare [almeno non mi scordo :)]
 - valutazione tramite tabella submission con pop-up per inserimento voto e descrizione (+ bottone modifica)
 - proclamazione vincitore (da sistemare completamente anche lato back-end)

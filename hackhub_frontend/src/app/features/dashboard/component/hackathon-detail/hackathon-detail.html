@@ -339,7 +339,15 @@
                   <div class="d-flex flex-column gap-3">
                     @for(team of hackathon()?.teams; track team.id || $index) {
                       <div class="p-3 border rounded">
-                        <h6 class="mb-2 fw-bold text-success">{{ team.name }}</h6>
+                       <div class="d-flex align-items-center gap-2 mb-2">
+                          <h6 class="mb-0 fw-bold text-success">{{ team.name }}</h6>
+                          
+                          @if (hackathon()?.winningTeam?.id === team.id) {
+                            <span class="badge hd-badge-winner ms-2">
+                              <i class="fa-solid fa-trophy me-1"></i> Winner
+                            </span>
+                          }
+                        </div>
                         <div class="div-members">
                          @if(team.leader) {
                               <div class="member leader"> <i class="fa-solid fa-user-tie me-1"></i> {{ team.leader.email }}

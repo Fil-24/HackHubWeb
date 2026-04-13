@@ -10,6 +10,7 @@ export interface Hackathon {
     prize: number;
     maxTeamMembers: number;
     maxNumberTeams: number;
+    winningTeam?: Team;
     startDate: string;        // LocalDateTime → string (ISO 8601)
     endDate: string;
     status: 'REGISTRATION' | 'ONGOING' | 'EVALUATION' | 'COMPLETED';

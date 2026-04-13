@@ -81,11 +81,10 @@ private mapToTeamModel(backendObj: any): Team {
         
       // Mappatura sicura delle statistiche verso l'interfaccia TeamStats
       teamStats: {
-        hackathonsPlayed: backendObj.teamStats?.hackathonsPlayed || 0,
-        // Mantengo il nome della proprietà "hackthonsWon" esattamente come l'hai scritta nella tua interfaccia TeamStats
-        hackthonsWon: backendObj.teamStats?.hackthonsWon || 0, 
-        podiums: backendObj.teamStats?.podiums || 0,
-        winRate: backendObj.teamStats?.winRate || 0
+        hackathonsPlayed: backendObj.stats?.hackathonsPlayed || 0,
+        hackathonsWon: backendObj.stats?.hackathonsWon || 0, 
+        podiums: backendObj.stats?.podiums || 0,
+        winRate: Math.trunc((backendObj.stats?.winRate || 0) * 100) / 100
       }
     };
   }

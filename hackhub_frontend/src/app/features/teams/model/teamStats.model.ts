@@ -1,6 +1,6 @@
 export interface TeamStats{
     hackathonsPlayed: number;
-    hackthonsWon:number;
+    hackathonsWon:number;
     podiums:number;
     winRate:number;
 

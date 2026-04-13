@@ -283,6 +283,9 @@
                   <button class="hd-btn-ghost flex-shrink-0" (click)="editMode.set(true)" [disabled]="myTeamDisabled()">
                     <i class="fa-solid fa-pen me-2"></i> Edit
                   </button>
+                  <button class="hd-btn-primary flex-shrink-0" (click)="updateCommit()" [disabled]="myTeamDisabled()">
+                    <i class="fa-solid fa-arrows-rotate me-2"></i> Update Commit
+                  </button>
                 </div>
               }
               @if (editMode()) {
