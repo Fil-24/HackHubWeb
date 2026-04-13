@@ -30,6 +30,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -117,17 +118,24 @@ public class SubmissionService {
             throw new AccessDeniedException("Team not registered at this hackathon or " +
                     "disabled");
 
-        SubmissionFactory factory = factories.get(type.toLowerCase());
-        if (factory == null)
-            throw new IllegalArgumentException("Unsupported submission type: " + type);
+        Optional<Submission> existingOpt = submissionRepository.findByTeamAndHackathon(t, h);
 
-        Optional<Submission> existing =
-                submissionRepository.findByTeamAndHackathon(t, h);
+        if (existingOpt.isPresent()) {
+            Submission existing = existingOpt.get();
+            existing.setSubmittedAt(LocalDateTime.now());
 
-        existing.ifPresent(submissionRepository::delete);
-        Submission submission = factory.create(t, h, source);
+            if (existing instanceof GitHubSubmission githubSub) {
+                githubSub.setRepositoryUrl(source);
+            }
 
-        submissionRepository.save(submission);
+            submissionRepository.save(existing);
+        } else {
+            SubmissionFactory factory = factories.get(type.toLowerCase());
+            if (factory == null) throw new IllegalArgumentException("Type not supported");
+
+            Submission newSub = factory.create(t, h, source);
+            submissionRepository.save(newSub);
+        }
     }
     /**
      * Retrieves all submissions for a specific hackathon.

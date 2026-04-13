@@ -25,6 +25,7 @@ import it.unicam.cs.hackhub.client.GitHubClient;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -57,6 +58,7 @@ public class GitHubSubmission extends Submission {
      * URL of the GitHub repository submitted by the team.
      */
     @Column(nullable = false, length = 500)
+    @Setter
     private String repositoryUrl;
 
     /**
