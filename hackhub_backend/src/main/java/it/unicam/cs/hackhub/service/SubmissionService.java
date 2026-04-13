@@ -293,16 +293,15 @@ public class SubmissionService {
     }
 
     /**
-     * Determines the winning team of the hackathon identified by {@code idHackathon} and completes the hackathon.
+     * Determines and sets the winning team of the hackathon identified by {@code idHackathon}.
      *
      * <p>
-     * Only the organizer of the hackathon can proclaim the winner. The hackathon must be in {@link StatusValue#EVALUATION}
+     * Only the organizer of the hackathon can proclaim the winner. The hackathon must be in the {@link StatusValue#EVALUATION}
      * phase and all submissions of non-disabled teams must be present and evaluated. The winner is selected by the highest
-     * score; in case of a tie, the most recently submitted entry wins.
+     * score; in case of a tie, the earliest submitted entry wins.
      * </p>
      *
      * @param idHackathon the unique identifier of the hackathon
-     * @return the winning {@link Team}, or {@code null} if no winner can be determined
      * @throws NullPointerException if the hackathon cannot be found
      * @throws AccessDeniedException if the authenticated staff account is not the hackathon organizer
      * @throws IllegalArgumentException if the hackathon is not in evaluation phase or if submissions are missing/not all evaluated
@@ -310,7 +309,7 @@ public class SubmissionService {
      * @throws org.springframework.security.access.AccessDeniedException if the caller is not authorized
      */
     @PreAuthorize("hasRole('STAFF')")
-    public Team proclamateWinner(Long idHackathon) {
+    public void proclamationWinner(Long idHackathon) {
         Hackathon h = hackathonService.getHackathon(idHackathon);
         if (h == null)
             throw new NullPointerException("Hackathon not found");
@@ -339,11 +338,14 @@ public class SubmissionService {
                         .thenComparing(Submission::getSubmittedAt, Comparator.reverseOrder()))
                         .orElse(null);
 
+        h.setWinningTeam(winner!=null?winner.getTeam():null);
+
+        /*
         if(winner == null)
             return null;
 
         h.complete();
-        return winner.getTeam();
+        return winner.getTeam();*/
     }
 
     /**

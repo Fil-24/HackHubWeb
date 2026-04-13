@@ -22,9 +22,7 @@
 package it.unicam.cs.hackhub.controller;
 
 import it.unicam.cs.hackhub.DTO.SubmissionResponse;
-import it.unicam.cs.hackhub.DTO.TeamResponse;
 import it.unicam.cs.hackhub.model.Submission;
-import it.unicam.cs.hackhub.model.Team;
 import it.unicam.cs.hackhub.service.SubmissionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -172,20 +170,17 @@ public class SubmissionController {
     }
 
     /**
-     * Determines and returns the winning team of a hackathon.
+     * Determines the winning team of a hackathon.
      * <p>
      * The winner is computed based on submitted evaluations.
      *
      * @param idHackathon the identifier of the hackathon
-     * @return a {@link ResponseEntity} containing the {@link TeamResponse}
-     *         if a winner is determined (200 OK),
+     * @return if a winner is determined (200 OK),
      *         or 404 (Not Found) if no winner can be proclaimed
      */
-    @GetMapping("/winner/hackathons/{idHackathon}")
-    public ResponseEntity<TeamResponse> getWinner(@PathVariable Long idHackathon) {
-        Team team = submissionService.proclamateWinner(idHackathon);
-        return team != null
-                ? ResponseEntity.ok(TeamResponse.fromEntity(team, null))
-                : ResponseEntity.notFound().build();
+    @PostMapping("/winner/hackathons/{idHackathon}")
+    public ResponseEntity<String> proclaimersWinner(@PathVariable Long idHackathon){
+        submissionService.proclamationWinner(idHackathon);
+        return ResponseEntity.ok("Winner proclamated successfully.");
     }
 }

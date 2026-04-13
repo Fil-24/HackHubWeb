@@ -97,17 +97,60 @@ export class SubmissionComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const numId = +id;
       this.hackathonId.set(numId);
     }
+    
+    // Recupera i dati dell'hackathon
     this.hackathonService.getById(this.hackathonId()!).subscribe({
-      next: (hackathon) => this.hackathon.set(hackathon),
+      next: (hackathon) => {
+        this.hackathon.set(hackathon);
+        
+        // Non appena ho l'hackathon, controllo se c'è già un vincitore
+        this.checkWinner(this.hackathonId()!); 
+      },
       error: (err) => this.showError(err)
     });
+  }
 
+  // --- GENERAL METHODS ---
+  checkWinner(idHackathon: number) {
+    this.hackathonService.getWinner(idHackathon).subscribe({
+      next: (winnerTeam) => {
+        console.log('Vincitore trovato:', winnerTeam);
+        this.winner.set(winnerTeam);
+      },
+      error: (err) => {
+        // Se riceve 404, significa che il vincitore non è ancora stato proclamato
+        if (err.status === 404) {
+           this.winner.set(null);
+        } else {
+           this.showError(err);
+        }
+      }
+    });
+  }
+
+  // --- STAFF METHODS ---
+
+  declareWinner() { 
+    const id = this.hackathonId();
+    if (!id) return;
+
+    this.submissionService.proclaimWinner(id).subscribe({
+      next: (message) => {
+        // Mostra il messaggio di successo dal backend
+        this.showSuccess(message || 'Vincitore proclamato con successo!');
+        
+        // Ora che è stato proclamato, facciamo la GET per recuperare i dati 
+        // del team e aggiornare l'interfaccia utente in tempo reale
+        this.checkWinner(id);
+      },
+      error: (err) => this.showError(err)
+    });
   }
 
   // --- HELPER METHODS FOR MESSAGES (5 seconds) ---
@@ -136,14 +179,7 @@ export class SubmissionComponent implements OnInit {
     });
   }
 
-  // --- GENERAL METHODS ---
-  checkWinner(idHackathon: number) {
-    this.submissionService.getWinner(idHackathon).subscribe({
-      next: (winnerTeam) => this.winner.set(winnerTeam),
-      error: () => this.winner.set(null) // No winner yet or 404
-    });
-  }
-
+ 
   // --- TEAM METHODS ---
   checkMySubmission() {
     this.submissionService.getSubmissionForTeam(this.hackathonId()!).subscribe({
@@ -356,5 +392,4 @@ export class SubmissionComponent implements OnInit {
     return false;
   });
 
-  declareWinner(sub: SubmissionResponse) { }
 }

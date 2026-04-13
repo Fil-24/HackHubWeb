@@ -7,6 +7,7 @@ import { Hackathon } from '../models/hackathon.model';
 import { environment } from '../../../../environments/environment';
 import { Rule } from '../models/rule.model';
 import { HackathonCreate } from '../models/HackathonCreate.model';
+import { Team } from '../../teams/model/team.model';
 
 @Injectable({ providedIn: 'root' })
 export class HackathonService {
@@ -64,6 +65,9 @@ export class HackathonService {
 
   removeRule(hackathonId: number, ruleId: number): Observable<any> {
     return this.http.delete<any>(`${this.BASE_URL}/${hackathonId}/rules/${ruleId}`);
+  }
+  getWinner(idHackathon: number): Observable<Team> {
+    return this.http.get<Team>(`${this.BASE_URL}/winner/hackathons/${idHackathon}`);
   }
 
 }

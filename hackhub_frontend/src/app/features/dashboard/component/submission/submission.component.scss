@@ -51,6 +51,10 @@
     padding: 28px; 
     overflow: visible !important; 
   }
+  &--winner {
+    border: 2px solid rgba($color-green, 0.4); 
+    background:  rgba($color-green, 0.05);
+  }
 }
 
 // ── SECTION HEADER ──

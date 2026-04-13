@@ -54,6 +54,7 @@ public record HackathonResponse(
         double prize,
         int maxTeamMembers,
         int maxNumberTeams,
+        TeamResponse winningTeam,
 
         LocalDateTime startDate,
         LocalDateTime endDate,
@@ -87,8 +88,7 @@ public record HackathonResponse(
                 h.getPrize(),
                 h.getMaxTeamMembers(),
                 h.getMaxNumberTeams(),
-
-                h.getStatus() != null ? h.getStatus().getStartDate() : null,
+                h.getWinningTeam() != null ? TeamResponse.fromEntity(h.getWinningTeam(), null) : null,                h.getStatus() != null ? h.getStatus().getStartDate() : null,
                 h.getStatus() != null ? h.getStatus().getEndDate() : null,
                 h.getStatusValue() != null ? h.getStatusValue().name() : null,
 

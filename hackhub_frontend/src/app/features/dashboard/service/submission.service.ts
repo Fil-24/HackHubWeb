@@ -34,8 +34,8 @@ export class SubmissionService {
     return this.http.post(`${this.apiUrl}/${id}/evaluation`, payload, { responseType: 'text' });
   }
 
-  getWinner(idHackathon: number): Observable<Team> {
-    return this.http.get<Team>(`${this.apiUrl}/winner/hackathons/${idHackathon}`);
+  proclaimWinner(idHackathon: number): Observable<string> {
+    return this.http.post(`${this.apiUrl}/winner/hackathons/${idHackathon}`, {}, { responseType: 'text' });
   }
   
   getSubmissionsByHackathon(idHackathon: number): Observable<SubmissionResponse[]> {

@@ -106,6 +106,13 @@ public class Hackathon implements Activable<Long> {
     )
     private Set<Rule> rules;
 
+    @ManyToOne
+    @JoinColumn(name = "winning_team_id_team")
+    private Team winningTeam;
+
+
+
+
     /**
      * Protected constructor required by JPA.
      */
@@ -148,6 +155,14 @@ public class Hackathon implements Activable<Long> {
                 throw new IllegalArgumentException("Start date cannot be before now");
 
         this.status = status;
+    }
+
+    /**
+     *
+     * @param winningTeam
+     */
+    public void setWinningTeam(Team winningTeam) {
+        this.winningTeam = winningTeam;
     }
 
     /**

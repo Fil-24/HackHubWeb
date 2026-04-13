@@ -25,7 +25,9 @@ import it.unicam.cs.hackhub.DTO.*;
 import it.unicam.cs.hackhub.model.Account;
 import it.unicam.cs.hackhub.model.Hackathon;
 import it.unicam.cs.hackhub.model.Rule;
+import it.unicam.cs.hackhub.model.Team;
 import it.unicam.cs.hackhub.service.HackathonService;
+import it.unicam.cs.hackhub.service.TeamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * REST controller responsible for hackathon management operations.
@@ -53,6 +56,7 @@ import java.util.Map;
 public class HackathonController {
 
     private final HackathonService hackathonService;
+    private final TeamService teamService;
 
     /**
      * Creates a new {@code HackathonController}.
@@ -60,8 +64,9 @@ public class HackathonController {
      * @param hackathonService the service layer component responsible for
      *                         hackathon business logic
      */
-    public HackathonController(HackathonService hackathonService) {
+    public HackathonController(HackathonService hackathonService, TeamService teamService) {
         this.hackathonService = hackathonService;
+        this.teamService = teamService;
     }
 
     /**
@@ -353,5 +358,21 @@ public class HackathonController {
     public ResponseEntity<List<RuleResponse>> getRules() {
         return ResponseEntity.ok(hackathonService.getRules()
                 .stream().map(RuleResponse::fromEntity).toList());
+    }
+
+
+    /**
+     * Retrieves the winning team of a hackathon.
+     *
+     * @param idHackathon the identifier of the hackathon
+     * @return 200 OK containing the TeamResponse if a winner exists,
+     * or 404 (Not Found) if the winner has not been proclaimed yet.
+     */
+    @GetMapping("/winner/hackathons/{idHackathon}")
+    public ResponseEntity<TeamResponse> getWinnerTeam(@PathVariable Long idHackathon) {
+
+        Team w = hackathonService.getWinner(idHackathon);
+
+        return ResponseEntity.ok(w != null ? TeamResponse.fromEntity(w, null) : null);
     }
 }

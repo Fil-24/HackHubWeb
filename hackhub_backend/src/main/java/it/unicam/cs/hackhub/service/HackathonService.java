@@ -566,4 +566,19 @@ HackathonService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return hackathonRepository.findMyHackathons(accountService.findByEmail(auth.getName()).get().getIdAccount());
     }
+
+
+    /**
+     * Retrieves the winning team of the specified hackathon.
+     *
+     * @param idHackathon the unique identifier of the hackathon
+     * @return the winning {@link Team} of the hackathon, or {@code null} if no winner has been proclaimed yet
+     * @throws NullPointerException if the hackathon cannot be found
+     */
+    public Team getWinner(Long idHackathon) {
+        Hackathon h = getHackathon(idHackathon);
+        if (h == null)
+            throw new NullPointerException("Hackathon not found");
+        return h.getWinningTeam();
+    }
 }
