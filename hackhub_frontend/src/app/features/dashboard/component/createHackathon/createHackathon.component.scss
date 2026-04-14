@@ -205,3 +205,20 @@
     @extend %btn-outline;
     padding: 14px 24px;
 }
+@media (max-width: 767px) {
+    .cr-form, .cr-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .mt-5.d-flex {
+        flex-direction: column;
+    }
+    
+    .cr-btn-outline.w-50, .cr-btn-primary.w-50 {
+        width: 100% !important;
+    }
+    
+    .cr-card-body {
+        padding: 30px 20px;
+    }
+}

@@ -308,4 +308,32 @@
         color: $text-secondary;
         margin-bottom: 6px;
     }
+
+   @media (max-width: 767px) {
+    .submission-card__row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    .submission-card .d-flex.gap-2 {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        width: 100%;
+    }
+    
+
+    .hd-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pr-modal-content {
+        max-height: 95vh;
+        width: 95%;
+    }
+    
+    .pr-card-body {
+        padding: 1.25rem !important; 
+    }
+}
 }

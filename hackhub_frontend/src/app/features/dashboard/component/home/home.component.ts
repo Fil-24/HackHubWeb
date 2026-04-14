@@ -45,5 +45,10 @@ export class HomeComponent implements OnInit {
       return !this.search || hackathon.name.toLowerCase().includes(this.search.toLowerCase());
     });
   }
+  formatDate(dateStr: string): string {
+    return new Date(dateStr).toLocaleDateString('it-IT', {
+        day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+  }
 }
 

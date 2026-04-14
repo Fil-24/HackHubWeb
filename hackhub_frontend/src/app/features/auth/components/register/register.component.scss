@@ -76,4 +76,18 @@
     pointer-events: none;
     z-index: 10;
   }
+  @media (max-width: 767px) {
+
+    #card-login, #card-signup {
+      padding: 1.25rem 1.25rem 2rem 1.25rem;
+      max-width: 100%;
+      border-radius: 16px;
+    }
+
+
+    #logo {
+      width: 48px;
+      margin-bottom: 1rem;
+    }
+  }
 }

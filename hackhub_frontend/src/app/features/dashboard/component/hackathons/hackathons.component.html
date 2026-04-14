@@ -65,16 +65,19 @@
                         (click)="setFiltroTempo('passati')">Past</button>
                 </div>
             </div>
-
+            @if(this.authService.isAuthenticated()) {
             <div class="filter-group">
                 <span class="filter-label">Participation</span>
                 <div class="filter-chips">
                     <button class="filter-chip" [class.active]="filtroPartecipazione() === 'tutti'"
                         (click)="setFiltroPartecipazione('tutti')">All</button>
+                        
                     <button class="filter-chip" [class.active]="filtroPartecipazione() === 'miei'"
                         (click)="setFiltroPartecipazione('miei')">My Hackathons</button>
+                        
                 </div>
             </div>
+        }
 
             <!-- Ordina -->
             <div class="filter-group">

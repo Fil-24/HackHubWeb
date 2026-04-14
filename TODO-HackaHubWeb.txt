@@ -5,7 +5,17 @@ team problemi:
 -revisionare il componente hackathon in generale
 -rimuovere mock su hackathon.service quando il db viene popolato e togliere i commenti/import
 -NON FUNZIONA IL CALCOLO DELLE STATS DEI TEAM (backend)
--hackathons sistemare lo sfondo
+hackathons:
+- sistemare lo sfondo
+- far si che se ci siano tante immagini si creino più pagine
+- creare un bottone che torna alla zona dei filtri che scorre con la barra
+-bottoni nascosti se non loggato
+
+submission: 
+- inserire una barra per soccrrere il link mobile
+-bottoni mobile
+login e register
+-padding sembra non funzionare
 -la durata degl'hackathon non tengono conto delle ore 
 Cose da fare [almeno non mi scordo :)]
 - valutazione tramite tabella submission con pop-up per inserimento voto e descrizione (+ bottone modifica)
