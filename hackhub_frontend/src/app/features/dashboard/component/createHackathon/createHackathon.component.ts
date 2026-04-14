@@ -117,7 +117,8 @@ export class CreateHackathon implements OnInit {
       endDate: this.hackathonData.endDate + ':00',
     };
 
-    // invia i dati al backend per creare l'hackathon e gestisce la risposta mostrando messaggi di successo o errore e reindirizzando alla pagina dell'hackathon creato in caso di successo
+    // invia i dati al backend per creare l'hackathon e gestisce la risposta mostrando messaggi di successo 
+    // o errore e reindirizzando alla pagina dell'hackathon creato in caso di successo
     this.HackathonService.createHackathon(data).subscribe({
       next: (res) => {
         this.successMessage.set("Hackathon created successfully!");

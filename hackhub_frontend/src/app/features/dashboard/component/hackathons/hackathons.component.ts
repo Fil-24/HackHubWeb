@@ -18,7 +18,7 @@ export class HackathonsComponent implements OnInit {
   // Segnali dei filtri
   searchTerm = signal<string>('');
   filtroTempo = signal('tutti');
-  filtroPartecipazione = signal('tutti'); // NUOVO SEGNALE
+  filtroPartecipazione = signal('tutti'); 
   ordinamento = signal('data-asc');
   
   showFiltri = false;

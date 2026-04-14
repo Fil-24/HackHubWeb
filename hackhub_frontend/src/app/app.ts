@@ -1,6 +1,5 @@
 import { Component, computed, OnInit, signal } from '@angular/core';
 import { RouterModule, RouterOutlet, Router } from '@angular/router';
-// Sostituisci con il percorso corretto del tuo AuthService
 import { AuthService } from './features/auth/service/auth.service'; 
 
 @Component({
@@ -42,7 +41,6 @@ export class App implements OnInit {
       avatarUrl: `https://ui-avatars.com/api/?name=${user.name}+${user.surname || ''}&background=0f172a&color=fff`    };
   });
 
-  // Funzione di logout reale
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']); // Riporta l'utente al login

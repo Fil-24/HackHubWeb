@@ -17,7 +17,6 @@ export class InvitationService {
     return this.http.get<Invitation[]>(this.apiUrl+'/user');
   }
 
-  //TODO: Unire API di accettazione e rifiuto, passando accept come parametro booleano
   respond(id: number, accept: boolean) {
       return this.http.patch(`${this.apiUrl}/${id}/response?accept=${accept}`, {});
     }

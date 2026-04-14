@@ -30,7 +30,6 @@ export class InvitationComponent implements OnInit {
     this.loadInvitations();
   }
 
-  // Simula il caricamento dal backend
   loadInvitations() {
     this.isLoading.set(true);
 
@@ -45,7 +44,7 @@ export class InvitationComponent implements OnInit {
           invitedAccountEmail: inv.invitedAccountEmail,
           idInvitingTeam: inv.idInvitingTeam,
           invitingTeamName: inv.invitingTeamName,
-          senderName: inv.invitingTeamName // Sostituisci con il nome reale del mittente se disponibile
+          senderName: inv.invitingTeamName
         })));
         this.isLoading.set(false);
       },

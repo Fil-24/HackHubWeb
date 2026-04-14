@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './my-team.component.html',
-  styleUrls: ['./my-team.component.scss'] // Qui potrai mettere eventuali stili specifici
+  styleUrls: ['./my-team.component.scss'] 
 })
 export class MyTeamComponent {
   successMessage = signal<string | null>(null);

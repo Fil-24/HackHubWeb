@@ -100,9 +100,8 @@ export class ProfileComponent {
         // Controlla che le nuove password coincidano
         if (this.editNewPassword !== this.editConfirmPassword) {
           this.errorMessage.set('Le password non coincidono!');
-          // Qui potresti mostrare un errore nella UI
           this.isSaving.set(false);
-          return; // Ferma l'esecuzione, non chiamare il backend
+          return; 
         }
 
         // Controlla che la nuova password rispetti la Regex
@@ -112,13 +111,11 @@ export class ProfileComponent {
           return;
         }
 
-        // Aggiungi le password al payload (assicurati che i nomi dei campi 
-        // coincidano con quelli che il tuo backend si aspetta)
+        
         dataToUpdate.oldPassword = this.editOldPassword;
         dataToUpdate.newPassword = this.editNewPassword;
       }
 
-    // Chiamata pulita al Service!
     this.authService.updateProfile(dataToUpdate).subscribe({
       next: (res) => {
         this.successMessage.set('Profilo aggiornato con successo!');

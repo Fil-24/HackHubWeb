@@ -9,8 +9,8 @@
 
 // ── HERO ──
 .hd-hero {
-  @extend %card-base; // 🔥 SEMPLIFICATO: include già bg, border, shadow, overflow e position!
-  border-radius: 8px; // Override leggero rispetto al 6px base
+  @extend %card-base; 
+  border-radius: 8px; 
   animation: hdFadeUp 0.5s ease both;
 
   &__bg {
@@ -105,18 +105,17 @@
   border: 1px solid rgba($color-green, 0.3);
   font-weight: 600;
 }
-// Badge Vincitore (Stile Bottone Primario)
+
 .hd-badge-winner {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 4px 12px;
-  border-radius: 50px; // Forma a "pillola" originale
+  border-radius: 50px; 
   
-  // Colori invertiti: sfondo bianco, testo e bordo blu primario
   background-color: #ffffff; 
   color: $color-primary;
-  border: 1.5px solid $color-primary; // Spessore 1.5px per coerenza con i tuoi input/bottoni
+  border: 1.5px solid $color-primary;
   
   font-family: $font-mono;
   font-size: 10px;
@@ -124,7 +123,6 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   
-  // Ombra molto leggera, del colore primario
   box-shadow: 0 2px 4px rgba($color-primary, 0.08);
   transition: all 0.2s ease;
   cursor: default;
@@ -134,7 +132,6 @@
     color: $color-primary;
   }
 
-  // Effetto hover (si solleva leggermente senza cambiare i colori base)
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba($color-primary, 0.15);
@@ -186,7 +183,6 @@
   @extend %card-base;
   animation: hdFadeUp 0.5s ease 0.08s both;
   
-  // FIX SOVRAPPOSIZIONE
   overflow: visible !important; 
 
   &:focus-within {
@@ -262,7 +258,7 @@
     
     &::placeholder {
       // %input-base gestisce già il colore del placeholder ($text-secondary)
-      font-style: italic; // Mantieni solo lo stile specifico
+      font-style: italic; 
     }
   }
 }

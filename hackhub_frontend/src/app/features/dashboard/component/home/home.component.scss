@@ -51,7 +51,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        color: $color-glitch; // Usa la variabile definita in _colors.scss
+        color: $color-glitch; 
         clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
         transform: translate(-2px, 0);
         opacity: 0;
@@ -147,7 +147,7 @@
     letter-spacing: 0.03em;
 }
 
-// ── COLONNA DESTRA (Search bar custom ma legata ai colori) ──
+// ── COLONNA DESTRA  ──
 .search-bar {
     display: flex;
     align-items: stretch;

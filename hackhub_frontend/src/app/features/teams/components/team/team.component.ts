@@ -96,9 +96,7 @@ export class TeamComponent {
   }
 
   openCreateTeam() {
-    // TODO: Qui puoi aprire un popup per creare il team o navigare verso la rotta di creazione
-    //console.log("Apertura modale/pagina di creazione team...");
-    // Esempio: this.router.navigate(['/teams/create']);
+  
     this.showCreateForm.set(true);
     document.body.style.overflow = 'hidden';
   }

@@ -11,7 +11,7 @@ export interface Hackathon {
     maxTeamMembers: number;
     maxNumberTeams: number;
     winningTeam?: Team;
-    startDate: string;        // LocalDateTime → string (ISO 8601)
+    startDate: string;        
     endDate: string;
     status: 'REGISTRATION' | 'ONGOING' | 'EVALUATION' | 'COMPLETED';
     teams: Team[];
