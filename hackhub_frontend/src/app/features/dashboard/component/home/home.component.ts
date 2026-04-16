@@ -28,7 +28,8 @@ export class HomeComponent implements OnInit {
         const ora = new Date();
         const ordinati = data
           .filter(h => new Date(h.startDate) > ora)
-          .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+          .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+          .slice(0, 3); 
         this.hackathon.set(ordinati);
       },
       error: (err) => {

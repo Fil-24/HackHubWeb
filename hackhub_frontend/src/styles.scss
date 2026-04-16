@@ -164,3 +164,77 @@ body{
   width: 100%;
   box-sizing: border-box;
 }
+// ── LAYOUT SEZIONI PROFILO/PAGINE ──
+.profile-section {
+    background: $bg-main;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: flex-start;
+}
+.relative-section { position: relative; }
+
+// ── COMPONENTI CONDIVISI (PR- CLASSES) ──
+.pr-card { 
+    @extend %card-base; 
+    border-radius: 12px; 
+}
+
+.pr-card-bar { 
+    @extend %card-top-bar; 
+    height: 4px;
+}
+
+.pr-title { 
+    @extend %title-display; 
+}
+
+.accent { color: $color-green; }
+
+.pr-text-muted { 
+    color: $text-secondary; 
+    font-size: 1rem; 
+}
+
+.pr-label {
+    font-family: $font-mono;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $text-secondary;
+    font-weight: 600;
+}
+
+
+// ── INPUTS BASE ──
+.pr-input {
+    @extend %input-base;
+    background: #ffffff;
+    border: 1px solid $border-color;
+    padding: 10px 16px;
+    border-radius: 8px;
+    color: $text-primary;
+    transition: all 0.3s ease;
+    width: 100%;
+
+    &:focus {
+        border-color: $color-green;
+        box-shadow: 0 0 0 3px rgba($color-green, 0.1);
+        outline: none;
+    }
+}
+
+// ── ANIMAZIONI GLOBALI ──
+.fade-in-down {
+    animation: fadeInDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

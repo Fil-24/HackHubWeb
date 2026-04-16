@@ -312,6 +312,9 @@
     transition: all 0.3s ease;
 }
 // ── Bottoni Custom ──
+.pr-btn-outline { @extend %btn-outline; }
+.pr-btn-primary { @extend %btn-primary; }
+
 .hc-btn-glow {
     @extend %btn-outline;
     width: 100%;

@@ -4,10 +4,11 @@ import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../auth/service/auth.service';
 import { HackathonService } from '../../service/hackathon.service';
 import { FormsModule } from '@angular/forms';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-hackathons',
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, NgClass],
   templateUrl: './hackathons.component.html',
   styleUrl: './hackathons.component.scss',
 })
@@ -59,7 +60,7 @@ export class HackathonsComponent implements OnInit {
     
     // 2. Filtro Tempo
     let tempoMatch = true;
-    if (this.filtroTempo() === 'futuri') {
+    if (this.filtroTempo() === 'attivi') {
       tempoMatch = new Date(hackathon.startDate) > dataAttuale;
     } else if (this.filtroTempo() === 'passati') {
       tempoMatch = new Date(hackathon.endDate) < dataAttuale;
@@ -67,7 +68,7 @@ export class HackathonsComponent implements OnInit {
 
     // 3. Filtro Partecipazione (Logica integrata dal Componente 2)
     let partecipazioneMatch = true;
-    if (this.filtroPartecipazione() === 'miei') {
+    if (this.filtroPartecipazione() === 'iscritti') {
         if (!currentUser) {
             partecipazioneMatch = false; 
         } else if (this.authService.isStaff()) {

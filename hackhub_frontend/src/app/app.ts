@@ -10,7 +10,7 @@ import { AuthService } from './features/auth/service/auth.service';
 })
 export class App implements OnInit {
   protected readonly title = signal('hackhub_frontend');
-
+protected readonly currentYear = signal(new Date().getFullYear());
   constructor(
     public authService: AuthService,
     private router: Router
