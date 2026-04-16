@@ -4,98 +4,95 @@
     <span>{{ errorMessage() }}</span>
 </div>
 }
-<section class="home-first-section">
-    <div class="banner-content row">
-        <div class="banner__stripes" aria-hidden="true"></div>
-        <h1 class="hh-title" data-text="HackHub">
+
+<section class="hero-section">
+    <div class="banner__stripes" aria-hidden="true"></div>
+    <div class="hero-content container">
+        <h1 class="hh-title">
             Hack<span class="accent">Hub</span><span class="hh-cursor"></span>
         </h1>
-    </div>
-</section>
+        <p class="hero-subtitle">
+            Build the future, line by line. <br>
+            Discover and join the most exciting hackathons worldwide.
+        </p>
 
-<section class="search-section">
-    <div class="container">
-        <div class="row align-items-center">
-
-            <!-- COLONNA SINISTRA: testo -->
-            <div class="col-12 col-md-5 col-left pe-md-5">
-                <div class="search-label">Search</div>
-                <h2 class="search-title">
-                    Find your <br> next<em> Hackathon</em>
-                </h2>
-                <p class="search-desc">
-                    Explore hundreds of hackathons.<br>
-                </p>
-            </div>
-            <!-- COLONNA DESTRA: search bar -->
-            <div class="col-12 col-md-7 ps-md-5">
-
-                <div class="search-bar">
-                    <div class="search-icon">
-                        <i class="bi bi-search"></i>
-                    </div>
-                        <input class="search-input" type="text" [(ngModel)]="search" name="search" placeholder="E.g. : AI hackathon, blockchain, web3...">
+        <div class="hero-search-wrapper">
+            <div class="search-bar glass-effect">
+                <div class="search-icon">
+                    <i class="bi bi-search"></i>
+                </div>
+                <input class="search-input" type="text" [(ngModel)]="search" name="search" 
+                       placeholder="E.g. : AI hackathon, blockchain, web3...">
+                <div class="search-badge">
+                    <span>{{ filtro()!.length }} Events</span>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<div class="sh-divider"></div>
+
 <section class="hc-wrap">
     <div class="container">
         <div class="hc-header">
             <div>
-                <div class="hc-label">Hackathon</div>
+                <div class="hc-label">Explore</div>
                 <h2 class="hc-title">Upcoming Events</h2>
             </div>
-            <div class="hc-count">// {{ filtro()!.length }} results found</div>
         </div>
+
         @if(filtro()!.length > 0) {
         <div class="hc-grid">
             @for (h of filtro().slice(0, 9); track $index) {
             <div class="hc-card">
                 <div class="hc-card-bar"></div>
                 <div class="hc-card-body">
+                    <div class="hc-card-meta">
+                        <span class="hc-badge">
+                            <i class="bi bi-geo-alt"></i> {{ h.location }}
+                        </span>
+                        <span class="hc-badge">
+                            <i class="bi bi-people"></i> Max {{ h.maxNumberTeams }}
+                        </span>
+                    </div>
+                    
                     <h3 class="hc-card-name">{{ h.name }}</h3>
-                    <p class="hc-card-desc">{{ h.location }}</p>
                 </div>
+                
                 <div class="hc-card-footer">
-                    <div class="hc-dates">
-                        <div class="hc-date-item">
-                            <span class="hc-date-label">Start</span>
-                            <span class="hc-date-value">{{ formatDate(h.startDate) }}</span>
+                    <div class="hc-timeline">
+                        <div class="hc-time-point">
+                            <span class="hc-time-label">Start</span>
+                            <span class="hc-time-value">{{ formatDate(h.startDate) }}</span>
                         </div>
-                        <div class="hc-date-item">
-                            <span class="hc-date-label">End</span>
-                            <span class="hc-date-value">{{ formatDate(h.endDate) }}</span>
-                        </div>
-                        <div class="hc-date-item">
-                            <span class="hc-date-label">Max participants</span>
-                            <span class="hc-date-value">{{ h.maxNumberTeams }}</span>
+                        <div class="hc-time-connector"></div>
+                        <div class="hc-time-point text-end">
+                            <span class="hc-time-label">End</span>
+                            <span class="hc-time-value">{{ formatDate(h.endDate) }}</span>
                         </div>
                     </div>
-                    <div class="hc-divider"></div>
-                    <button class="hc-btn" routerLink="/hackathon/{{ h.id }}">View details →</button>
+                    
+                    <button class="hc-btn-glow" routerLink="/hackathon/{{ h.id }}">
+                        View details <i class="bi bi-arrow-right-short"></i>
+                    </button>
                 </div>
             </div>
             }
         </div>
 
-        <div class="hc-card hc-card-more">
-            <button class="hc-btn" routerLink="/hackathons">View all →</button>
+        <div class="hc-card-more">
+            <button class="hc-btn-outline" routerLink="/hackathons">View all hackathons →</button>
         </div>
-
         }
-        @if(filtro().length === 0) {
-        <!-- Nessun risultato -->
-        <div class="state-box">
-            <p class="state-box__title">No hackathons found</p>
-            @if(search) {
-            <p class="state-box__sub">Try a different search term.</p>
-            }@else {
-            <p class="state-box__sub">There are no upcoming hackathons at the moment.</p>
-            }
 
+        @if(filtro().length === 0) {
+        <div class="state-box">
+            <i class="bi bi-terminal state-icon"></i>
+            <p class="state-box__title">404 - Hackathons not found</p>
+            @if(search) {
+                <p class="state-box__sub">We couldn't find anything matching "<strong>{{search}}</strong>". Try a different keyword.</p>
+            }@else {
+                <p class="state-box__sub">There are no upcoming hackathons at the moment. Keep coding and check back later!</p>
+            }
         </div>
         }
     </div>

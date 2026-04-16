@@ -8,23 +8,23 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [RouterLink,FormsModule]
+  imports: [RouterLink, FormsModule]
 })
 export class HomeComponent implements OnInit {
-  hackathon = signal<Hackathon[] >([]);
+  hackathon = signal<Hackathon[]>([]);
   errorMessage = signal<string | null>(null);
   search = '';
 
-  constructor(private HackathonService: HackathonService) { }
+  constructor(private hackathonService: HackathonService) { }
 
   ngOnInit(): void {
     this.caricaHackathon();
   }
 
   caricaHackathon(): void {
-    this.HackathonService.getAll().subscribe({
+    this.hackathonService.getAll().subscribe({
       next: (data) => {
-        //filtra e ordina i hackathon in base alla data di inizio, mostrando solo quelli futuri
+        // Filtra e ordina gli hackathon in base alla data di inizio, mostrando solo quelli futuri
         const ora = new Date();
         const ordinati = data
           .filter(h => new Date(h.startDate) > ora)
@@ -36,19 +36,19 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
   filtro(): Hackathon[] {
     if (!this.hackathon()) {
       return [];
     }
-    const dataAttuale = new Date();
-    return this.hackathon()!.filter(hackathon => {
-      return !this.search || hackathon.name.toLowerCase().includes(this.search.toLowerCase());
+    return this.hackathon()!.filter(h => {
+      return !this.search || h.name.toLowerCase().includes(this.search.toLowerCase());
     });
   }
+
   formatDate(dateStr: string): string {
     return new Date(dateStr).toLocaleDateString('it-IT', {
         day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
     });
   }
 }
-
