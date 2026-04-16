@@ -1,13 +1,15 @@
 <section class="profile-section">
   <div class="container py-5">
 
-    <div class="row justify-content-center mb-4">
+    <div class="row justify-content-center mb-3">
       <div class="col-12 col-lg-10">
-        <button class="hd-btn-ghost" routerLink="/hackathon/{{ hackathonId() }}" style="font-size: 0.9rem;">
-          <i class="fa-solid fa-arrow-left me-2"></i> details
-        </button>
+        <a [routerLink]="['/hackathon/', hackathonId()]" class="text-decoration-none text-muted d-inline-flex align-items-center gap-2 hd-back-link hover-primary">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Details</span>
+        </a>
       </div>
     </div>
+    
 
     @if (successMessage()) {
     <div class="row justify-content-center mb-3">

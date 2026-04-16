@@ -1,6 +1,14 @@
 <section class="profile-section">
   <div class="container py-5">
 
+    <div class="row justify-content-center mb-3">
+      <div class="col-12 col-lg-10">
+        <a [routerLink]="['/hackathons']" class="text-decoration-none text-muted d-inline-flex align-items-center gap-2 hd-back-link hover-primary">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Back to Hackathons</span>
+        </a>
+      </div>
+    </div>
     @if (successMessage()) {
       <div class="row justify-content-center mb-3">
         <div class="col-12 col-lg-10">

@@ -6,13 +6,13 @@ import { StaffService } from '../../service/staff.service';
 import { HackathonCreate } from '../../models/HackathonCreate.model';
 import { Rule } from '../../models/rule.model';
 import { Staff } from '../../models/staff.model';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { min } from 'rxjs';
 import { Hackathon } from '../../models/hackathon.model';
 import { Account } from '../../../account/models/account.model';
 @Component({
   selector: 'app-create-hackathon',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './createHackathon.component.html',
   styleUrl: './createHackathon.component.scss',
 })

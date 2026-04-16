@@ -1,11 +1,20 @@
 <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6">
+          <div class="col-12 col-lg-10">
+                    <a routerLink="/hackathons" class="text-decoration-none text-muted d-inline-flex align-items-center gap-2 hd-back-link hover-primary">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Back to Hackathons</span>
+                    </a>
+                </div> <br>
         <div class="cr-card">
 
+            
             <div class="cr-card-bar"></div>
 
 
             <div class="cr-card-body">
+               <div class="row justify-content-center mb-3">
+              
                 @if (errorMessage()) {
                 <div class="alert alert-error">
                     <i class="fa-solid fa-triangle-exclamation"></i>
