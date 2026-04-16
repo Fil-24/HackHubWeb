@@ -3,8 +3,8 @@
     
     <div class="row justify-content-center mb-3">
       <div class="col-12 text-center">
-        <h3 class="pr-title">Inviti <span class="accent">Ricevuti</span></h3>
-        <p class="pr-text-muted mt-2">Gestisci le richieste per unirti a nuovi team.</p>
+        <h3 class="pr-title">Invitations <span class="accent">Received</span></h3>
+        <p class="pr-text-muted mt-2">Manage requests to join new teams.</p>
       </div>
     </div>
 
@@ -28,9 +28,9 @@
     @if (isLoading()) {
       <div class="text-center py-5">
         <div class="spinner-border" style="color: #00c896;" role="status">
-          <span class="visually-hidden">Caricamento...</span>
+          <span class="visually-hidden">Loading...</span>
         </div>
-        <p class="pr-label mt-3">Caricamento inviti in corso...</p>
+        <p class="pr-label mt-3">Loading invitations...</p>
       </div>
     } 
     
@@ -39,7 +39,7 @@
         <div class="col-12 col-lg-8">
           <div class="pr-card text-center p-5">
             <i class="fa-solid fa-envelope-open mb-3" style="font-size: 2.5rem; color: #cbd5e1;"></i>
-            <p class="pr-value mb-0">Non hai nessun nuovo invito al momento.</p>
+            <p class="pr-value mb-0">You have no new invitations at the moment.</p>
           </div>
         </div>
       </div>
@@ -69,17 +69,17 @@
   
                   <div class="flex-grow-1 border-start border-end border-0 border-md px-md-4 py-2 py-md-0" style="border-color: #e5e7eb !important;">
                     <p class="pr-text-muted mb-2" style="font-size: 14px;">
-                      Sei stato invitato ad unirti al team
+                      You have been invited to join the team
                     </p>
                     <div class="d-flex align-items-center gap-2">
-                      <span class="pr-label mb-0">Stato:</span>
+                      <span class="pr-label mb-0">Status:</span>
                       <span class="pr-badge">{{ invito.state }}</span>
                     </div>
                   </div>
   
                   <div class="d-flex gap-2 mt-2 mt-md-0 flex-shrink-0 w-100 w-md-auto justify-content-end">
-                    <button class="pr-btn-outline flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="respond(invito.idInvitation, false)">Rifiuta</button>
-                    <button class="pr-btn-primary flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="respond(invito.idInvitation, true)">Accetta</button>
+                    <button class="pr-btn-outline flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="respond(invito.idInvitation, false)">Decline</button>
+                    <button class="pr-btn-primary flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="respond(invito.idInvitation, true)">Accept</button>
                   </div>
   
                 </div>

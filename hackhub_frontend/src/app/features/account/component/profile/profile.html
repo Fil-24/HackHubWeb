@@ -31,18 +31,18 @@
               @if (!isEditing()) {
                 <div class="pr-info-grid">
                   <div class="pr-info-item">
-                    <span class="pr-label">Nome</span>
+                    <span class="pr-label">Name</span>
                     <span class="pr-value">{{ user.name }}</span>
                   </div>
                   
                   <div class="pr-info-item">
-                    <span class="pr-label">Cognome</span>
+                    <span class="pr-label">Surname</span>
                     <span class="pr-value">{{ user.surname }}</span>
                   </div>
 
                   <div class="pr-info-item pr-full-width">
                     <span class="pr-label">Nickname</span>
-                    <span class="pr-value">{{ user.nickname || 'Nessun nickname' }}</span>
+                    <span class="pr-value">{{ user.nickname || 'No nickname' }}</span>
                   </div>
                   
                   <div class="pr-info-item pr-full-width">
@@ -51,18 +51,18 @@
                   </div>
 
                   <div class="pr-info-item pr-full-width mt-2">
-                    <span class="pr-label">Status Team</span>
+                    <span class="pr-label">Team Status</span>
                     @if (user.idTeam) {
-                      <span class="pr-value accent-green">{{ user.teamName || 'Team non specificato' }}</span>
+                      <span class="pr-value accent-green">{{ user.teamName || 'Team not specified' }}</span>
                     } @else {
-                      <span class="pr-value pr-text-muted">Nessun team assegnato</span>
+                      <span class="pr-value pr-text-muted">No team assigned</span>
                     }
                   </div>
                 </div>
 
                 <div class="mt-5 text-center">
                   <button class="pr-btn-primary w-100" (click)="toggleEdit()">
-                    Modifica Informazioni →
+                    Edit Information →
                   </button>
                 </div>
 
@@ -70,12 +70,12 @@
                 <div class="pr-form">
                   
                   <div class="pr-input-group">
-                    <label class="pr-label">Nome</label>
+                    <label class="pr-label">Name</label>
                     <input type="text" class="pr-input" [(ngModel)]="editName">
                   </div>
 
                   <div class="pr-input-group">
-                    <label class="pr-label">Cognome</label>
+                    <label class="pr-label">Surname</label>
                     <input type="text" class="pr-input" [(ngModel)]="editSurname">
                   </div>
 
@@ -94,32 +94,32 @@
                   </div>
 
                   <div class="pr-input-group pr-full-width mb-2">
-                    <span class="pr-label" style="color: #00c896;">Cambio Password (Opzionale)</span>
+                    <span class="pr-label" style="color: #00c896;">Change Password (Optional)</span>
                     <span class="pr-value" style="font-size: 12px; color: #64748b;">
-                      Compila questi campi solo se desideri aggiornare la tua password.
+                      Fill in these fields only if you want to update your password.
                     </span>
                   </div>
 
                   <div class="pr-input-group pr-full-width">
-                    <label class="pr-label">Vecchia Password</label>
+                    <label class="pr-label">Old Password</label>
                     <div class="password-wrapper position-relative w-100">
-                      <input [type]="isOldPasswordVisible ? 'text' : 'password'" class="pr-input w-100" [(ngModel)]="editOldPassword" placeholder="Inserisci la password attuale">
+                      <input [type]="isOldPasswordVisible ? 'text' : 'password'" class="pr-input w-100" [(ngModel)]="editOldPassword" placeholder="Enter current password">
                       <i [class]="isOldPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" (click)="toggleOldPasswordVisibility()"></i>
                     </div>
                   </div>
 
                   <div class="pr-input-group pr-full-width">
-                    <label class="pr-label">Nuova Password</label>
+                    <label class="pr-label">New Password</label>
                     <div class="password-wrapper position-relative w-100">
-                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="pr-input w-100" [(ngModel)]="editNewPassword" placeholder="Inserisci la nuova password">
+                      <input [type]="isPasswordVisible ? 'text' : 'password'" class="pr-input w-100" [(ngModel)]="editNewPassword" placeholder="Enter new password">
                       <i [class]="isPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" (click)="togglePasswordVisibility()"></i>
                     </div>
                   </div>
 
                   <div class="pr-input-group pr-full-width">
-                    <label class="pr-label">Conferma Nuova Password</label>
+                    <label class="pr-label">Confirm New Password</label>
                     <div class="password-wrapper position-relative w-100">
-                      <input [type]="isConfirmPasswordVisible ? 'text' : 'password'" class="pr-input w-100" [(ngModel)]="editConfirmPassword" placeholder="Ripeti la nuova password">
+                      <input [type]="isConfirmPasswordVisible ? 'text' : 'password'" class="pr-input w-100" [(ngModel)]="editConfirmPassword" placeholder="Repeat new password">
                       <i [class]="isConfirmPasswordVisible ? 'fa-solid fa-eye-slash password-icon' : 'fa-solid fa-eye password-icon'" (click)="toggleConfirmPasswordVisibility()"></i>
                     </div>
                   </div>
@@ -129,13 +129,13 @@
 
                 <div class="mt-5 d-flex gap-3">
                         
-                  <button class="pr-btn-outline w-50" (click)="cancelEdit()" [disabled]="isSaving()">Annulla</button>
+                  <button class="pr-btn-outline w-50" (click)="cancelEdit()" [disabled]="isSaving()">Cancel</button>
                   <button class="pr-btn-primary w-50 d-flex justify-content-center align-items-center gap-2" (click)="saveChanges()" [disabled]="isSaving()">
                     @if (isSaving()) {
                       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                      Salvataggio...
+                      Saving...
                     } @else {
-                      Salva Modifiche
+                      Save Changes
                     }
                   </button>
                 </div>
@@ -144,7 +144,7 @@
             } @else {
               <div class="text-center py-5">
                 <div class="spinner-border" style="color: #00c896;" role="status">
-                  <span class="visually-hidden">Caricamento...</span>
+                  <span class="visually-hidden">Loading...</span>
                 </div>
               </div>
             }

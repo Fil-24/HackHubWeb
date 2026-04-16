@@ -10,7 +10,6 @@
     }
     @else {
 
-      <!-- ── ALERTS ── -->
       @if (successMessage()) {
         <div class="row justify-content-center mb-3">
           <div class="col-12 col-lg-10">
@@ -32,7 +31,6 @@
         </div>
       }
 
-      <!-- ── HERO CARD ── -->
       <div class="row justify-content-center mb-4">
         <div class="col-12 col-lg-10">
           <div class="mt-hero">
@@ -49,7 +47,7 @@
                   <div>
                     <h2 class="mt-hero__name">{{ team()?.name }}</h2>
                     <p class="mt-hero__desc">
-                      {{ team()?.description || 'Nessuna descrizione inserita.' }}
+                      {{ team()?.description || 'No description provided.' }}
                     </p>
                   </div>
                 </div>
@@ -58,33 +56,32 @@
                   @if (isLeader) {
                     <button class="mt-hero__btn-edit" (click)="showModifyForm = !showModifyForm">
                       <i class="fa-solid fa-pen-to-square"></i>
-                      <span>Modifica</span>
+                      <span>Edit</span>
                     </button>
                   }
                   <button class="mt-hero__btn-leave" (click)="askLeave()">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                    <span>Lascia</span>
+                    <span>Leave</span>
                   </button>
                 </div>
 
               </div>
             </div>
 
-            <!-- Stats strip -->
             <div class="mt-strip">
               <div class="mt-strip__item">
                 <span class="mt-strip__value">{{ team()?.teamStats?.hackathonsPlayed || 0 }}</span>
-                <span class="mt-strip__label">Hackathon giocati</span>
+                <span class="mt-strip__label">Hackathons played</span>
               </div>
               <div class="mt-strip__sep" aria-hidden="true"></div>
               <div class="mt-strip__item">
                 <span class="mt-strip__value mt-strip__value--green">{{ team()?.teamStats?.hackathonsWon || 0 }}</span>
-                <span class="mt-strip__label">Vittorie</span>
+                <span class="mt-strip__label">Wins</span>
               </div>
               <div class="mt-strip__sep" aria-hidden="true"></div>
               <div class="mt-strip__item">
                 <span class="mt-strip__value">{{ team()?.teamStats?.podiums || 0 }}</span>
-                <span class="mt-strip__label">Podi</span>
+                <span class="mt-strip__label">Podiums</span>
               </div>
               <div class="mt-strip__sep" aria-hidden="true"></div>
               <div class="mt-strip__item">
@@ -97,7 +94,6 @@
         </div>
       </div>
 
-      <!-- ── FORM MODIFICA ── -->
       @if (showModifyForm) {
         <div class="row justify-content-center mb-4">
           <div class="col-12 col-lg-10">
@@ -110,28 +106,28 @@
                     <i class="fa-solid fa-pen-to-square"></i>
                   </div>
                   <div>
-                    <h5 class="mt-section-header__title">Modifica Team</h5>
-                    <p class="mt-section-header__sub">Aggiorna il nome e la descrizione del tuo team</p>
+                    <h5 class="mt-section-header__title">Edit Team</h5>
+                    <p class="mt-section-header__sub">Update your team's name and description</p>
                   </div>
                 </div>
 
                 <div class="d-flex flex-column gap-3">
                   <div class="mt-field">
                     <label class="mt-field__label">
-                      <i class="fa-solid fa-tag"></i> Nome Team
+                      <i class="fa-solid fa-tag"></i> Team Name
                     </label>
                     <input type="text" class="mt-field__input"
                       [(ngModel)]="name" maxlength="50"
-                      placeholder="Nome del team...">
+                      placeholder="Team name...">
                     <span class="mt-field__counter">{{ name.length }}/50</span>
                   </div>
                   <div class="mt-field">
                     <label class="mt-field__label">
-                      <i class="fa-solid fa-align-left"></i> Descrizione
+                      <i class="fa-solid fa-align-left"></i> Description
                     </label>
                     <textarea class="mt-field__input mt-field__textarea"
                       [(ngModel)]="description" maxlength="300" rows="4"
-                      placeholder="Descrivi il tuo team...">
+                      placeholder="Describe your team...">
                     </textarea>
                     <span class="mt-field__counter">{{ description.length }}/300</span>
                   </div>
@@ -139,10 +135,10 @@
 
                 <div class="d-flex gap-2 mt-4 justify-content-end">
                   <button class="mt-btn-ghost" (click)="showModifyForm = false">
-                    Annulla
+                    Cancel
                   </button>
                   <button class="mt-btn-primary" (click)="modifyTeam()">
-                    <i class="fa-solid fa-floppy-disk me-1"></i> Salva modifiche
+                    <i class="fa-solid fa-floppy-disk me-1"></i> Save changes
                   </button>
                 </div>
 
@@ -153,8 +149,7 @@
       }
       @else
       {
-        <!-- ── MEMBRI ── -->
-      <div class="row justify-content-center">
+        <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
           <div class="mt-section-card">
             <div class="mt-section-card__bar"></div>
@@ -166,17 +161,16 @@
                 </div>
                 <div class="flex-grow-1">
                   <h5 class="mt-section-header__title">
-                    Membri della Squadra
+                    Team Members
                   </h5>
                   <p class="mt-section-header__sub">
-                    {{ (team()?.members?.length || 0) + (team()?.leader ? 1 : 0) }} persone in questo team
+                    {{ (team()?.members?.length || 0) + (team()?.leader ? 1 : 0) }} people in this team
                   </p>
                 </div>
               </div>
 
               <div class="mt-members">
 
-                <!-- Leader -->
                 @if (team()?.leader) {
                   <div class="mt-member mt-member--leader">
                     <div class="mt-member__avatar mt-member__avatar--leader">
@@ -194,10 +188,9 @@
                   </div>
                 }
 
-                <!-- Separatore se ci sono membri -->
                 @if (team()?.members?.length) {
                   <div class="mt-members__sep">
-                    <span>Membri</span>
+                    <span>Members</span>
                   </div>
                 }
 
@@ -212,7 +205,7 @@
                     </div>
                     @if (isLeader) {
                       <button class="mt-member__remove" (click)="askRemoveMember(member)"
-                        title="Rimuovi {{ member.nickname }}">
+                        title="Remove {{ member.nickname }}">
                         <i class="fa-solid fa-xmark"></i>
                       </button>
                     }
@@ -221,15 +214,14 @@
 
               </div>
 
-              <!-- ── INVITA ── -->
               @if (isLeader) {
                 <div class="mt-invite">
                   <div class="mt-invite__header">
                     <i class="fa-solid fa-paper-plane mt-invite__icon"></i>
-                    <span class="mt-section-header__title" style="font-size: 14px;">Invita un membro</span>
+                    <span class="mt-section-header__title" style="font-size: 14px;">Invite a member</span>
                   </div>
                   <p class="mt-section-header__sub mb-3">
-                    Inserisci l'email dell'utente che vuoi aggiungere al team
+                    Enter the email of the user you want to add to the team
                   </p>
                   <div class="d-flex flex-column flex-md-row gap-2">
                     <div class="mt-invite__input-wrap flex-grow-1">
@@ -237,12 +229,12 @@
                       <input
                         type="email"
                         class="mt-invite__input"
-                        placeholder="email@esempio.com"
+                        placeholder="email@example.com"
                         [value]="newMemberEmail()"
                         (input)="newMemberEmail.set($any($event.target).value)">
                     </div>
                     <button class="mt-btn-primary flex-shrink-0" (click)="inviteMember()">
-                      <i class="fa-solid fa-paper-plane me-1"></i> Invita
+                      <i class="fa-solid fa-paper-plane me-1"></i> Invite
                     </button>
                   </div>
                 </div>
@@ -256,8 +248,7 @@
     
     }
   </div>
-  <!-- ── CONFIRM DIALOG ── -->
-@if (confirmDialog()) {
+  @if (confirmDialog()) {
   <div class="mt-dialog-overlay" (click)="closeDialog()">
     <div class="mt-dialog" (click)="$event.stopPropagation()">
 
@@ -276,7 +267,7 @@
       }
 
       <div class="mt-dialog__actions">
-        <button class="mt-btn-ghost" (click)="closeDialog()">Annulla</button>
+        <button class="mt-btn-ghost" (click)="closeDialog()">Cancel</button>
         <button
           class="mt-dialog__confirm-btn"
           [class.mt-dialog__confirm-btn--danger]="confirmDialog()!.type === 'danger'"

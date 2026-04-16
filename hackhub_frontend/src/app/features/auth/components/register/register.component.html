@@ -20,7 +20,7 @@
         <input type="email" class="input w-100" formControlName="email" placeholder="Email" 
                [class.border-danger]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" />
         @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
-          <div class="text-danger small mt-1">Inserisci un'email valida.</div>
+          <div class="text-danger small mt-1">Enter a valid email.</div>
         }
       </div>
       
@@ -34,7 +34,7 @@
         </div>
         @if (registerForm.get('password')?.errors?.['pattern'] && registerForm.get('password')?.touched) {
           <div class="text-danger small mt-1">
-            Min 8 caratteri, 1 maiuscola, 1 minuscola, 1 numero.
+            Min 8 characters, 1 uppercase, 1 lowercase, 1 number.
           </div>
         }
       </div>
@@ -48,7 +48,7 @@
              (click)="toggleConfirmPasswordVisibility()" style="cursor: pointer;"></i>
         </div>
         @if (registerForm.get('confirmPassword')?.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched) {
-          <div class="text-danger small mt-1">Le password non coincidono.</div>
+          <div class="text-danger small mt-1">Passwords do not match.</div>
         }
       </div>
       
@@ -59,7 +59,7 @@
           <option value="USER">User</option>
           <option value="STAFF">Staff</option>
         </select>
-        <img src="assets/img/Expand_down.svg" class="select-arrow" alt="Freccia">
+        <img src="assets/img/Expand_down.svg" class="select-arrow" alt="Arrow">
       </div>
     
       @if (errorMessage()) {

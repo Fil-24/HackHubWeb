@@ -3,8 +3,8 @@
     
     <div class="row justify-content-center mb-3">
       <div class="col-12 text-center">
-        <h3 class="pr-title">Esplora <span class="accent">Team</span></h3>
-        <p class="pr-text-muted mt-2">Cerca un team a cui unirti o visualizza i dettagli del tuo gruppo.</p>
+        <h3 class="pr-title">Explore <span class="accent">Teams</span></h3>
+        <p class="pr-text-muted mt-2">Search for a team to join or view your group's details.</p>
       </div>
     </div>
 
@@ -22,21 +22,21 @@
     @if (isLoading()) {
       <div class="text-center py-5">
         <div class="spinner-border" style="color: #00c896;" role="status">
-          <span class="visually-hidden">Caricamento...</span>
+          <span class="visually-hidden">Loading...</span>
         </div>
-        <p class="pr-label mt-3">Caricamento team in corso...</p>
+        <p class="pr-label mt-3">Loading team...</p>
       </div>
     } 
     @else {
       <div class="row justify-content-center mb-4">
         <div class="col-12 col-lg-10">
           <div class="d-flex flex-column flex-md-row gap-3">
-            <div class="pr-search-bar flex-grow-1">
+            <div class="pr-search-bar flex-grow-1"> 
               <i class="fa-solid fa-magnifying-glass search-icon"></i>
               <input 
                 type="text" 
-                class="pr-input-search" 
-                placeholder="Cerca un team per nome..." 
+                class="pr-input-search"
+                placeholder="Search for a team by name..."
                 [value]="searchQuery()"
                 (input)="updateSearch($event)">
             </div>
@@ -44,7 +44,7 @@
             @if (isLoggedIn() && this.authService.isUser()) {
               <button class="pr-btn-primary flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="openCreateTeam()">
                 <i class="fa-solid fa-plus"></i>
-                <span> Crea Team</span>
+                <span> Create Team</span>
               </button>
             }
 
@@ -57,7 +57,7 @@
           <div class="col-12 col-lg-8">
             <div class="pr-card text-center p-5">
               <i class="fa-solid fa-ghost mb-3" style="font-size: 2.5rem; color: #cbd5e1;"></i>
-              <p class="pr-value mb-0">Nessun team trovato con questa ricerca.</p>
+              <p class="pr-value mb-0">No team found with this search.</p>
             </div>
           </div>
         </div>
@@ -79,26 +79,26 @@
                       </div>
                       <div>
                         <h4 class="pr-value m-0" style="font-size: 1.15rem;">{{ team.name }}</h4>
-                        <div class="d-flex align-items-center gap-2 mt-1">
-                          <span class="pr-label mb-0"><i class="fa-solid fa-users"></i> {{ (team.members ? team.members!.length : 0) + (team.leader ? 1 : 0) }} MEMBRI</span>
+                        <div class="d-flex align-items-center gap-2 mt-1"> 
+                          <span class="pr-label mb-0"><i class="fa-solid fa-users"></i> {{ (team.members ? team.members!.length : 0) + (team.leader ? 1 : 0) }} MEMBERS</span>
                         </div>
                       </div>
                     </div>
     
                     <div class="flex-grow-1 border-start border-end border-0 border-md px-md-4 py-2 py-md-0" style="border-color: #e5e7eb !important;">
                       <p class="pr-text-muted mb-2 text-truncate" style="max-width: 300px; font-size: 14px;">
-                        {{ team.description || 'Nessuna descrizione disponibile.' }}
+                        {{ team.description || 'No description available.' }}
                       </p>
-                      <div class="d-flex align-items-center gap-2">
-                        <span class="pr-badge"><i class="fa-solid fa-trophy"></i> {{ team.teamStats!.hackathonsWon || 0 }} Vittorie</span>
+                      <div class="d-flex align-items-center gap-2"> 
+                        <span class="pr-badge"><i class="fa-solid fa-trophy"></i> {{ team.teamStats!.hackathonsWon || 0 }} Wins</span>
                       </div>
                     </div>
     
                     <div class="d-flex gap-2 mt-2 mt-md-0 flex-shrink-0 w-100 w-md-auto justify-content-end">
                       <button class="pr-btn-outline flex-grow-1 flex-md-grow-0" style="padding: 10px 20px;" (click)="openTeamDetails(team)">
-                        <i class="fa-solid fa-circle-info me-1"></i> Dettagli
+                        <i class="fa-solid fa-circle-info me-1"></i> Details
                       </button>
-                    </div>
+                    </div> 
     
                   </div>
                 </div>
@@ -125,32 +125,32 @@
             </div>
             <div>
               <h3 class="pr-title m-0" style="font-size: 1.8rem;">{{ selectedTeam()!.name }}</h3>
-              <span class="pr-label">ID Squadra: #{{ selectedTeam()!.id }}</span>
+              <span class="pr-label">Team ID: #{{ selectedTeam()!.id }}</span>
             </div>
           </div>
           <button class="btn-close-custom" (click)="closePopup()">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
-
+ 
         <div class="mb-4">
           <p class="pr-text-muted" style="font-size: 15px;">
-            {{ selectedTeam()!.description || 'Questo team non ha inserito una descrizione.' }}
+            {{ selectedTeam()!.description || 'This team has not provided a description.' }}
           </p>
         </div>
-
-        <h5 class="pr-value mb-3">Statistiche Team</h5>
+ 
+        <h5 class="pr-value mb-3">Team Statistics</h5>
         <div class="stats-grid mb-4">
           <div class="stat-box">
-            <span class="pr-label">Giocati</span>
+            <span class="pr-label">Played</span>
             <span class="stat-value">{{ selectedTeam()!.teamStats!.hackathonsPlayed || 0 }}</span>
           </div>
           <div class="stat-box">
-            <span class="pr-label">Vittorie</span>
+            <span class="pr-label">Wins</span>
             <span class="stat-value text-success">{{ selectedTeam()!.teamStats!.hackathonsWon || 0 }}</span>
           </div>
           <div class="stat-box">
-            <span class="pr-label">Podi</span>
+            <span class="pr-label">Podiums</span>
             <span class="stat-value">{{ selectedTeam()!.teamStats!.podiums || 0 }}</span>
           </div>
           <div class="stat-box">
@@ -158,9 +158,9 @@
             <span class="stat-value">{{ selectedTeam()!.teamStats!.winRate || 0 }}%</span>
           </div>
         </div>
-
+ 
        <h5 class="pr-value mb-3">
-          Membri della Squadra ({{ (selectedTeam()!.members!.length || 0) + (selectedTeam()!.leader ? 1 : 0) }})
+          Team Members ({{ (selectedTeam()!.members!.length || 0) + (selectedTeam()!.leader ? 1 : 0) }})
         </h5>
         
         <div class="members-list">
@@ -173,7 +173,7 @@
               <div class="d-flex flex-column">
                 <div class="d-flex align-items-center gap-2">
                   <span class="pr-value" style="font-size: 14px;">{{ selectedTeam()!.leader.nickname }}</span>
-                  <span class="pr-badge" style="padding: 2px 6px; font-size: 9px; margin: 0;">
+                  <span class="pr-badge" style="padding: 2px 6px; font-size: 9px; margin: 0;"> 
                     <i class="fa-solid fa-crown me-1"></i> Leader
                   </span>
                 </div>
@@ -195,7 +195,7 @@
           }
 
           @if (!selectedTeam()!.leader && (!selectedTeam()!.members || selectedTeam()!.members.length === 0)) {
-            <p class="pr-text-muted">Nessun membro visibile.</p>
+            <p class="pr-text-muted">No visible members.</p>
           }
           
         </div>
@@ -215,8 +215,8 @@
         <div class="d-flex justify-content-between align-items-start mb-4">
           <div class="d-flex align-items-center gap-3">
             <div>
-              <h3 class="pr-title m-0" style="font-size: 1.8rem;">Crea <span class="accent">Team</span></h3>
-              <span class="pr-label">Compila i campi per creare il tuo team</span>
+              <h3 class="pr-title m-0" style="font-size: 1.8rem;">Create <span class="accent">Team</span></h3>
+              <span class="pr-label">Fill in the fields to create your team</span>
             </div>
           </div>
           <button class="btn-close-custom" (click)="closeCreateForm()">
@@ -242,12 +242,12 @@
 
           <div class="create-field">
             <label class="pr-label mb-2 d-block">
-              <i class="fa-solid fa-tag me-1"></i> Nome Team
+              <i class="fa-solid fa-tag me-1"></i> Team Name
             </label>
             <input
               type="text"
-              class="pr-create-input"
-              placeholder="Es. Phoenix Squad..."
+              class="pr-create-input" 
+              placeholder="e.g., Phoenix Squad..."
               [(ngModel)]="newTeamName"
               maxlength="50">
             <span class="pr-label d-flex justify-content-end mt-1">
@@ -257,11 +257,11 @@
 
           <div class="create-field">
             <label class="pr-label mb-2 d-block">
-              <i class="fa-solid fa-align-left me-1"></i> Descrizione
+              <i class="fa-solid fa-align-left me-1"></i> Description
             </label>
             <textarea
               class="pr-create-input pr-create-textarea"
-              placeholder="Descrivi il tuo team, la vostra specialità, i vostri obiettivi..."
+              placeholder="Describe your team, its specialty, your goals..."
               [(ngModel)]="newTeamDescription"
               maxlength="300"
               rows="4">
@@ -273,20 +273,20 @@
 
         </div>
 
-        <div class="d-flex gap-3 mt-4 justify-content-end">
+        <div class="d-flex gap-3 mt-4 justify-content-end"> 
           <button class="pr-btn-outline" style="padding: 10px 20px;" (click)="closeCreateForm()">
-            Annulla
+            Cancel
           </button>
           <button
             class="pr-btn-primary"
             style="padding: 10px 24px;"
             [disabled]="isCreating() || !newTeamName.trim()"
             (click)="submitCreateTeam()">
-            @if (isCreating()) {
+            @if (isCreating()) { 
               <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-              Creazione...
+              Creating...
             } @else {
-              <i class="fa-solid fa-plus me-1"></i> Crea Team
+              <i class="fa-solid fa-plus me-1"></i> Create Team
             }
           </button>
         </div>

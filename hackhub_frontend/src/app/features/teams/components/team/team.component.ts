@@ -78,7 +78,7 @@ export class TeamComponent {
       },
       error: (err) => {
         console.error(err);
-        this.errorMessage.set('Errore durante il caricamento dei team.');
+        this.errorMessage.set('Error while loading teams.');
         this.clearMessagesAfterDelay(); 
         this.isLoading.set(false);
       }
@@ -133,7 +133,7 @@ closeCreateForm() {
     const description = this.newTeamDescription.trim();
 
     if (!name) {
-      this.createErrorMessage.set('Il nome del team è obbligatorio.');
+      this.createErrorMessage.set('Team name is required.');
       return;
     }
 
@@ -144,7 +144,7 @@ closeCreateForm() {
     this.teamService.createTeam(name, description).subscribe({
       next: (team) => {
         this.isCreating.set(false);
-        this.createSuccessMessage.set(`Team "${team.name}" creato con successo!`);
+        this.createSuccessMessage.set(`Team "${team.name}" created successfully!`);
         this.authService.updateTeamId(team.id);
         // Chiude la modale dopo un breve delay e aggiorna la vista
         setTimeout(() => {
@@ -155,7 +155,7 @@ closeCreateForm() {
       error: (err) => {
         this.isCreating.set(false);
         this.createErrorMessage.set(
-          err?.error?.message || 'Errore durante la creazione del team. Riprova.'
+          err?.error?.message || 'Error while creating the team. Please try again.'
         );
       }
     });

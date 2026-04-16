@@ -15,7 +15,7 @@ import { timeout } from 'rxjs';
 export class ProfileComponent {
   
   isEditing = signal(false);
-  isSaving = signal(false); // Gestisce lo stato di caricamento del bottone
+  isSaving = signal(false); // Manages the loading state of the button
   passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
   editName = signal('');
   editSurname = signal('');
@@ -25,7 +25,7 @@ export class ProfileComponent {
   editNewPassword = signal('');
   editConfirmPassword = signal('');
 
-  // computed — si aggiorna automaticamente quando user() cambia
+  // computed — automatically updates when user() changes
   private user = computed(() => this.authService.user());
 
   constructor(public authService: AuthService) {
@@ -45,7 +45,7 @@ export class ProfileComponent {
   isPasswordVisible: boolean = false;
   isConfirmPasswordVisible: boolean = false;
   isOldPasswordVisible: boolean = false;
-  messageTimeout: any; // Per tenere traccia del timer di cancellazione dei messaggi
+  messageTimeout: any; // To keep track of the message clearing timer
 
   toggleOldPasswordVisibility(): void {
     this.isOldPasswordVisible = !this.isOldPasswordVisible;
@@ -72,13 +72,14 @@ export class ProfileComponent {
     }
     this.isEditing.set(false);
   }
+  
   private clearMessagesAfterDelay() {
-    // Se c'è già un timer in corso, lo cancella (evita bug se l'utente clicca velocemente)
+    // If a timer is already running, clear it (prevents bugs if the user clicks quickly)
     if (this.messageTimeout) {
       clearTimeout(this.messageTimeout);
     }
     
-    // Imposta un nuovo timer di 5000 millisecondi (5 secondi)
+    // Set a new timer for 5000 milliseconds (5 seconds)
     this.messageTimeout = setTimeout(() => {
       this.errorMessage.set(null);
       this.successMessage.set(null);
@@ -86,7 +87,7 @@ export class ProfileComponent {
   }
 
   saveChanges() {
-    this.isSaving.set(true); // Disabilita il form/bottoni
+    this.isSaving.set(true); // Disables the form/buttons
 
     const dataToUpdate: any = {
       name: this.editName,
@@ -94,19 +95,20 @@ export class ProfileComponent {
       nickname: this.editNickname,
       email: this.editEmail
     };
-    // 2. Aggiungi i dati della password SOLO se l'utente ha inserito qualcosa
+    
+    // 2. Add password data ONLY if the user entered something
       if (this.editOldPassword || this.editNewPassword) {
         
-        // Controlla che le nuove password coincidano
+        // Check that the new passwords match
         if (this.editNewPassword !== this.editConfirmPassword) {
-          this.errorMessage.set('Le password non coincidono!');
+          this.errorMessage.set('Passwords do not match!');
           this.isSaving.set(false);
           return; 
         }
 
-        // Controlla che la nuova password rispetti la Regex
+        // Check that the new password meets the Regex requirements
         if (!this.passwordRegex.test(this.editNewPassword())) {
-          this.errorMessage.set('La nuova password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola, una minuscola e un numero.');
+          this.errorMessage.set('The new password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.');
          this.isSaving.set(false);
           return;
         }
@@ -118,10 +120,10 @@ export class ProfileComponent {
 
     this.authService.updateProfile(dataToUpdate).subscribe({
       next: (res) => {
-        this.successMessage.set('Profilo aggiornato con successo!');
+        this.successMessage.set('Profile updated successfully!');
         this.isSaving.set(false);
-        this.isEditing.set(false); // Chiude la modalità modifica
-          this.clearMessagesAfterDelay(); // Imposta il timer per cancellare i messaggi
+        this.isEditing.set(false); // Closes edit mode
+          this.clearMessagesAfterDelay(); // Sets the timer to clear messages
         this.editOldPassword.set('');
         this.editNewPassword.set('');
         this.editConfirmPassword.set('');
@@ -129,8 +131,8 @@ export class ProfileComponent {
       },
       error: (err) => {
         this.isSaving.set(false);
-        this.errorMessage.set(err.message || 'Errore sconosciuto durante l\'aggiornamento del profilo');
-        this.clearMessagesAfterDelay(); // Imposta il timer per cancellare i messaggi
+        this.errorMessage.set(err.message || 'Unknown error while updating profile');
+        this.clearMessagesAfterDelay(); // Sets the timer to clear messages
       }
     });
   }

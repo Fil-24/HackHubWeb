@@ -1,15 +1,13 @@
 <section class="profile-section relative-section">
   <div class="container py-5">
 
-    <!-- HEADER -->
     <div class="row justify-content-center mb-3">
       <div class="col-12 text-center">
-        <h3 class="pr-title">Gestione <span class="accent">Utenti</span></h3>
-        <p class="pr-text-muted mt-2">Visualizza e gestisci tutti gli account della piattaforma.</p>
+        <h3 class="pr-title">User <span class="accent">Management</span></h3>
+        <p class="pr-text-muted mt-2">View and manage all platform accounts.</p>
       </div>
     </div>
 
-    <!-- ALERTS -->
     <div class="row justify-content-center mb-3">
       <div class="col-12 col-lg-10">
         @if (errorMessage()) {
@@ -27,7 +25,6 @@
       </div>
     </div>
 
-    <!-- SEARCH + FILTER -->
     <div class="row justify-content-center mb-4">
       <div class="col-12 col-lg-10">
         <div class="d-flex flex-column flex-md-row gap-3">
@@ -37,7 +34,7 @@
             <input
               type="text"
               class="pr-input-search"
-              placeholder="Cerca per nome, nickname o email..."
+              placeholder="Search by name, nickname or email..."
               [value]="searchQuery()"
               (input)="updateSearch($event)">
           </div>
@@ -57,7 +54,6 @@
       </div>
     </div>
 
-    <!-- LOADING -->
     @if (isLoading()) {
       <div class="text-center py-5">
         <div class="mt-loading">
@@ -65,23 +61,21 @@
           <span class="mt-loading__dot"></span>
           <span class="mt-loading__dot"></span>
         </div>
-        <p class="pr-label mt-3">Caricamento utenti in corso...</p>
+        <p class="pr-label mt-3">Loading users...</p>
       </div>
     }
 
-    <!-- EMPTY -->
     @else if (filteredAccounts().length === 0) {
       <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
           <div class="pr-card text-center p-5">
             <i class="fa-solid fa-ghost mb-3" style="font-size: 2.5rem; color: #cbd5e1;"></i>
-            <p class="pr-value mb-0">Nessun utente trovato.</p>
+            <p class="pr-value mb-0">No users found.</p>
           </div>
         </div>
       </div>
     }
 
-    <!-- LIST -->
     @else {
       <div class="row justify-content-center">
         <div class="col-12 col-lg-10 d-flex flex-column gap-3">
@@ -93,7 +87,6 @@
               <div class="pr-card-body p-4">
                 <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-4">
 
-                  <!-- AVATAR + INFO -->
                   <div class="d-flex align-items-center gap-3" style="min-width: 260px;">
                     <div class="au-avatar flex-shrink-0" [class.au-avatar--disabled]="account.disabled">
                       {{ account.name.charAt(0) | uppercase }}{{ account.surname.charAt(0) | uppercase }}
@@ -111,7 +104,6 @@
                     </div>
                   </div>
 
-                  <!-- DETAILS -->
                   <div class="flex-grow-1 border-start border-end border-0 border-md px-md-4 py-2 py-md-0" style="border-color: #e5e7eb !important;">
                     <p class="pr-text-muted mb-1" style="font-size: 13px; font-style: normal;">
                       <i class="fa-solid fa-envelope me-1" style="color: #94a3b8;"></i>
@@ -123,15 +115,14 @@
                         {{ account.teamName }}
                       </p>
                     } @else {
-                      <p class="pr-text-muted mb-0" style="font-size: 13px;">Nessun team</p>
+                      <p class="pr-text-muted mb-0" style="font-size: 13px;">No team</p>
                     }
                   </div>
 
-                  <!-- STATUS + ACTION -->
                   <div class="d-flex flex-column align-items-end gap-2 flex-shrink-0">
                     <span class="au-status-badge" [class.au-status-badge--active]="!account.disabled" [class.au-status-badge--disabled]="account.disabled">
                       <span class="au-status-badge__dot"></span>
-                      {{ account.disabled ? 'Disabilitato' : 'Attivo' }}
+                      {{ account.disabled ? 'Disabled' : 'Active' }}
                     </span>
                     <button
                       class="au-toggle-btn"
@@ -139,9 +130,9 @@
                       [class.au-toggle-btn--disable]="!account.disabled"
                       (click)="askToggleStatus(account)">
                       @if (account.disabled) {
-                        <i class="fa-solid fa-lock-open me-1"></i> Abilita
+                        <i class="fa-solid fa-lock-open me-1"></i> Enable
                       } @else {
-                        <i class="fa-solid fa-lock me-1"></i> Disabilita
+                        <i class="fa-solid fa-lock me-1"></i> Disable
                       }
                     </button>
                   </div>
@@ -158,7 +149,6 @@
   </div>
 </section>
 
-<!-- CONFIRM DIALOG -->
 @if (confirmDialog()) {
   <div class="mt-dialog-overlay" (click)="closeDialog()">
     <div class="mt-dialog" (click)="$event.stopPropagation()">
@@ -178,7 +168,7 @@
       }
 
       <div class="mt-dialog__actions">
-        <button class="mt-btn-ghost" (click)="closeDialog()">Annulla</button>
+        <button class="mt-btn-ghost" (click)="closeDialog()">Cancel</button>
         <button
           class="mt-dialog__confirm-btn"
           [class.mt-dialog__confirm-btn--danger]="confirmDialog()!.type === 'danger'"

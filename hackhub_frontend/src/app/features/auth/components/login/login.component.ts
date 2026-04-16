@@ -59,7 +59,7 @@ export class LoginComponent {
         this.router.navigate(['/dashboard']);
       },
       error: err => {
-        this.errorMessage.set(err.message || 'Errore durante il login. Controlla le credenziali.');
+        this.errorMessage.set(err.message || 'Login failed. Please try again.');
       }
     });
   }

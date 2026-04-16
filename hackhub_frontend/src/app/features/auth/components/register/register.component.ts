@@ -91,7 +91,7 @@ export class RegisterComponent {
         this.router.navigate(['/dashboard']);
       },
       error: err => {
-        this.errorMessage.set(err.message || 'Errore durante la registrazione.');
+        this.errorMessage.set(err.message || 'Registration failed. Please try again.');
       }
     });
   }

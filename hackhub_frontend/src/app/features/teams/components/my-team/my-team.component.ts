@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Team } from '../../model/team.model'; // Assicurati che il percorso sia corretto
+import { Team } from '../../model/team.model'; // Make sure the path is correct
 import { Router } from '@angular/router';
 import { TeamService } from '../../service/team.service';
 import { InvitationService } from '../../../account/service/invitation.service';
@@ -85,7 +85,7 @@ export class MyTeamComponent {
 
     this.invitationService.invite(this.newMemberEmail()).subscribe({
       next: () => {
-        this.successMessage.set('Invitation sended!');
+        this.successMessage.set('Invitation sent!');
         this.newMemberEmail.set('');
         setTimeout(() => this.successMessage.set(null), 3000);
       },
@@ -198,12 +198,12 @@ export class MyTeamComponent {
       this.confirmDialog.set({
         type: 'danger',
         icon: 'fa-solid fa-arrow-right-from-bracket',
-        title: 'Lasciare il team?',
-        message: 'Stai per abbandonare il tuo team come leader.',
+        title: 'Leave the team?',
+        message: 'You are about to leave your team as the leader.',
         warning: hasMembers
-          ? 'Il ruolo di leader verrà assegnato automaticamente ad un altro membro del team.'
-          : 'Non ci sono altri membri: abbandonando il team, questo verrà eliminato definitivamente.',
-        confirmLabel: 'Sì, lascia',
+          ? 'The leader role will be automatically assigned to another team member.'
+          : 'There are no other members: by leaving the team, it will be permanently deleted.',
+        confirmLabel: 'Yes, leave',
         onConfirm: () => {
           this.closeDialog();
           this.leave();
@@ -213,9 +213,9 @@ export class MyTeamComponent {
       this.confirmDialog.set({
         type: 'danger',
         icon: 'fa-solid fa-arrow-right-from-bracket',
-        title: 'Lasciare il team?',
-        message: 'Stai per abbandonare il team. Potrai unirti o crearne uno nuovo in qualsiasi momento.',
-        confirmLabel: 'Sì, lascia',
+        title: 'Leave the team?',
+        message: 'You are about to leave the team. You can join or create a new one at any time.',
+        confirmLabel: 'Yes, leave',
         onConfirm: () => {
           this.closeDialog();
           this.leave();
@@ -228,9 +228,9 @@ export class MyTeamComponent {
     this.confirmDialog.set({
       type: 'danger',
       icon: 'fa-solid fa-user-xmark',
-      title: 'Rimuovere il membro?',
-      message: `Stai per rimuovere ${member.nickname} dal team. L'utente potrà essere reinvitato in seguito.`,
-      confirmLabel: 'Rimuovi',
+      title: 'Remove member?',
+      message: `You are about to remove ${member.nickname} from the team. The user can be invited again later.`,
+      confirmLabel: 'Remove',
       onConfirm: () => {
         this.closeDialog();
         this.removeMember(member.idAccount);

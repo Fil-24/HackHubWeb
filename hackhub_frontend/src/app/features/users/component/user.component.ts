@@ -5,6 +5,17 @@ import { UpperCasePipe, LowerCasePipe } from '@angular/common';
 
 type FilterValue = 'ALL' | 'USER' | 'STAFF' | 'ADMIN' | 'DISABLED';
 
+// Note: Add ConfirmDialogConfig interface if it is not exported elsewhere.
+export interface ConfirmDialogConfig {
+  type: 'default' | 'danger';
+  icon: string;
+  title: string;
+  message: string;
+  warning?: string;
+  confirmLabel: string;
+  onConfirm: () => void;
+}
+
 @Component({
   selector: 'app-user.component',
   imports: [UpperCasePipe, LowerCasePipe],
@@ -22,11 +33,11 @@ export class UserComponent {
   private messageTimeout: any;
 
   filters: { label: string; value: FilterValue }[] = [
-    { label: 'Tutti',       value: 'ALL'      },
-    { label: 'User',        value: 'USER'     },
-    { label: 'Staff',       value: 'STAFF'    },
-    { label: 'Admin',       value: 'ADMIN'    },
-    { label: 'Disabilitati', value: 'DISABLED' },
+    { label: 'All',       value: 'ALL'      },
+    { label: 'User',      value: 'USER'     },
+    { label: 'Staff',     value: 'STAFF'    },
+    { label: 'Admin',     value: 'ADMIN'    },
+    { label: 'Disabled',  value: 'DISABLED' },
   ];
 
   filteredAccounts = computed(() => {
@@ -61,7 +72,7 @@ export class UserComponent {
         this.isLoading.set(false);
       },
       error: () => {
-        this.errorMessage.set('Errore nel caricamento degli utenti.');
+        this.errorMessage.set('Error loading users.');
         this.clearMessagesAfterDelay();
         this.isLoading.set(false);
       }
@@ -81,11 +92,11 @@ export class UserComponent {
     this.confirmDialog.set({
       type: enabling ? 'default' : 'danger',
       icon: enabling ? 'fa-solid fa-lock-open' : 'fa-solid fa-lock',
-      title: enabling ? "Abilitare l'utente?" : "Disabilitare l'utente?",
+      title: enabling ? "Enable user?" : "Disable user?",
       message: enabling
-        ? `Stai per riabilitare l'account di ${account.name} ${account.surname} (@${account.nickname}). L'utente potrà di nuovo accedere alla piattaforma.`
-        : `Stai per disabilitare l'account di ${account.name} ${account.surname} (@${account.nickname}). L'utente non potrà più accedere alla piattaforma.`,
-      confirmLabel: enabling ? 'Sì, abilita' : 'Sì, disabilita',
+        ? `You are about to re-enable the account of ${account.name} ${account.surname} (@${account.nickname}). The user will be able to access the platform again.`
+        : `You are about to disable the account of ${account.name} ${account.surname} (@${account.nickname}). The user will no longer be able to access the platform.`,
+      confirmLabel: enabling ? 'Yes, enable' : 'Yes, disable',
       onConfirm: () => {
         this.closeDialog();
         this.toggleStatus(account);
@@ -105,13 +116,13 @@ export class UserComponent {
         );
         this.successMessage.set(
           account.disabled
-            ? `Account di ${account.nickname} abilitato.`
-            : `Account di ${account.nickname} disabilitato.`
+            ? `${account.nickname}'s account enabled.`
+            : `${account.nickname}'s account disabled.`
         );
         this.clearMessagesAfterDelay();
       },
       error: () => {
-        this.errorMessage.set('Errore durante l\'aggiornamento dello stato.');
+        this.errorMessage.set('Error updating status.');
         this.clearMessagesAfterDelay();
       }
     });

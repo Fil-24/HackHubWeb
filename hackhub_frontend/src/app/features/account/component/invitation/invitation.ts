@@ -5,8 +5,6 @@ import { InvitationService } from '../../service/invitation.service';
 import { Invitation } from '../../models/invitation.model';
 import { AuthService } from '../../../auth/service/auth.service';
 
-
-
 @Component({
   selector: 'app-invitation',
   standalone: true,
@@ -15,11 +13,11 @@ import { AuthService } from '../../../auth/service/auth.service';
   styleUrl: './invitation.scss',
 })
 export class InvitationComponent implements OnInit {
-  // Stato del componente
+  // Component state
   invitations = signal<Invitation[]>([]);
   isLoading = signal<boolean>(true);
   
-  // Gestione messaggi (con la logica del timeout)
+  // Message handling (with timeout logic)
   successMessage = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
   private messageTimeout: any;
@@ -49,7 +47,7 @@ export class InvitationComponent implements OnInit {
         this.isLoading.set(false);
       },
       error: (err) => {
-        this.errorMessage.set('Errore nel caricamento degli inviti.');
+        this.errorMessage.set('Error loading invitations.');
         this.isLoading.set(false);
         this.clearMessagesAfterDelay();
       }
@@ -66,27 +64,27 @@ export class InvitationComponent implements OnInit {
           this.authService.updateTeamName(res.invitingTeamName);
         }
         
-        this.handleResponse(idInvitation, accept? 'accettato' : 'rifiutato');
+        this.handleResponse(idInvitation, accept ? 'accepted' : 'declined');
       },
       error: () => {
-        this.errorMessage.set("Errore nella gestione dell'invito.");
+        this.errorMessage.set("Error handling the invitation.");
         this.clearMessagesAfterDelay();
       }
     });
   }
 
 
-  private handleResponse(id: number, action: 'accettato' | 'rifiutato') {
-    // Mostra il messaggio di successo e fa partire il timer di 5 secondi
-    this.successMessage.set(`Invito ${action} con successo!`);
+  private handleResponse(id: number, action: 'accepted' | 'declined') {
+    // Shows the success message and starts the 5-second timer
+    this.successMessage.set(`Invitation ${action} successfully!`);
     this.errorMessage.set(null);
     this.clearMessagesAfterDelay();
 
-    // Rimuove visivamente l'invito dalla lista aggiornando il signal
+    // Visually removes the invitation from the list by updating the signal
     this.invitations.update(current => current.filter(inv => inv.idInvitation !== id));
   }
 
-  // Metodo per nascondere i messaggi dopo 5 secondi
+  // Method to hide messages after 5 seconds
   private clearMessagesAfterDelay() {
     if (this.messageTimeout) {
       clearTimeout(this.messageTimeout);
