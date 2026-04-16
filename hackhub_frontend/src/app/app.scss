@@ -111,19 +111,18 @@
   }
 }
 
-// Layout Strutturale per rendere tutto "Sticky"
 .app-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; // Occupa almeno tutta l'altezza dello schermo
+  min-height: 100vh; 
 }
 
 .main-content {
-  flex: 1 0 auto; // Questo "spinge" il footer verso il basso
+  flex: 1 0 auto; 
 }
 
 .custom-footer {
-  flex-shrink: 0; // Impedisce al footer di restringersi
+  flex-shrink: 0; 
   background-color: $bg-surface;
   border-top: 1.5px solid $color-green;
   padding: 2rem 0;
@@ -154,11 +153,22 @@
   }
 }
 
-// Ottimizzazione per mobile della navbar
 @media (max-width: 991px) {
   .navbar-collapse {
     padding: 1rem 0;
-    .nav-item { padding: 0.25rem 0; }
-    .profile-dropdown { margin-top: 1rem; }
+    
+    .nav-item { 
+      padding: 0.25rem 0; 
+    }
+    
+    .profile-dropdown { 
+      margin-top: 1rem; 
+
+      .dropdown-menu {
+        position: static !important;
+        transform: none !important;
+        width: 100%; 
+      }
+    }
   }
 }
