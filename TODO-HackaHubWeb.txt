@@ -1,3 +1,8 @@
+USER DI ADMIN, DOVE ATTIVA E DISATTIVA NON MI FUNZIONA CORRETTAMENTE( SE FUNZIONA L'ERRORE è TROPPO GENERICO E NON SI CAPISCE IL PERCHE NON LO POSSO FARE) LE INFORMAZIONI DEL PROFILO NON SONO COMPLETE IL TEAM NON VIENE VISTO 
+CORREGGERE SU SUBMISSION HUB LA CONDIZIONE PER GESTIRE I REPORT
+
+TOGLIERE I LOG CHE FANNO VEDERE INFOMRAZIONI SULLA MODALITA SVILUPPATORE DEL BROWSER
+
 team problemi:
 
 -sistemare i model all'interno del home
@@ -26,3 +31,4 @@ imprecisioni da correggere se c'è tempo
 - una volta salvata la submission non si aggiorna automaticamente la pagina
 - mi sembra manchi il bottone per aggiornare la sottomissione, c'è solo quello per l edit
 - bisognerebbe mettere su tutte le pagine di dettaglio un bottone per tornare in dietro, al momento la navigabilità è un po caotica
+-inconsistenza: lista hackathon, lista team, lista utenti(admin)
