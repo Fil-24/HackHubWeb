@@ -3,7 +3,7 @@ import { AuthService } from '../../../auth/service/auth.service';
 import { FormsModule } from '@angular/forms';
 import { HackathonService } from '../../service/hackathon.service';
 import { StaffService } from '../../service/staff.service';
-import { HackathonCreate } from '../../models/HackathonCreate.model';
+import { HackathonCreate } from '../../models/hackathonCreate.model';
 import { Rule } from '../../models/rule.model';
 import { Staff } from '../../models/staff.model';
 import { Router, RouterLink } from '@angular/router';

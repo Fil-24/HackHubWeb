@@ -36,7 +36,6 @@ export class UserComponent {
     { label: 'All',       value: 'ALL'      },
     { label: 'User',      value: 'USER'     },
     { label: 'Staff',     value: 'STAFF'    },
-    { label: 'Admin',     value: 'ADMIN'    },
     { label: 'Disabled',  value: 'DISABLED' },
   ];
 
@@ -45,6 +44,8 @@ export class UserComponent {
     const f = this.activeFilter();
 
     return this.accounts().filter(a => {
+      if (a.role === 'ADMIN') return false;
+      
       const matchSearch =
         a.name.toLowerCase().includes(q) ||
         a.surname.toLowerCase().includes(q) ||

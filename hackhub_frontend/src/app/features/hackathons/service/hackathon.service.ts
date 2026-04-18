@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { Hackathon } from '../models/hackathon.model';
 import { environment } from '../../../../environments/environment';
 import { Rule } from '../models/rule.model';
-import { HackathonCreate } from '../models/HackathonCreate.model';
+import { HackathonCreate } from '../models/hackathonCreate.model';
 import { Team } from '../../teams/model/team.model';
 
 @Injectable({ providedIn: 'root' })

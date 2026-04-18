@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterLink } from '@angular/router';
-import { SubmissionService } from '../../service/submission.service';
-import { SubmissionResponse, SubmitProjectPayload } from '../../models/submission.model';
-import { Team } from '../../../teams/model/team.model';
-import { AuthService } from '../../../auth/service/auth.service';
-import { ReportService } from '../../../reports/service/report.service';
-import { HackathonService } from '../../service/hackathon.service';
-import { Hackathon } from '../../models/hackathon.model';
-import { Report } from '../../../reports/model/report.model';
+import { SubmissionService } from '../service/submission.service';
+import { SubmissionResponse, SubmitProjectPayload } from '../models/submission.model';
+import { Team } from '../../teams/model/team.model';
+import { AuthService } from '../../auth/service/auth.service';
+import { ReportService } from '../../reports/service/report.service';
+import { HackathonService } from '../../hackathons/service/hackathon.service';
+import { Hackathon } from '../../hackathons/models/hackathon.model';
+import { Report } from '../../reports/model/report.model';
 
 @Component({
   selector: 'app-submission',
@@ -214,6 +214,7 @@ export class SubmissionComponent implements OnInit {
     this.submissionService.submitProject(payload).subscribe({
       next: () => {
         this.showSuccess('GitHub repository linked successfully!');
+        this.checkMySubmission(); 
         this.isSubmitting.set(false);
       },
       error: (err) => {
