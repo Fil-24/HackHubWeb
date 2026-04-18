@@ -30,14 +30,8 @@
               },
               "src/assets"
             ],
-            "styles": [
-              "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
-
-            ], 
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ]
+            "styles": ["src/styles.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
           },
           "configurations": {
             "production": {
@@ -49,11 +43,12 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "10kB",
+                  "maximumError": "20kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "serviceWorker": "ngsw-config.json"
             },
             "development": {
               "optimization": false,

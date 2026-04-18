@@ -1,14 +1,11 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import {
-  provideHttpClient,
-  withInterceptorsFromDi,
-  HTTP_INTERCEPTORS
-} from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { routes } from './app.routes';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { AuthService } from './features/auth/service/auth.service';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,18 +17,22 @@ export const appConfig: ApplicationConfig = {
     AuthService,
     //AuthGuard,
 
-    // JWT Interceptor 
+    // JWT Interceptor
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
-      multi: true
+      multi: true,
     },
 
-    // Error Interceptor 
+    // Error Interceptor
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
+  ],
 };
