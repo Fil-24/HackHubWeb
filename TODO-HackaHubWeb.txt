@@ -2,9 +2,6 @@ CORREGGERE SU SUBMISSION HUB LA CONDIZIONE PER GESTIRE I REPORT
 
 TOGLIERE I LOG CHE FANNO VEDERE INFOMRAZIONI SULLA MODALITA SVILUPPATORE DEL BROWSER
 
-TEAM:
--sistemare i model all'interno del home
-
 HACKATHONS:
 - sistemare lo sfondo
 - revisionare il componente hackathon in generale
@@ -16,13 +13,6 @@ SUBMISSION:
 LOGIN e REGISTER:
 - rendere il register più estitico
 
-IMPRECISIONI:
-- una volta salvata la submission non si aggiorna automaticamente la pagina
-
-ADMIN:
-- togliere admin dalla lista dei user che si posso disabilitare
-- sistemare il fatto No Team
-
 GRAFICA:
-- search bar da unificare team
-- date creazione hackathon
+- search bar da unificare team e utenti (admin)
+- date creazione hackathon (minuti più spostati rispetto alle ore)

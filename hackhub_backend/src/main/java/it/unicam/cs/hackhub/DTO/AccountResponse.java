@@ -3,6 +3,8 @@ package it.unicam.cs.hackhub.DTO;
 import it.unicam.cs.hackhub.model.Account;
 import it.unicam.cs.hackhub.model.Team;
 
+import java.util.Optional;
+
 /**
  * Data Transfer Object (DTO) representing a user account for REST responses.
  * <p>
@@ -36,7 +38,7 @@ public record AccountResponse(
      * @param team the team associated to the account
      * @return the corresponding DTO, or {@code null} if {@code account} is null
      */
-    public static AccountResponse fromEntity(Account account, Team team) {
+    public static AccountResponse fromEntity(Account account, Optional<Team> team) {
         if (account == null) return null;
 
         return new AccountResponse(
@@ -47,8 +49,8 @@ public record AccountResponse(
                 account.getEmail(),
                 account.getRole().name(),
                 account.isDisabled(),
-                team != null ? team.getIdTeam() : null,
-                team !=null ? team.getName() : null
+                team.<Long>map(Team::getIdTeam).orElse(null),
+                team.<String>map(Team::getName).orElse(null)
         );
     }
 }

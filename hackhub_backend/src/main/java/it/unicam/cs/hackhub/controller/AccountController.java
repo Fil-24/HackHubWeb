@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * REST controller responsible for managing {@link Account} resources.
@@ -63,8 +64,11 @@ public class AccountController {
      *         with HTTP status 200 (OK)
      */
     @GetMapping
-    public ResponseEntity<List<Account>> getAllAccounts() {
-        return ResponseEntity.ok(accountService.getAccounts());
+    public ResponseEntity<List<AccountResponse>> getAllAccounts() {
+        List<Account> accounts = accountService.getAccounts();
+        return ResponseEntity.ok(accounts.stream()
+                .map(a -> AccountResponse.fromEntity(a, teamService.findMemberById(a.getIdAccount())))
+                .toList());
     }
 
     /**
@@ -113,7 +117,7 @@ public class AccountController {
         Account updatedAccount = accountService.modifyProfile(name, surname,
                 email, nickname, oldPassword, newPassword);
 
-        Team team = teamService.findMemberById(updatedAccount.getIdAccount()).orElse(null);
+        Optional<Team> team = teamService.findMemberById(updatedAccount.getIdAccount());
 
         return ResponseEntity.ok(
                 AccountResponse.fromEntity(updatedAccount, team)

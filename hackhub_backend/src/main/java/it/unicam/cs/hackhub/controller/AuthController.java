@@ -31,6 +31,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 /**
  * REST controller that exposes authentication endpoints.
  * <p>
@@ -114,7 +116,7 @@ public class AuthController {
         String email = auth.getName();
         Account account = accountService.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        Team team = teamService.findMemberById(account.getIdAccount()).orElse(null);
+        Optional<Team> team = teamService.findMemberById(account.getIdAccount());
 
         return ResponseEntity.ok(
                 AccountResponse.fromEntity(account, team)
