@@ -1,4 +1,4 @@
-import { Component, computed, effect, signal } from '@angular/core'; // <-- Aggiungi effect
+import { Component, computed, effect, HostListener, signal } from '@angular/core'; // <-- Aggiungi effect
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Team } from '../../model/team.model';
@@ -18,7 +18,7 @@ export class TeamComponent {
   // Segnali per lo stato...
   teams = signal<Team[]>([]);
   isLoading = signal<boolean>(true);
-  errorMessage = signal<string|null>('');
+  errorMessage = signal<string | null>('');
   searchQuery = signal<string>('');
   isLoggedIn = signal<boolean>(false);
   messageTimeout: any;
@@ -28,13 +28,13 @@ export class TeamComponent {
   // Computed
   filteredTeams = computed(() => {
     const query = this.searchQuery().toLowerCase();
-    return this.teams().filter(team => 
-      team.name.toLowerCase().includes(query) || 
+    return this.teams().filter(team =>
+      team.name.toLowerCase().includes(query) ||
       (team.description && team.description.toLowerCase().includes(query))
     );
   });
 
-  myTeam = signal<Team | null>(null); 
+  myTeam = signal<Team | null>(null);
   selectedTeam = signal<Team | null>(null);
 
   // — Segnali per la form di creazione —
@@ -44,31 +44,37 @@ export class TeamComponent {
   createErrorMessage = signal<string | null>(null);
   createSuccessMessage = signal<string | null>(null);
 
-  constructor(private teamService: TeamService, protected authService: AuthService, private router : Router) {
+  //per paginazione e bottone
+  currentPage = signal<number>(1);
+  itemsPerPage = 8;
+
+  showScrollTop = signal<boolean>(false);
+
+  constructor(private teamService: TeamService, protected authService: AuthService, private router: Router) {
     effect(() => {
       const user = this.authService.user();
-      
+
       if (user) {
         this.isLoggedIn.set(true);
-        if (user.idTeam) { 
+        if (user.idTeam) {
           this.loadMyTeam();
-          return; 
+          return;
         }
-        this.myTeam.set(null); 
+        this.myTeam.set(null);
         this.loadTeams();
       } else {
         this.isLoggedIn.set(false);
         this.myTeam.set(null);
         this.loadTeams();
       }
-    }); 
+    });
   }
 
 
   loadMyTeam() {
     this.router.navigate(['/teams/my']);
   }
-  
+
   loadTeams() {
     this.isLoading.set(true);
     this.teamService.getAllTeams().subscribe({
@@ -79,7 +85,7 @@ export class TeamComponent {
       error: (err) => {
         console.error(err);
         this.errorMessage.set('Error while loading teams.');
-        this.clearMessagesAfterDelay(); 
+        this.clearMessagesAfterDelay();
         this.isLoading.set(false);
       }
     });
@@ -89,14 +95,14 @@ export class TeamComponent {
     if (this.messageTimeout) {
       clearTimeout(this.messageTimeout);
     }
-    
+
     this.messageTimeout = setTimeout(() => {
       this.errorMessage.set(null);
     }, 5000);
   }
 
   openCreateTeam() {
-  
+
     this.showCreateForm.set(true);
     document.body.style.overflow = 'hidden';
   }
@@ -104,6 +110,7 @@ export class TeamComponent {
   updateSearch(event: Event) {
     const input = event.target as HTMLInputElement;
     this.searchQuery.set(input.value);
+    this.currentPage.set(1);
   }
 
   openTeamDetails(team: Team) {
@@ -117,15 +124,15 @@ export class TeamComponent {
   }
 
   // — Chiude la form e resetta lo stato —
-closeCreateForm() {
-  this.showCreateForm.set(false);
-  this.newTeamName = '';
-  this.newTeamDescription = '';
-  this.createErrorMessage.set(null);
-  this.createSuccessMessage.set(null);
-  this.isCreating.set(false);
-  document.body.style.overflow = 'auto';
-}
+  closeCreateForm() {
+    this.showCreateForm.set(false);
+    this.newTeamName = '';
+    this.newTeamDescription = '';
+    this.createErrorMessage.set(null);
+    this.createSuccessMessage.set(null);
+    this.isCreating.set(false);
+    document.body.style.overflow = 'auto';
+  }
 
   // — Invia la richiesta di creazione —
   submitCreateTeam() {
@@ -159,5 +166,28 @@ closeCreateForm() {
         );
       }
     });
+  }
+  paginato = computed(() => {
+    const start = (this.currentPage() - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.filteredTeams().slice(start, end);
+  });
+
+  totalPages = computed(() => {
+    return Math.ceil(this.filteredTeams().length / this.itemsPerPage);
+  });
+
+  changePage(page: number) {
+    this.currentPage.set(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  @HostListener('window:scroll')
+  onScroll() {
+    this.showScrollTop.set(window.scrollY > 200);
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

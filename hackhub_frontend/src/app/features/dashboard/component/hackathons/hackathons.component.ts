@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, computed, HostListener, OnInit, signal } from '@angular/core';
 import { Hackathon } from '../../models/hackathon.model';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../auth/service/auth.service';
@@ -23,6 +23,11 @@ export class HackathonsComponent implements OnInit {
   ordinamento = signal('data-asc');
   
   showFiltri = false;
+  //per paginazione e bottone
+  currentPage = signal<number>(1);
+  itemsPerPage = 9;
+
+  showScrollTop = signal<boolean>(false);
 
   constructor(private hackathonService: HackathonService, protected authService: AuthService) { }
   
@@ -43,7 +48,7 @@ export class HackathonsComponent implements OnInit {
     });
   }
 
-  filtro(): Hackathon[] {
+  filtro = computed(() => {
   if (!this.hackathon()) {
     return [];
   }
@@ -107,18 +112,21 @@ export class HackathonsComponent implements OnInit {
           return 0;
       }
     });
-  }
+  });
 
   setFiltroPartecipazione(filtro: string) {
     this.filtroPartecipazione.set(filtro);
+    this.currentPage.set(1);
   }
 
   setFiltroTempo(filtro: string) {
     this.filtroTempo.set(filtro);
+    this.currentPage.set(1);
   }
 
   setOrdinamento(ord: string) {
     this.ordinamento.set(ord);
+    this.currentPage.set(1);
   }
 
   formatDate(dateStr: string): string {
@@ -126,4 +134,29 @@ export class HackathonsComponent implements OnInit {
         day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
     });
   }
+
+
+paginato = computed(() => {
+    const start = (this.currentPage() - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.filtro().slice(start, end);
+});
+
+totalPages = computed(() => {
+    return Math.ceil(this.filtro().length / this.itemsPerPage);
+});
+
+changePage(page: number) {
+    this.currentPage.set(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+@HostListener('window:scroll')
+onScroll() {
+    this.showScrollTop.set(window.scrollY > 200);
+}
+
+scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 }

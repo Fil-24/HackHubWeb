@@ -1,6 +1,6 @@
 <section class="profile-section relative-section">
     <div class="container py-5">
-        
+
         <div class="row justify-content-center mb-4">
             <div class="col-12 text-center">
                 <h3 class="pr-title">All <span class="accent">Hackathons</span></h3>
@@ -11,122 +11,162 @@
         <div class="row justify-content-center mb-4">
             <div class="col-12 col-lg-10">
                 <div class="d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
-                    
+
                     <div class="h-search-box flex-grow-1" style="max-width: 450px;">
                         <i class="bi bi-search h-search-icon"></i>
-                        <input type="text" class="pr-input w-100" placeholder="Search by name..." 
-                               [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)">
+                        <input type="text" class="pr-input w-100" placeholder="Search by name..."
+                            [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)">
                     </div>
 
                     <div class="d-flex flex-wrap gap-3">
                         <button class="pr-btn-outline" (click)="showFiltri = !showFiltri" [class.active]="showFiltri">
                             <i class="bi bi-filter"></i> Filters & Sorting
-                            <i class="bi" [ngClass]="showFiltri ? 'bi-chevron-up' : 'bi-chevron-down'" style="font-size: 12px; margin-left: 6px;"></i>
+                            <i class="bi" [ngClass]="showFiltri ? 'bi-chevron-up' : 'bi-chevron-down'"
+                                style="font-size: 12px; margin-left: 6px;"></i>
                         </button>
 
                         @if (this.authService.isStaff()) {
-                            <button class="pr-btn-primary" [routerLink]="['/hackathon/create']">
-                                <i class="fa-solid fa-plus me-2"></i> Create Hackathon
-                            </button>
+                        <button class="pr-btn-primary" [routerLink]="['/hackathon/create']">
+                            <i class="fa-solid fa-plus me-2"></i> Create Hackathon
+                        </button>
                         }
                     </div>
                 </div>
 
                 @if (showFiltri) {
-                    <div class="pr-card mt-3 p-4 fade-in-down">
-                        <div class="row g-4">
-                            <div class="col-12 col-md-4">
-                                <label class="pr-label d-block mb-2"><i class="bi bi-calendar-event me-2"></i>Status</label>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <button class="h-filter-chip" [class.active]="filtroTempo() === 'tutti'" (click)="setFiltroTempo('tutti')">All</button>
-                                    <button class="h-filter-chip" [class.active]="filtroTempo() === 'attivi'" (click)="setFiltroTempo('attivi')">Active</button>
-                                    <button class="h-filter-chip" [class.active]="filtroTempo() === 'passati'" (click)="setFiltroTempo('passati')">Past</button>
-                                </div>
-                            </div>
-                            
-                            <div class="col-12 col-md-4">
-                                <label class="pr-label d-block mb-2"><i class="bi bi-person-check me-2"></i>My Participation</label>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <button class="h-filter-chip" [class.active]="filtroPartecipazione() === 'tutti'" (click)="setFiltroPartecipazione('tutti')">All</button>
-                                    <button class="h-filter-chip" [class.active]="filtroPartecipazione() === 'iscritti'" (click)="setFiltroPartecipazione('iscritti')">Joined</button>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-4">
-                                <label class="pr-label d-block mb-2"><i class="bi bi-sort-down me-2"></i>Sort by</label>
-                                <select class="pr-input w-100" [ngModel]="ordinamento()" (ngModelChange)="ordinamento.set($event)">
-                                    <option value="data-asc">Date (Nearest)</option>
-                                    <option value="data-desc">Date (Furthest)</option>
-                                    <option value="az">Name (A-Z)</option>
-                                    <option value="za">Name (Z-A)</option>
-                                </select>
+                <div class="pr-card mt-3 p-4 fade-in-down">
+                    <div class="row g-4">
+                        <div class="col-12 col-md-4">
+                            <label class="pr-label d-block mb-2"><i class="bi bi-calendar-event me-2"></i>Status</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button class="h-filter-chip" [class.active]="filtroTempo() === 'tutti'"
+                                    (click)="setFiltroTempo('tutti')">All</button>
+                                <button class="h-filter-chip" [class.active]="filtroTempo() === 'attivi'"
+                                    (click)="setFiltroTempo('attivi')">Active</button>
+                                <button class="h-filter-chip" [class.active]="filtroTempo() === 'passati'"
+                                    (click)="setFiltroTempo('passati')">Past</button>
                             </div>
                         </div>
+
+                        <div class="col-12 col-md-4">
+                            @if(this.authService.isAuthenticated()) {
+                            <label class="pr-label d-block mb-2"><i class="bi bi-person-check me-2"></i>My
+                                Participation</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button class="h-filter-chip" [class.active]="filtroPartecipazione() === 'tutti'"
+                                    (click)="setFiltroPartecipazione('tutti')">All</button>
+
+                                <button class="h-filter-chip" [class.active]="filtroPartecipazione() === 'iscritti'"
+                                    (click)="setFiltroPartecipazione('iscritti')">Joined</button>
+
+                            </div>
+                            }
+                        </div>
+
+
+                        <div class="col-12 col-md-4">
+                            <label class="pr-label d-block mb-2"><i class="bi bi-sort-down me-2"></i>Sort by</label>
+                            <select class="pr-input w-100" [ngModel]="ordinamento()"
+                                (ngModelChange)="ordinamento.set($event)">
+                                <option value="data-asc">Date (Nearest)</option>
+                                <option value="data-desc">Date (Furthest)</option>
+                                <option value="az">Name (A-Z)</option>
+                                <option value="za">Name (Z-A)</option>
+                            </select>
+                        </div>
                     </div>
+                </div>
                 }
             </div>
         </div>
 
         @if(filtro() && filtro()!.length > 0) {
-            <div class="row g-4 justify-content-center">
-                <div class="col-12 col-lg-10">
-                    <div class="h-grid">
-                        @for (h of filtro(); track h.id) {
-                            <div class="h-card">
-                                <div class="h-card-bar"></div>
-                                <div class="h-card-body">
-                                    <div class="h-card-meta">
-                                        <span class="h-badge">
-                                            <i class="bi bi-geo-alt"></i> {{ h.location }}
-                                        </span>
-                                        <span class="h-badge">
-                                            <i class="bi bi-people"></i> Max {{ h.maxNumberTeams }}
-                                        </span>
-                                    </div>
-                                    
-                                    <h3 class="h-card-name">{{ h.name }}</h3>
+        <div class="row g-4 justify-content-center">
+            <div class="col-12 col-lg-10">
+                <div class="h-grid">
+                    @for (h of paginato(); track $index) {
+                    <div class="h-card">
+                        <div class="h-card-bar"></div>
+                        <div class="h-card-body">
+                            <div class="h-card-meta">
+                                <span class="h-badge">
+                                    <i class="bi bi-geo-alt"></i> {{ h.location }}
+                                </span>
+                                <span class="h-badge">
+                                    <i class="bi bi-people"></i> Max {{ h.maxNumberTeams }}
+                                </span>
+                            </div>
+
+                            <h3 class="h-card-name">{{ h.name }}</h3>
+                        </div>
+
+                        <div class="h-card-footer">
+                            <div class="h-timeline">
+                                <div class="h-time-point">
+                                    <span class="h-time-label">Start</span>
+                                    <span class="h-time-value">{{ formatDate(h.startDate) }}</span>
                                 </div>
-                                
-                                <div class="h-card-footer">
-                                    <div class="h-timeline">
-                                        <div class="h-time-point">
-                                            <span class="h-time-label">Start</span>
-                                            <span class="h-time-value">{{ formatDate(h.startDate) }}</span>
-                                        </div>
-                                        <div class="h-time-connector"></div>
-                                        <div class="h-time-point text-end">
-                                            <span class="h-time-label">End</span>
-                                            <span class="h-time-value">{{ formatDate(h.endDate) }}</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <button class="pr-btn-outline w-100 mt-4 d-flex justify-content-center align-items-center gap-2" routerLink="/hackathon/{{ h.id }}">
-                                        View details <i class="bi bi-arrow-right"></i>
-                                    </button>
+                                <div class="h-time-connector"></div>
+                                <div class="h-time-point text-end">
+                                    <span class="h-time-label">End</span>
+                                    <span class="h-time-value">{{ formatDate(h.endDate) }}</span>
                                 </div>
                             </div>
-                        }
+
+                            <button
+                                class="pr-btn-outline w-100 mt-4 d-flex justify-content-center align-items-center gap-2"
+                                routerLink="/hackathon/{{ h.id }}">
+                                View details <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
                     </div>
+                    }
                 </div>
+                @if (totalPages() > 1) {
+                <div class="h-pagination">
+                    <button class="h-page-btn" [disabled]="currentPage() === 1" (click)="changePage(currentPage() - 1)">
+                        <i class="bi bi-arrow-left"></i>
+                    </button>
+
+                    @for (page of [].constructor(totalPages()); track $index) {
+                    <button class="h-page-btn" [class.active]="currentPage() === $index + 1"
+                        (click)="changePage($index + 1)">
+                        {{ $index + 1 }}
+                    </button>
+                    }
+
+                    <button class="h-page-btn" [disabled]="currentPage() === totalPages()"
+                        (click)="changePage(currentPage() + 1)">
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+                }
             </div>
+        </div>
         }
 
         @if(filtro() && filtro()!.length === 0) {
-            <div class="row justify-content-center mt-4">
-                <div class="col-12 col-lg-8">
-                    <div class="pr-card text-center p-5">
-                        <i class="fa-solid fa-magnifying-glass-minus mb-3" style="font-size: 3rem; color: #cbd5e1;"></i>
-                        <h4 class="pr-title mb-2" style="font-size: 1.5rem;">No hackathons found</h4>
-                        <p class="pr-text-muted mb-0">Try a different search term or change your filters.</p>
-                        
-                        @if (searchTerm() || filtroTempo() !== 'tutti' || filtroPartecipazione() !== 'tutti') {
-                            <button class="pr-btn-outline mt-4" (click)="searchTerm.set(''); setFiltroTempo('tutti'); setFiltroPartecipazione('tutti')">
-                                Clear all filters
-                            </button>
-                        }
-                    </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-12 col-lg-8">
+                <div class="pr-card text-center p-5">
+                    <i class="fa-solid fa-magnifying-glass-minus mb-3" style="font-size: 3rem; color: #cbd5e1;"></i>
+                    <h4 class="pr-title mb-2" style="font-size: 1.5rem;">No hackathons found</h4>
+                    <p class="pr-text-muted mb-0">Try a different search term or change your filters.</p>
+
+                    @if (searchTerm() || filtroTempo() !== 'tutti' || filtroPartecipazione() !== 'tutti') {
+                    <button class="pr-btn-outline mt-4"
+                        (click)="searchTerm.set(''); setFiltroTempo('tutti'); setFiltroPartecipazione('tutti')">
+                        Clear all filters
+                    </button>
+                    }
                 </div>
             </div>
+        </div>
         }
     </div>
 </section>
+@if (showScrollTop()) {
+<button class="scroll-top-btn" (click)="scrollToTop()">
+    <i class="bi bi-arrow-up"></i>
+</button>
+}
