@@ -1,34 +1,28 @@
-USER DI ADMIN, DOVE ATTIVA E DISATTIVA NON MI FUNZIONA CORRETTAMENTE( SE FUNZIONA L'ERRORE è TROPPO GENERICO E NON SI CAPISCE IL PERCHE NON LO POSSO FARE) LE INFORMAZIONI DEL PROFILO NON SONO COMPLETE IL TEAM NON VIENE VISTO 
 CORREGGERE SU SUBMISSION HUB LA CONDIZIONE PER GESTIRE I REPORT
 
 TOGLIERE I LOG CHE FANNO VEDERE INFOMRAZIONI SULLA MODALITA SVILUPPATORE DEL BROWSER
 
-team problemi:
-
+TEAM:
 -sistemare i model all'interno del home
 
--revisionare il componente hackathon in generale
--rimuovere mock su hackathon.service quando il db viene popolato e togliere i commenti/import
--NON FUNZIONA IL CALCOLO DELLE STATS DEI TEAM (backend)
-hackathons:
+HACKATHONS:
 - sistemare lo sfondo
-- far si che se ci siano tante immagini si creino più pagine
-- creare un bottone che torna alla zona dei filtri che scorre con la barra
--bottoni nascosti se non loggato
+- revisionare il componente hackathon in generale
 
-submission: 
+SUBMISSION: 
 - inserire una barra per soccrrere il link mobile
--bottoni mobile
-login e register
--padding sembra non funzionare
--la durata degl'hackathon non tengono conto delle ore 
-Cose da fare [almeno non mi scordo :)]
-- valutazione tramite tabella submission con pop-up per inserimento voto e descrizione (+ bottone modifica)
-- proclamazione vincitore (da sistemare completamente anche lato back-end)
-- sempre sulla stessa tabella per la proclamazione inserire su action il bottone per la segnalazione (al posto di valuta o insieme in caso si è entrambi)
+- bottoni mobile e modifica grafica
 
-imprecisioni da correggere se c'è tempo
+LOGIN e REGISTER:
+- rendere il register più estitico
+
+IMPRECISIONI:
 - una volta salvata la submission non si aggiorna automaticamente la pagina
-- mi sembra manchi il bottone per aggiornare la sottomissione, c'è solo quello per l edit
-- bisognerebbe mettere su tutte le pagine di dettaglio un bottone per tornare in dietro, al momento la navigabilità è un po caotica
--inconsistenza: lista hackathon, lista team, lista utenti(admin)
+
+ADMIN:
+- togliere admin dalla lista dei user che si posso disabilitare
+- sistemare il fatto No Team
+
+GRAFICA:
+- search bar da unificare team
+- date creazione hackathon

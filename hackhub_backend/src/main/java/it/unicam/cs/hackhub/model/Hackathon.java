@@ -162,6 +162,7 @@ public class Hackathon implements Activable<Long> {
      * @param winningTeam
      */
     public void setWinningTeam(Team winningTeam) {
+        this.complete();
         this.winningTeam = winningTeam;
     }
 

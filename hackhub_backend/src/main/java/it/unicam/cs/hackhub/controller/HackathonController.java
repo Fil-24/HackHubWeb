@@ -370,9 +370,7 @@ public class HackathonController {
      */
     @GetMapping("/winner/hackathons/{idHackathon}")
     public ResponseEntity<TeamResponse> getWinnerTeam(@PathVariable Long idHackathon) {
-
         Team w = hackathonService.getWinner(idHackathon);
-
         return ResponseEntity.ok(w != null ? TeamResponse.fromEntity(w, null) : null);
     }
 }

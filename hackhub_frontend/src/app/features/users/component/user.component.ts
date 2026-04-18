@@ -69,6 +69,7 @@ export class UserComponent {
     this.accountService.getAllAccounts().subscribe({
       next: (data) => {
         this.accounts.set(data);
+        console.log(data);
         this.isLoading.set(false);
       },
       error: () => {
@@ -121,8 +122,8 @@ export class UserComponent {
         );
         this.clearMessagesAfterDelay();
       },
-      error: () => {
-        this.errorMessage.set('Error updating status.');
+      error: res => {
+        this.errorMessage.set(res);
         this.clearMessagesAfterDelay();
       }
     });
