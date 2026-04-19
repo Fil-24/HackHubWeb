@@ -70,7 +70,6 @@ export class UserComponent {
     this.accountService.getAllAccounts().subscribe({
       next: (data) => {
         this.accounts.set(data);
-        console.log(data);
         this.isLoading.set(false);
       },
       error: () => {

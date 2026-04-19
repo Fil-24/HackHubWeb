@@ -1,11 +1,15 @@
 @use "../../../../../colors" as *;
 @use "../../../../../styles" as *;
 
-.login-container, .register-container {
+.login-container,
+.register-container {
   @extend %auth-container;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
-#card-login, #card-signup {
+#card-login,
+#card-signup {
   @extend %card-base;
   padding: 3rem 2.5rem;
   width: 100%;
@@ -27,7 +31,8 @@
   gap: 1.25rem;
 }
 
-#login-title, #signup-title {
+#login-title,
+#signup-title {
   @extend %title-display;
   margin-top: 0 !important;
   margin-bottom: 1.5rem !important;
@@ -37,19 +42,35 @@
 #logo {
   width: 60px;
   margin-bottom: 1.5rem;
-  align-self: flex-start; 
+  align-self: flex-start;
 }
 
 /* Form Elements */
-.input { @extend %input-base; }
+.input {
+  @extend %input-base;
+}
 
-.btn { width: 100%; padding: 12px 0; }
-.btn-primary { @extend %btn-primary; @extend .btn; }
-.btn-secondary { @extend %btn-outline; @extend .btn; }
+.btn {
+  width: 100%;
+  padding: 12px 0;
+}
+
+.btn-primary {
+  @extend %btn-primary;
+  @extend .btn;
+}
+
+.btn-secondary {
+  @extend %btn-outline;
+  @extend .btn;
+}
 
 .password-wrapper {
   @extend %password-wrapper;
-  .password-input { @extend %input-base; }
+
+  .password-input {
+    @extend %input-base;
+  }
 }
 
 /* Solo in Register: Select Custom */
@@ -62,9 +83,14 @@
     @extend %input-base;
     appearance: none;
     cursor: pointer;
-    
-    &:invalid { color: $text-secondary; }
-    option { color: $text-primary; }
+
+    &:invalid {
+      color: $text-secondary;
+    }
+
+    option {
+      color: $text-primary;
+    }
   }
 
   .select-arrow {
@@ -76,9 +102,11 @@
     pointer-events: none;
     z-index: 10;
   }
+
   @media (max-width: 767px) {
 
-    #card-login, #card-signup {
+    #card-login,
+    #card-signup {
       padding: 1.25rem 1.25rem 2rem 1.25rem;
       max-width: 100%;
       border-radius: 16px;

@@ -76,7 +76,6 @@ export class SubmissionComponent implements OnInit {
   constructor(private hackathonService: HackathonService) {
     effect(() => {
       const user = this.authService.user();
-      console.log('User in effect:', user);
 
       if (user) {
         this.isTeamMember.set(!!user.idTeam);
@@ -121,7 +120,6 @@ export class SubmissionComponent implements OnInit {
   checkWinner(idHackathon: number) {
     this.hackathonService.getWinner(idHackathon).subscribe({
       next: (winnerTeam) => {
-        console.log('Winner found:', winnerTeam);
         this.winner.set(winnerTeam);
       },
       error: (err) => {
@@ -173,7 +171,6 @@ export class SubmissionComponent implements OnInit {
   loadStaffDashboard(idHackathon: number) {
     this.submissionService.getSubmissionsByHackathon(idHackathon).subscribe({
       next: (data) => {
-        console.log('Submissions for Hackathon ID', idHackathon, ':', data);
         this.submissions.set(data);
       },
       error: (err) => this.showError(err)
@@ -209,7 +206,6 @@ export class SubmissionComponent implements OnInit {
     this.errorMessage.set(null);
 
     const payload : SubmitProjectPayload = { idHackathon: id, type: 'github', source: this.githubUrl() };
-    console.log(payload);
 
     this.submissionService.submitProject(payload).subscribe({
       next: () => {
@@ -245,7 +241,6 @@ export class SubmissionComponent implements OnInit {
   }
 
   openReport(sub: any) {
-    console.log(sub);
     this.activeSubmission.set(sub);
     this.reportReason.set('');
     this.reportDescription.set('');
@@ -292,7 +287,6 @@ export class SubmissionComponent implements OnInit {
       reason: this.reportReason(),
       description: this.reportDescription()
     };
-    console.log('Report payload:', payload);
     this.reportService.reportTeam(payload).subscribe({
       next: () => {
         this.showSuccess('Report submitted successfully.');
@@ -308,7 +302,6 @@ export class SubmissionComponent implements OnInit {
 
   submitEvaluation() {
     this.isEvaluating.set(true);
-    console.log(this.evalJudgment() + " " + this.evalScore() + " " + this.activeSubmission()?.id)
     this.submissionService.evaluateSubmission(
       this.activeSubmission()?.id,
       { writtenJudgment: this.evalJudgment(), score: this.evalScore() }
