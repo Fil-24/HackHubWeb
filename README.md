@@ -93,14 +93,14 @@ HackHubWeb/
         │   │   ├── interceptor/              # HTTP interceptors
         │   │   └── resolver/                 # User resolver
         │   │
-        │   └── features/                    # Feature 
-        │      ├── auth/                     # Authentication
-        │      ├── dashboard/                # Staff dashboard
-        │      ├── hackathons/               # Hackathon management
-        │      ├── reports/                  # Report management
-        │      ├── submissions/              # Submission management
-        │      ├── teams/                    # Team management
-        │      └── users/                    # User profile
+        │   └── features/                     # Feature 
+        │      ├── auth/                      # Authentication
+        │      ├── dashboard/                 # Staff dashboard
+        │      ├── hackathons/                # Hackathon management
+        │      ├── reports/                   # Report management
+        │      ├── submissions/               # Submission management
+        │      ├── teams/                     # Team management
+        │      └── users/                     # User profile
         ├── assets/
         │   └── img/                          # Icons and images
         └── environments/
@@ -134,8 +134,6 @@ mvn spring-boot:run
 ```
 
 The backend starts at: `http://localhost:8080`
-
-The H2 console is available at: `http://localhost:8080/h2-console`
 
 > Default datasource credentials are configured in `src/main/resources/application.properties`.
 
