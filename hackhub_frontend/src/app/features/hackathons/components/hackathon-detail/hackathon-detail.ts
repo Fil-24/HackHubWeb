@@ -53,8 +53,6 @@ export class HackathonDetailComponent implements OnInit {
   isStaff = computed(() => {
     const user = this.authService.user();
     const hackathon = this.hackathon();
-    console.log('user.idAccount:', user?.idAccount);
-    console.log('staff:', hackathon?.staff);
     if (!user || !hackathon || !hackathon.staff) return false;
 
     return (
@@ -112,7 +110,6 @@ export class HackathonDetailComponent implements OnInit {
 
     this.hackathonService.getById(id).subscribe({
       next: (data: any) => {
-        console.log('--- HACKATHON DATA FROM BACKEND ---', data);
 
         this.hackathon.set(data);
         const currentUserId = this.authService.userId;

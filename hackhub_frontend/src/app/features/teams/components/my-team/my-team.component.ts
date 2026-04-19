@@ -53,9 +53,6 @@ export class MyTeamComponent {
 
         const currentUserId = this.authService.currentUser?.idAccount;
 
-        console.log(currentUserId);
-        console.log(data);
-
         this.isLeader =
           currentUserId !== null &&
           data.leader?.idAccount === currentUserId;

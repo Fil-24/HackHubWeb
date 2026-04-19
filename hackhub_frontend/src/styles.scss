@@ -1,7 +1,6 @@
-
 @use "colors" as *;
 
-body{
+body {
   background-color: $bg-main !important;
 }
 
@@ -13,12 +12,14 @@ body{
   font-weight: 800;
   line-height: 1.1;
 
-  .accent { color: $color-green; }
+  .accent {
+    color: $color-green;
+  }
 }
 
 // ── LAYOUT & CONTAINERS ──
 %auth-container {
-  min-height: 100vh;
+  min-height: calc(100vh - 250px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,34 +60,41 @@ body{
   transition: border-color 0.2s, outline 0.2s;
   box-sizing: border-box;
 
-  &:focus, &:focus-within {
+  &:focus,
+  &:focus-within {
     border-color: $color-green;
     outline: 3px solid rgba($color-green, 0.15);
   }
-  
-  &::placeholder { color: $text-secondary; }
+
+  &::placeholder {
+    color: $text-secondary;
+  }
 }
 
 // ── PASSWORD WRAPPER ──
 %password-wrapper {
   position: relative;
   width: 100%;
-  display: block; 
+  display: block;
 
-  input { padding-right: 2.8rem; }
+  input {
+    padding-right: 2.8rem;
+  }
 
   .password-icon {
     position: absolute;
     right: 14px;
     top: 50%;
-    transform: translateY(-50%); 
-    z-index: 10; 
-    color: $text-secondary; 
+    transform: translateY(-50%);
+    z-index: 10;
+    color: $text-secondary;
     cursor: pointer;
     font-size: 1.1rem;
     transition: color 0.2s ease;
 
-    &:hover { color: $color-green; }
+    &:hover {
+      color: $color-green;
+    }
   }
 }
 
@@ -164,77 +172,84 @@ body{
   width: 100%;
   box-sizing: border-box;
 }
+
 // ── LAYOUT SEZIONI PROFILO/PAGINE ──
 .profile-section {
-    background: $bg-main;
-    min-height: calc(100vh - 80px);
-    display: flex;
-    align-items: flex-start;
+  background: $bg-main;
+  min-height: calc(100% - 250px);
+  display: flex;
+  align-items: flex-start;
 }
-.relative-section { position: relative; }
+
+.relative-section {
+  position: relative;
+}
 
 // ── COMPONENTI CONDIVISI (PR- CLASSES) ──
-.pr-card { 
-    @extend %card-base; 
-    border-radius: 12px; 
+.pr-card {
+  @extend %card-base;
+  border-radius: 12px;
 }
 
-.pr-card-bar { 
-    @extend %card-top-bar; 
-    height: 4px;
+.pr-card-bar {
+  @extend %card-top-bar;
+  height: 4px;
 }
 
-.pr-title { 
-    @extend %title-display; 
+.pr-title {
+  @extend %title-display;
 }
 
-.accent { color: $color-green; }
+.accent {
+  color: $color-green;
+}
 
-.pr-text-muted { 
-    color: $text-secondary; 
-    font-size: 1rem; 
+.pr-text-muted {
+  color: $text-secondary;
+  font-size: 1rem;
 }
 
 .pr-label {
-    font-family: $font-mono;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: $text-secondary;
-    font-weight: 600;
+  font-family: $font-mono;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $text-secondary;
+  font-weight: 600;
 }
 
 
 // ── INPUTS BASE ──
 .pr-input {
-    @extend %input-base;
-    background: #ffffff;
-    border: 1px solid $border-color;
-    padding: 10px 16px;
-    border-radius: 8px;
-    color: $text-primary;
-    transition: all 0.3s ease;
-    width: 100%;
+  @extend %input-base;
+  background: #ffffff;
+  border: 1px solid $border-color;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: $text-primary;
+  transition: all 0.3s ease;
+  width: 100%;
 
-    &:focus {
-        border-color: $color-green;
-        box-shadow: 0 0 0 3px rgba($color-green, 0.1);
-        outline: none;
-    }
+  &:focus {
+    border-color: $color-green;
+    box-shadow: 0 0 0 3px rgba($color-green, 0.1);
+    outline: none;
+  }
 }
 
 // ── ANIMAZIONI GLOBALI ──
 .fade-in-down {
-    animation: fadeInDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

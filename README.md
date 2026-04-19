@@ -1,103 +1,122 @@
 # HackHub 🚀
 
-> A full-stack web platform for managing hackathons — from registration to winner declaration.
+> A full-stack web platform for managing the complete lifecycle of hackathons — from team registration to winner declaration.
 
 ---
 
-## 📋 Table of Contents
+## 📖 Project Overview
 
-- [About](#about)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Architecture](#architecture)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Backend Setup](#backend-setup)
-  - [Frontend Setup](#frontend-setup)
-- [Roles & Actors](#roles--actors)
-- [Hackathon Lifecycle](#hackathon-lifecycle)
-- [Design Patterns](#design-patterns)
-- [License](#license)
+**HackHub** is a web application designed to fully digitalize the management of hackathons — time-limited competitions where teams develop and deliver a project to achieve a common goal. The platform centralizes every phase of the event, from participant registration to winner proclamation.
+
+Built with a **Java Spring Boot** backend and an **Angular 21** frontend with PWA support, HackHub provides a role-based environment where organizers can create and manage events, teams can register and submit their projects, judges can evaluate submissions, and mentors can support participants throughout the competition.
 
 ---
 
-## About
+## ✨ Features
 
-**HackHub** is a web platform for organizing and participating in hackathons. It supports the full lifecycle of an event — from team registration and project submission to evaluation and winner proclamation — with a role-based access system for organizers, judges, mentors, and participants.
-
----
-
-## Features
-
-- 🏆 Create and manage hackathons with full lifecycle support
-- 👥 Team creation, invites, and membership management
-- 📁 Project submission and update system (GitHub repository link)
-- ⭐ Judge evaluation with score (0–10) and written feedback
+- 🏆 Create and manage hackathons with a full 4-state lifecycle
+- 👥 Team creation, invitations, and membership management
+- 📁 Project submission via GitHub repository link, updatable until deadline
+- ⭐ Judge evaluation system with numerical score (0–10) and written feedback
 - 🚩 Mentor flagging of teams for rule violations
 - 🔒 Role-based access control (Visitor, User, Staff, Admin)
-- 📅 External calendar integration for mentor/team calls
-- 💰 External payment system for prize disbursement
-- 🔍 Advanced filtering and sorting for hackathon discovery
-- 📱 Progressive Web App (PWA) support
+- 🔐 JWT-based authentication with role claims
+- 🛡️ Angular route guards for frontend protection
+- 📱 Progressive Web App (PWA) support — installable on any device
+- 🔍 Advanced filtering, sorting, and pagination for hackathon and team discovery
 
 ---
 
-## Tech Stack
-
-### Frontend
-| Technology | Version |
-|---|---|
-| Angular | 21 |
-| TypeScript | - |
-| SCSS | — |
-| Bootstrap | - |
+## 🛠️ Tech Stack
 
 ### Backend
-| Technology | Version |
+| Technology | Details |
 |---|---|
 | Java | 21 |
 | Spring Boot | 4 |
-| Spring Security | — |
-| Spring Data JPA | — |
-| H2 Database | — |
-| Maven | — |
+| Spring Web | REST API with `@RestController` |
+| Spring Security | JWT authentication + RBAC |
+| Spring Data JPA | Repository-based persistence (Hibernate) |
+| H2 Database | In-memory relational database |
+| Apache Maven | Build tool and dependency management |
+
+### Frontend
+| Technology | Details |
+|---|---|
+| Angular | 21 |
+| TypeScript | Statically typed JavaScript |
+| SCSS | Advanced CSS with variables, mixins, nesting |
+| Bootstrap 5 | Responsive grid layout and UI components |
+| @angular/pwa | Service Worker + Web App Manifest |
 
 ---
 
-## Architecture
+## 👤 Roles & Actors
 
-TODO
+| Role | Description |
+|---|---|
+| **Visitor** | Unauthenticated user, can browse public hackathon info |
+| **User** | Registered user, can create or join a team |
+| **Staff** | Personnel assigned to specific hackathons as Organizers, Judges, or Mentors |
+| **Team Leader** |	Team creator who manages membership, event registration, and invites|
+| **Team Member** | Can register their team in a hackathon and submit a project |
+| **Mentor** | Staff member who supports teams, can flag rule violations |
+| **Judge** | Staff member who evaluates submissions with a score (0–10) and feedback |
+| **Organizer** | Staff member who creates hackathons and declares the winner |
+
+---
+
+
+## 📁 Project Structure
+
 ```
 HackHubWeb/
-├── hackhub_frontend/       # Angular SPA
-│   └── src/
-│       ├── app/
-│       │   ├── auth/       # Authentication & guards
-│       │   ├── features/   # Feature modules (hackathons, teams, submissions...)
-│       │   └── shared/     # Shared components, models, services
-│       └── environments/
-├── hackhub_backend/        # Spring Boot REST API
-│   └── src/
-│       ├── main/java/
-│       │   ├── controller/
-│       │   ├── service/
-│       │   ├── repository/
-│       │   └── model/
-│       └── resources/
-│           └── application.properties
-└── database/               # SQL scripts
+│
+├── hackhub_backend/                          # Spring Boot REST API
+│   ├── pom.xml
+│   └── src/main/java/it/unicam/cs/hackhub/
+│       ├── HackhubApplication.java           # Entry point
+│       ├── client/                           # External integrations
+│       ├── controller/                       # REST endpoints
+│       ├── exception/                        # Exception handler
+│       ├── DTO/                              # Data Transfer Objects
+│       ├── model/                            # JPA Entities
+│       ├── repository/                       # Spring Data repositories
+│       ├── service/                          # Business logic
+│       └── security/                         # JWT & Spring Security config
+│
+└── hackhub_frontend/                         # Angular PWA
+    └── src/
+        ├── app/
+        │   ├── core/                         # core
+        │   │   ├── guard/                    # Route guards
+        │   │   ├── interceptor/              # HTTP interceptors
+        │   │   └── resolver/                 # User resolver
+        │   │
+        │   └── features/                    # Feature 
+        │      ├── auth/                     # Authentication
+        │      ├── dashboard/                # Staff dashboard
+        │      ├── hackathons/               # Hackathon management
+        │      ├── reports/                  # Report management
+        │      ├── submissions/              # Submission management
+        │      ├── teams/                    # Team management
+        │      └── users/                    # User profile
+        ├── assets/
+        │   └── img/                          # Icons and images
+        └── environments/
+            └── environment.ts
+
 ```
 
----
-
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Java 21
-- Node.js 18+
-- npm 9+
-- Maven 3.8+
+- **Java** 21+
+- **Maven** 3.8+
+- **Node.js** 18+
+- **npm** 9+
+- **Angular CLI** 21+
 
 ---
 
@@ -114,11 +133,11 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-The backend will start at `http://localhost:8080`.
+The backend starts at: `http://localhost:8080`
 
-```
+The H2 console is available at: `http://localhost:8080/h2-console`
 
-> Default credentials are configured in `application.properties`.
+> Default datasource credentials are configured in `src/main/resources/application.properties`.
 
 ---
 
@@ -135,48 +154,56 @@ npm install
 ng serve
 ```
 
-The app will be available at `http://localhost:4200`.
+The app will be available at: `http://localhost:4200`
 
-#### Build for production (PWA)
+#### Build & Run as PWA (Production)
 
 ```bash
+# Build
 ng build
+
+# Serve the production build
 ng serve --configuration=production
 ```
 
----
-
-## Roles & Actors
-
-| Role | Description |
-|---|---|
-| **Visitor** | Unauthenticated user, can browse public hackathon info |
-| **User** | Registered user, can create or join a team |
-| **Team Member** | Can register their team in a hackathon and submit a project |
-| **Mentor** | Staff member who supports teams, can flag rule violations |
-| **Judge** | Staff member who evaluates submissions with a score (0–10) and feedback |
-| **Organizer** | Staff member who creates hackathons and declares the winner |
+> The Service Worker (PWA) is only active in the production build. Use `ng serve` during development.
 
 ---
 
-## Hackathon Lifecycle
+## 🔐 Security
 
-```
-REGISTRATION → ONGOING → EVALUATION → CLOSED
-```
+### JWT Authentication
 
-| Status | Description |
-|---|---|
-| `REGISTRATION` | Teams can register for the hackathon |
-| `ONGOING` | Hackathon is active; teams can submit their projects |
-| `EVALUATION` | Submissions are closed; the judge evaluates all projects |
-| `COMPLETED` | All submissions evaluated; organizer declares the winner |
+On login, the backend issues a signed JWT containing the user's identity and static role as a custom claim. This token is attached to every subsequent HTTP request in the `Authorization` header (`Bearer <token>`), enabling stateless authentication without server-side session management.
 
+### Role-Based Access Control (RBAC)
+
+Every REST endpoint is protected by Spring Security annotations that define which roles are authorized to access it:
+
+- `USER` — basic team and participation features
+- `STAFF` — hackathon management for assigned events
+- `ADMIN` — full platform access
+
+### Frontend Protection
+
+Angular route guards prevent navigation to restricted pages for unauthenticated users or users with insufficient roles. Backend authorization remains the authoritative security layer — the API rejects any request with an invalid token or insufficient permissions with `401 Unauthorized` or `403 Forbidden`.
 
 ---
 
-## License
+## 📝 License
 
 This project is licensed under the [MIT License](LICENSE).
 
 ---
+
+## 👨‍💻 Authors
+
+- **Coacci Victoria**: [@vichy1004](https://github.com/vichy1004)
+- **Fattori Filippo**: [@Fil-24](https://github.com/Fil-24)
+- **Pigliapoco Simone**: [@simonepigliapoco-gif](https://github.com/simonepigliapoco-gif)
+
+Developed as a university project at **Università di Camerino (UNICAM)**.
+
+---
+
+> HackHub — Where ideas compete.
