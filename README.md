@@ -53,38 +53,18 @@ Built with a **Java Spring Boot** backend and an **Angular 21** frontend with PW
 
 ## 👤 Roles & Actors
 
-HackHub uses a two-tier role system: **static roles** (assigned at registration) and **dynamic roles** (contextual behavior within hackathons or teams).
-
-### Static Roles
 | Role | Description |
 |---|---|
-| `USER` | Registered user with access to team and hackathon participation features |
-| `STAFF` | Platform personnel assignable to hackathons as Organizer, Judge, or Mentor |
-| `ADMIN` | System administrator with full platform access (default account) |
-
-### Dynamic Roles
-
-**Staff context:**
-| Role | Description |
-|---|---|
-| **Organizer** | Creates hackathons, assigns staff, manages lifecycle transitions, declares winner |
-| **Judge** | Evaluates team submissions with a score (0–10) and written feedback |
-| **Mentor** | Supports teams, monitors activity, flags rule violations to the organizer |
-
-**User context:**
-| Role | Description |
-|---|---|
-| **Team Leader** | Creates and manages a team, invites members, registers/unregisters from hackathons |
-| **Team Member** | Submits and updates the team's project within the hackathon deadline |
-
-**Unauthenticated:**
-| Role | Description |
-|---|---|
-| **Visitor** | Can browse public hackathon info, cannot access operational features |
+| **Visitor** | Unauthenticated user, can browse public hackathon info |
+| **User** | Registered user, can create or join a team |
+| **Staff** | Personnel assigned to specific hackathons as Organizers, Judges, or Mentors |
+| **Team Leader** |	Team creator who manages membership, event registration, and invites|
+| **Team Member** | Can register their team in a hackathon and submit a project |
+| **Mentor** | Staff member who supports teams, can flag rule violations |
+| **Judge** | Staff member who evaluates submissions with a score (0–10) and feedback |
+| **Organizer** | Staff member who creates hackathons and declares the winner |
 
 ---
-
-
 
 
 ## 📁 Project Structure
@@ -96,15 +76,10 @@ HackHubWeb/
 │   ├── pom.xml
 │   └── src/main/java/it/unicam/cs/hackhub/
 │       ├── HackhubApplication.java           # Entry point
-│       │
 │       ├── client/                           # External integrations
-│       │
 │       ├── controller/                       # REST endpoints
-│       │
 │       ├── exception/                        # Exception handler
-│       │
 │       ├── DTO/                              # Data Transfer Objects
-│       │
 │       ├── model/                            # JPA Entities
 │       ├── repository/                       # Spring Data repositories
 │       ├── service/                          # Business logic
@@ -126,12 +101,8 @@ HackHubWeb/
         │      ├── submissions/              # Submission management
         │      ├── teams/                    # Team management
         │      └── users/                    # User profile
-        │   
-        │   
-        │
         ├── assets/
         │   └── img/                          # Icons and images
-        │
         └── environments/
             └── environment.ts
 
@@ -226,15 +197,10 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 ## 👨‍💻 Authors
-  ## 👨‍💻 Autori
 
-**Coacci Victoria**
-**Fattori Filippo**
-**Pigliapoco Simone**
-
-- GitHub: [@vichy1004](https://github.com/vichy1004)
-- GitHub: [@Fil-24](https://github.com/Fil-24)
-- GitHub: [@simonepigliapoco-gif](https://github.com/simonepigliapoco-gif)
+- **Coacci Victoria**: [@vichy1004](https://github.com/vichy1004)
+- **Fattori Filippo**: [@Fil-24](https://github.com/Fil-24)
+- **Pigliapoco Simone**: [@simonepigliapoco-gif](https://github.com/simonepigliapoco-gif)
 
 Developed as a university project at **Università di Camerino (UNICAM)**.
 
