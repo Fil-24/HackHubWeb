@@ -1,17 +1,11 @@
 CORREGGERE SU SUBMISSION HUB LA CONDIZIONE PER GESTIRE I REPORT
 
-TOGLIERE I LOG CHE FANNO VEDERE INFOMRAZIONI SULLA MODALITA SVILUPPATORE DEL BROWSER (FORSE FATTO)
-
-HACKATHONS:
-- revisionare il componente hackathon in generale
-
 SUBMISSION:
 - inserire una barra per soccrrere il link mobile
 - bottoni mobile e modifica grafica
 
-LOGIN e REGISTER:
-- rendere il register più estitico
+PASSWORD:
+- da capire se il secret è stato utilizzato o meno
 
-GRAFICA:
-- search bar da unificare team e utenti (admin)
-- date creazione hackathon (minuti più spostati rispetto alle ore)
+RELAZIONE
+- da sistemare parte ORM e SQL injection

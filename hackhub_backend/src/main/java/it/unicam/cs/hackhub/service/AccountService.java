@@ -98,7 +98,7 @@ public class AccountService implements Activable<Long> {
         this.hackathonService = hackathonService;
         this.teamService = teamService;
         this.encoder = encoder;
-        this. jwt = jwt;
+        this.jwt = jwt;
     }
 
     /**
