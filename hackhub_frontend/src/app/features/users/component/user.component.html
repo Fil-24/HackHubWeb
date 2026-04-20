@@ -29,11 +29,11 @@
       <div class="col-12 col-lg-10">
         <div class="d-flex flex-column flex-md-row gap-3">
 
-          <div class="pr-search-bar flex-grow-1">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <div class="h-search-box flex-grow-1">
+            <i class="bi bi-search h-search-icon"></i>
             <input
               type="text"
-              class="pr-input-search"
+              class="pr-input w-100"
               placeholder="Search by name, nickname or email..."
               [value]="searchQuery()"
               (input)="updateSearch($event)">

@@ -4,8 +4,8 @@
 .login-container,
 .register-container {
   @extend %auth-container;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 10px;
+  //padding-bottom: 50px;
 }
 
 #card-login,
@@ -13,7 +13,7 @@
   @extend %card-base;
   padding: 3rem 2.5rem;
   width: 100%;
-  max-width: 400px;
+  max-width: 550px;
 
   &::before {
     @extend %card-top-bar;

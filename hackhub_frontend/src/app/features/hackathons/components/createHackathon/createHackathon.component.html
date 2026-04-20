@@ -62,7 +62,7 @@
                     <div class="cr-input-group ">
                         <label class="cr-label">Start Date</label>
                         <input type="datetime-local" name="Data di inizio" class="cr-input"
-                            [(ngModel)]="hackathonData.startDate" [min]="minDate">
+                            [(ngModel)]="hackathonData.startDate" [min]="minDate" (change)="onStartDateChange()">
                     </div>
                     <div class="cr-input-group ">
                         <label class="cr-label">End Date</label>

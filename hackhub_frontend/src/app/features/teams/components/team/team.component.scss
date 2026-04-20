@@ -56,34 +56,19 @@
 }
 
 // ── RICERCA ──
-.pr-search-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  
-  .search-icon {
-    position: absolute;
-    left: 16px;
-    color: $text-secondary;
-  }
-  
-  .pr-input-search {
-    width: 100%;
-    background: transparent; // O aggiungi un colore di sfondo se necessario
-    border: 1px solid rgba($text-secondary, 0.2);
-    border-radius: 8px;
-    padding: 14px 20px 14px 45px;
-    color: $text-primary;
-    font-size: 15px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    
-    &:focus {
-      outline: none;
-      border-color: $color-green;
-      box-shadow: 0 0 0 3px rgba($color-green, 0.1);
+.h-search-box {
+    position: relative;
+    .h-search-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $color-green;
+        font-size: 1.1rem;
     }
-  }
+    .pr-input { padding-left: 45px; } // Override per l'icona
 }
+
 
 // ── AVATAR ──
 .team-avatar {

@@ -64,23 +64,48 @@ export class CreateHackathon implements OnInit {
     const user = this.authService.user();
   }
   ngOnInit(): void {
-    // Imposta la data minima (oggi) per i campi data
     const now = new Date();
     const pad = (n: number) => String(n).padStart(2, '0');
-    const localDateTime = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
-    this.hackathonData.startDate = localDateTime;
-    this.minDate = localDateTime;
-    this.hackathonData.endDate = localDateTime;
-    // Carica regole e staff per i dropdown
+    // Helper function per formattare la data nel formato richiesto da datetime-local
+    const formatForInput = (date: Date) => {
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    };
+
+    // La data minima selezionabile nel calendario è "Oggi"
+    this.minDate = formatForInput(now);
+
+    //  Imposta la data di INIZIO a +1 settimana da oggi
+    const start = new Date();
+    start.setDate(now.getDate() + 7);
+    this.hackathonData.startDate = formatForInput(start);
+
+    // Imposta la data di FINE a +1 settimana dalla data di inizio (+14 giorni totali da oggi)
+    const end = new Date(start);
+    end.setDate(start.getDate() + 7);
+    this.hackathonData.endDate = formatForInput(end);
+
+    // Caricamento dati esistenti (Rules e Staff)
     this.HackathonService.getRules().subscribe(data => {
       this.regole = data;
     });
     this.StaffService.getStaff().subscribe(data => {
       this.accounts = data;
     });
-
   }
+  onStartDateChange() {
+  const start = new Date(this.hackathonData.startDate);
+  const end = new Date(this.hackathonData.endDate);
+
+  // Se la data di fine è diventata precedente o uguale alla nuova data di inizio
+  if (end <= start) {
+    const newEnd = new Date(start);
+    newEnd.setDate(start.getDate() + 7); // Sposta la fine a +7 giorni dalla nuova data inizio
+    
+    const pad = (n: number) => String(n).padStart(2, '0');
+    this.hackathonData.endDate = `${newEnd.getFullYear()}-${pad(newEnd.getMonth() + 1)}-${pad(newEnd.getDate())}T${pad(newEnd.getHours())}:${pad(newEnd.getMinutes())}`;
+  }
+}
   saveChanges() {
     // Validazione dei campi
     if (!this.hackathonData.name || !this.hackathonData.location || !this.hackathonData.startDate || !this.hackathonData.endDate) {
