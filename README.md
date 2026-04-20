@@ -127,10 +127,10 @@ HackHubWeb/
 cd hackhub_backend
 
 # Build the project
-mvn clean install
+.\mvnw clean install
 
 # Run the application
-mvn spring-boot:run
+.\mvnw spring-boot:run
 ```
 
 The backend starts at: `http://localhost:8080`
@@ -149,7 +149,7 @@ cd hackhub_frontend
 npm install
 
 # Start the development server
-ng serve
+ng serve --open
 ```
 
 The app will be available at: `http://localhost:4200`
@@ -157,6 +157,9 @@ The app will be available at: `http://localhost:4200`
 #### Build & Run as PWA (Production)
 
 ```bash
+# Navigate to the frontend folder
+cd hackhub_frontend
+
 # Build
 ng build
 
