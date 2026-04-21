@@ -124,11 +124,10 @@ export class ProfileComponent {
         this.successMessage.set('Profile updated successfully!');
         this.isSaving.set(false);
         this.isEditing.set(false); // Closes edit mode
-          this.clearMessagesAfterDelay(); // Sets the timer to clear messages
+        this.clearMessagesAfterDelay(); // Sets the timer to clear messages
         this.editOldPassword.set('');
         this.editNewPassword.set('');
         this.editConfirmPassword.set('');
-      
       },
       error: (err) => {
         this.isSaving.set(false);
