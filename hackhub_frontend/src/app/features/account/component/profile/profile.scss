@@ -1,12 +1,6 @@
 @use "../../../../../colors" as *;
 @use "../../../../../styles" as *;
 
-.profile-section {
-  background: $bg-main;
-  min-height: calc(100vh - 80px);
-  display: flex;
-  align-items: center;
-}
 
 .pr-card { @extend %card-base; }
 .pr-card-bar { @extend %card-top-bar; }

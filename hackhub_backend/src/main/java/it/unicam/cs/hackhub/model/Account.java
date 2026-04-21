@@ -210,14 +210,14 @@ public class Account {
      * </p>
      *
      * @param password the password to set
-     * @throws IllegalArgumentException if password is null, blank,
-     *                                  or already initialized
+     * @throws IllegalArgumentException if password is null, blank
+     *
      */
     public void setPassword(String password) {
         if (password == null || password.isBlank())
             throw new IllegalArgumentException("Password cannot be blank");
-        if (this.password != null)
-            throw new IllegalArgumentException("Password already set");
+        /*if (this.password != null)
+            throw new IllegalArgumentException("Password already set");*/
         this.password = password;
     }
 
@@ -235,7 +235,7 @@ public class Account {
      * @param newPassword the new password to assign
      * @throws IllegalArgumentException if either password is null or blank
      */
-    public void changePassword(String oldPassword, String newPassword) {
+    /*public void changePassword(String oldPassword, String newPassword) {
 
         if (oldPassword == null || newPassword == null)
             throw new IllegalArgumentException("Password cannot be null");
@@ -244,5 +244,5 @@ public class Account {
             throw new IllegalArgumentException("New password cannot be blank");
 
         this.password = newPassword;
-    }
+    }*/
 }

@@ -28,6 +28,7 @@ import it.unicam.cs.hackhub.model.Activable;
 import it.unicam.cs.hackhub.repository.AccountRepository;
 import it.unicam.cs.hackhub.security.JwtUtil;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -76,6 +77,11 @@ public class AccountService implements Activable<Long> {
     private final JwtUtil jwt;
 
     /**
+     * Global application-level secret used to "pepper" passwords before
+     * they are processed by the {@link PasswordEncoder}.
+     */
+    private final String pepper;
+    /**
      * Creates a new {@code AccountService} with the required dependencies.
      *
      * <p>
@@ -88,17 +94,20 @@ public class AccountService implements Activable<Long> {
      * @param teamService the service used to manage team membership and leadership constraints
      * @param encoder the password encoder used for password hashing and verification
      * @param jwt the utility used to generate JWT tokens during authentication
+     * @param pepper the secret used to "pepper" passwords
      */
     public AccountService(AccountRepository accountRepository,
                           @Lazy HackathonService hackathonService,
                           @Lazy TeamService teamService,
                           PasswordEncoder encoder,
-                          JwtUtil jwt){
+                          JwtUtil jwt,
+                          @Value("${app.security.password-pepper}") String pepper){
         this.accountRepository = accountRepository;
         this.hackathonService = hackathonService;
         this.teamService = teamService;
         this.encoder = encoder;
         this.jwt = jwt;
+        this.pepper=pepper;
     }
 
     /**
@@ -169,9 +178,9 @@ public class AccountService implements Activable<Long> {
 
         if (!(oldPassword == null || newPassword == null)) {
             if (!(newPassword.isEmpty() || oldPassword.isEmpty())){
-                if (!encoder.matches(oldPassword,account.getPassword()))
+                if (!encoder.matches(oldPassword +pepper,account.getPassword()))
                     throw new IllegalArgumentException("Old password not valid");
-                account.changePassword(oldPassword, encoder.encode(newPassword));
+                account.setPassword(encoder.encode(newPassword+pepper));
             }
         }
 
@@ -293,7 +302,7 @@ public class AccountService implements Activable<Long> {
                 req.email(),
                 role,
                 req.nickname(),
-                encoder.encode(req.password())
+                encoder.encode(req.password()+pepper)
         );
 
         accountRepository.save(account);
@@ -321,7 +330,7 @@ public class AccountService implements Activable<Long> {
             throw new IllegalStateException("Account is disabled");
         }
 
-        if (!encoder.matches(req.password(), account.getPassword()))
+        if (!encoder.matches(req.password()+pepper, account.getPassword()))
             throw new IllegalArgumentException("Bad credentials");
 
         String token = jwt.generateToken(account.getEmail(), account.getRole().name());

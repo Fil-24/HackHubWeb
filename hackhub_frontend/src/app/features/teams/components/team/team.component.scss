@@ -2,15 +2,7 @@
 @use "../../../../../styles" as *;
 
 // ── LAYOUT GLOBALE ──
-.profile-section {
-  background: $bg-main;
-  min-height: calc(100vh - 80px);
-  display: flex;
-  align-items: flex-start; 
-}
-.relative-section {
-  position: relative;
-}
+
 
 // ── COMPONENTI BASE ──
 .pr-card { @extend %card-base; }

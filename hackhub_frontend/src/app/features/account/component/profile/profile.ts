@@ -90,17 +90,18 @@ export class ProfileComponent {
     this.isSaving.set(true); // Disables the form/buttons
 
     const dataToUpdate: any = {
-      name: this.editName,
-      surname: this.editSurname,
-      nickname: this.editNickname,
-      email: this.editEmail
+      name: this.editName(),
+      surname: this.editSurname(),
+      nickname: this.editNickname(),
+      email: this.editEmail()
     };
     
-    // 2. Add password data ONLY if the user entered something
-      if (this.editOldPassword || this.editNewPassword) {
+    // Add password data ONLY if the user entered something
+      if (this.editOldPassword() || this.editNewPassword()) {
         
         // Check that the new passwords match
-        if (this.editNewPassword !== this.editConfirmPassword) {
+        
+        if (this.editNewPassword() !== this.editConfirmPassword()) {
           this.errorMessage.set('Passwords do not match!');
           this.isSaving.set(false);
           return; 
@@ -114,8 +115,8 @@ export class ProfileComponent {
         }
 
         
-        dataToUpdate.oldPassword = this.editOldPassword;
-        dataToUpdate.newPassword = this.editNewPassword;
+        dataToUpdate.oldPassword = this.editOldPassword();
+        dataToUpdate.newPassword = this.editNewPassword();
       }
 
     this.authService.updateProfile(dataToUpdate).subscribe({
