@@ -20,7 +20,7 @@ export class ProfileComponent {
   editName = signal('');
   editSurname = signal('');
   editNickname = signal('');
-  editEmail = signal('');
+  //editEmail = signal('');
   editOldPassword = signal('');
   editNewPassword = signal('');
   editConfirmPassword = signal('');
@@ -35,7 +35,6 @@ export class ProfileComponent {
         this.editName.set(user.name || '');
         this.editSurname.set(user.surname || '');
         this.editNickname.set(user.nickname || '');
-        this.editEmail.set(user.email || '');
       }
     });
   }
@@ -68,7 +67,6 @@ export class ProfileComponent {
       this.editName.set(user.name || '');
       this.editSurname.set(user.surname || '');
       this.editNickname.set(user.nickname || '');
-      this.editEmail.set(user.email || '');
     }
     this.isEditing.set(false);
   }
@@ -93,7 +91,7 @@ export class ProfileComponent {
       name: this.editName(),
       surname: this.editSurname(),
       nickname: this.editNickname(),
-      email: this.editEmail()
+      email: this.user()?.email // Email is not editable, but we need to include it in the update payload
     };
     
     // Add password data ONLY if the user entered something
