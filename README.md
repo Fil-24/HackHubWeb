@@ -90,8 +90,7 @@ HackHubWeb/
         ├── app/
         │   ├── core/                         # core
         │   │   ├── guard/                    # Route guards
-        │   │   ├── interceptor/              # HTTP interceptors
-        │   │   └── resolver/                 # User resolver
+        │   │   └── interceptor/              # HTTP interceptors
         │   │
         │   └── features/                     # Feature 
         │      ├── auth/                      # Authentication

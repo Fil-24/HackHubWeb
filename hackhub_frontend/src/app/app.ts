@@ -17,7 +17,7 @@ protected readonly currentYear = signal(new Date().getFullYear());
   ) {}
 
   ngOnInit() {
-    // Se c'è un token ma l'utente non è ancora caricato (es. refresh della pagina),
+    // Se c'è un token ma l'utente non è ancora caricato
     // richiamiamo il backend per popolare il segnale userSignal.
     if (this.authService.getToken() && !this.authService.currentUser) {
       this.authService.loadUser$().subscribe();
@@ -33,9 +33,9 @@ protected readonly currentYear = signal(new Date().getFullYear());
     if (!user) return null;
 
     return {
-      // Unisco nome e cognome. Se usi nickname, puoi mettere user.nickname
+      // Unisco nome e cognome
       name: `${user.name} ${user.surname || ''}`.trim(),
-      role: user.role, // "USER", "ADMIN", "STAFF"
+      role: user.role,
       email: user.email,
       // Genera un avatar basato sulle iniziali
       avatarUrl: `https://ui-avatars.com/api/?name=${user.name}+${user.surname || ''}&background=0f172a&color=fff`    };
@@ -43,6 +43,6 @@ protected readonly currentYear = signal(new Date().getFullYear());
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/login']); // Riporta l'utente al login
+    this.router.navigate(['/login']);
   }
 }
