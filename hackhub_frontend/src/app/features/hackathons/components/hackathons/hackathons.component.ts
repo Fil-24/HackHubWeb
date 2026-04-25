@@ -71,7 +71,7 @@ export class HackathonsComponent implements OnInit {
       tempoMatch = new Date(hackathon.endDate) < dataAttuale;
     }
 
-    // 3. Filtro Partecipazione (Logica integrata dal Componente 2)
+    // 3. Filtro Partecipazione
     let partecipazioneMatch = true;
     if (this.filtroPartecipazione() === 'iscritti') {
         if (!currentUser) {
@@ -82,13 +82,10 @@ export class HackathonsComponent implements OnInit {
                                         || hackathon.staff.mentors.some(m => m.idAccount === currentUser.idAccount) 
         } else {
             partecipazioneMatch = !!hackathon.teams?.some((team: any) => {
-          // Caso A: L'utente ha un idTeam e corrisponde a quello del team
           if (currentUser.idTeam && team.idTeam === currentUser.idTeam) return true;
           
-          // Caso B: L'utente è il leader del team
           if (team.leader && team.leader.idTeamMember === currentUser.idAccount) return true;
           
-          // Caso C: L'utente è un membro all'interno dell'array members
           if (team.members && team.members.some((m: any) => m.idTeamMember === currentUser.idAccount)) return true;
           
           return false;

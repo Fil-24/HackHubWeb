@@ -124,12 +124,6 @@ export class CreateHackathon implements OnInit {
       this.errorMessage.set("Please select at least one mentor");
       return;
     }
-    /*
-    if (this.regoleSelezionate.length === 0) {
-      this.errorMessage.set("Please select at least one rule");
-      return;
-    }
-    */
 
     //aggiungo i dati dei giudici, mentori e regole selezionati all'oggetto hackathonData da inviare al backend
     this.hackathonData.judgeEmail = this.giudiceSelezionato.email;
