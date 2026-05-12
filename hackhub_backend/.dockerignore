@@ -1,0 +1,25 @@
+# --- Git e configurazioni ---
+.git
+.gitignore
+
+# --- IDE (IntelliJ IDEA) ---
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# --- File di sistema operativo ---
+.DS_Store
+Thumbs.db
+
+# --- Database Locale H2 ---
+# (Impedisce a Docker di copiare il DB locale di sviluppo)
+database/
+
+# --- Sicurezza e Credenziali ---
+.env
+*.env
+application-dev.properties
+
+# --- Cartelle di Build Locali ---
+target/

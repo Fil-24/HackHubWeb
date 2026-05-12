@@ -31,3 +31,17 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+
+# --- File di sistema operativo ---
+.DS_Store
+Thumbs.db
+
+# --- Database Locale H2 ---
+# (Fondamentale: non caricare su Git i file del db locale!)
+database/
+# --- Sicurezza e Variabili d'ambiente ---
+.env
+*.env
+application-dev.properties

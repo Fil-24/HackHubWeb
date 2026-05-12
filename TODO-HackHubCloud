@@ -1,0 +1,7 @@
+FRONTEND
+-modificare file environments con valori corretti per la produzione
+
+BANCKEND
+-aggiungere i .ignore
+-aggiungere .env
+-cambiare proprietà del db attualmente per prova postgress
