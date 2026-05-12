@@ -7,7 +7,7 @@ on:
     branches: 
       [ main ]
     paths:
-    - '**'
+    - 'hackhub_frontend/**'
     - '.github/workflows/cn-hackhub-frontend-AutoDeployTrigger-f048f7bc-a2e7-42ad-aabe-269cefe8d1f8.yml'
 
   # Allow manual trigger 
