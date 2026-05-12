@@ -293,8 +293,8 @@ public class AccountService implements Activable<Long> {
             throw new IllegalArgumentException("Role must be USER or STAFF");
         }
 
-       /* if (role != Role.USER && role != Role.STAFF)
-            throw new IllegalArgumentException("Role must be USER or STAFF");*/
+       if (role != Role.USER && role != Role.STAFF)
+            throw new IllegalArgumentException("Role must be USER or STAFF");
 
         Account account = new Account(
                 req.name(),
