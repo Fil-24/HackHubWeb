@@ -8,7 +8,7 @@
 
 **HackHub** is a web application designed to fully digitalize the management of hackathons — time-limited competitions where teams develop and deliver a project to achieve a common goal. The platform centralizes every phase of the event, from participant registration to winner proclamation.
 
-Built with a **Java Spring Boot** backend and an **Angular 21** frontend with PWA support, HackHub provides a role-based environment where organizers can create and manage events, teams can register and submit their projects, judges can evaluate submissions, and mentors can support participants throughout the competition.
+Built with a **Java Spring Boot** backend and an **Angular 21** frontend, HackHub provides a role-based environment where organizers can create and manage events, teams can register and submit their projects, judges can evaluate submissions, and mentors can support participants throughout the competition.
 
 ---
 
@@ -22,7 +22,6 @@ Built with a **Java Spring Boot** backend and an **Angular 21** frontend with PW
 - 🔒 Role-based access control (Visitor, User, Staff, Admin)
 - 🔐 JWT-based authentication with role claims
 - 🛡️ Angular route guards for frontend protection
-- 📱 Progressive Web App (PWA) support — installable on any device
 - 🔍 Advanced filtering, sorting, and pagination for hackathon and team discovery
 
 ---
@@ -36,7 +35,6 @@ Built with a **Java Spring Boot** backend and an **Angular 21** frontend with PW
 | TypeScript | Statically typed JavaScript |
 | SCSS | Advanced CSS with variables, mixins, nesting |
 | Bootstrap 5 | Responsive grid layout and UI components |
-| @angular/pwa | Service Worker + Web App Manifest |
 
 ---
 
@@ -59,7 +57,7 @@ Built with a **Java Spring Boot** backend and an **Angular 21** frontend with PW
 ## 📁 Project Structure
 
 ```
-hackhub_frontend/                         # Angular PWA
+hackhub_frontend/                         # Angular
   └── src/
       ├── app/
       │   ├── core/                         # core
@@ -127,7 +125,7 @@ ng serve --open
 
 The app will be available at: `http://localhost:4200`
 
-#### Build & Run as PWA (Production)
+#### Build & Run (Production)
 
 ```bash
 # Navigate to the frontend folder
@@ -139,8 +137,6 @@ ng build
 # Serve the production build
 ng serve --configuration=production
 ```
-
-> The Service Worker (PWA) is only active in the production build. Use `ng serve` during development.
 
 ---
 

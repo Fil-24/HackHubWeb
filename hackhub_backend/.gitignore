@@ -44,4 +44,3 @@ database/
 # --- Sicurezza e Variabili d'ambiente ---
 .env
 *.env
-application-dev.properties

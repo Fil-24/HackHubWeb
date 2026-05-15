@@ -5,3 +5,8 @@ BANCKEND
 -aggiungere i .ignore
 -aggiungere .env
 -cambiare proprietà del db attualmente per prova postgress
+
+AZURE
+-costi
+-log
+
