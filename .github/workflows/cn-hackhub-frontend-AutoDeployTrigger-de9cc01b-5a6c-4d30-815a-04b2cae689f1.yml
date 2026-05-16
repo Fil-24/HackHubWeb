@@ -37,8 +37,7 @@ jobs:
 
       - name: Run Tests
         working-directory: ./hackhub_frontend
-        # Assicurati che in Angular karma.conf.js o angular.json sia configurato per usare ChromeHeadless
-        run: npm run test -- --watch=false --browsers=ChromeHeadless 
+        run: npm run test -- --watch=false
 
       # --- FASE 2: BUILD DOCKER E DEPLOY (CD) ---
       - name: Azure Login
