@@ -33,7 +33,7 @@ Built with a **Java Spring Boot** backend and an **Angular 21** frontend, HackHu
 | Spring Web | REST API with `@RestController` |
 | Spring Security | JWT authentication + RBAC |
 | Spring Data JPA | Repository-based persistence (Hibernate) |
-| H2 Database | In-memory relational database |
+| SQL Server | Azure SQL Database |
 | Apache Maven | Build tool and dependency management |
 
 ### Frontend
@@ -65,6 +65,17 @@ Built with a **Java Spring Boot** backend and an **Angular 21** frontend, HackHu
 ## ⚙️ Architecture
 
 ---
+
+## 🔄 CI/CD Pipeline
+
+The project uses **GitHub Actions** to automate build and deployment on every push to `main`.
+
+Two separate pipelines are configured in `.github/workflows/`:
+
+| Pipeline | File | Trigger |
+|---|---|---|
+| Backend | `cn-hackhub-backend-AutoDeployTrigger-....yml` | Changes in `hackhub_backend/**` |
+| Frontend | `cn-hackhub-frontend-AutoDeployTrigger-....yml` | Changes in `hackhub_frontend/**` |
 
 
 ## 🚀 Getting Started
