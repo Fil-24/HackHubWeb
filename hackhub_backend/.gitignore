@@ -1,6 +1,5 @@
 HELP.md
 target/
-.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -39,8 +38,7 @@ build/
 Thumbs.db
 
 # --- Database Locale H2 ---
-# (Fondamentale: non caricare su Git i file del db locale!)
 database/
-# --- Sicurezza e Variabili d'ambiente ---
+# --- Sicurezza e Variabili d'ambiente --- (attualmente non presenti)
 .env
 *.env

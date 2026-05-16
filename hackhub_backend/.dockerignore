@@ -16,7 +16,7 @@ Thumbs.db
 # (Impedisce a Docker di copiare il DB locale di sviluppo)
 database/
 
-# --- Sicurezza e Credenziali ---
+# --- Sicurezza e Credenziali (sviluppo)---
 .env
 *.env
 application-dev.properties

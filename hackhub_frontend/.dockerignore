@@ -1,7 +1,26 @@
+# --- Dipendenze e Build ---
 node_modules
 dist
+.angular
+
+# --- Git ---
 .git
 .gitignore
-*.md
-.angular
+
+# --- Test e Documentazione ---
 coverage
+*.md
+
+# --- Log di Node/npm ---
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# --- IDE e OS ---
+.vscode/
+.idea/
+.DS_Store
+
+# --- File Docker ---
+Dockerfile
+.dockerignore
