@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { HackathonDetailComponent } from './hackathon-detail';
 
@@ -9,6 +12,11 @@ describe('HackathonDetail', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HackathonDetailComponent],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HackathonDetailComponent);

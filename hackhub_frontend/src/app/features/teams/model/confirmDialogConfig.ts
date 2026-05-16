@@ -1,4 +1,4 @@
-interface ConfirmDialogConfig {
+export interface ConfirmDialogConfig {
   type: 'danger' | 'default';
   icon: string;
   title: string;

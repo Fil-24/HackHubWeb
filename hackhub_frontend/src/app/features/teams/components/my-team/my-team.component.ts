@@ -1,11 +1,12 @@
 import { ChangeDetectorRef, Component, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Team } from '../../model/team.model'; // Make sure the path is correct
+import { Team } from '../../model/team.model';
 import { Router } from '@angular/router';
 import { TeamService } from '../../service/team.service';
 import { InvitationService } from '../../../account/service/invitation.service';
 import { AuthService } from '../../../auth/service/auth.service';
 import { FormsModule } from '@angular/forms';
+import { ConfirmDialogConfig } from '../../model/confirmDialogConfig'; 
 
 @Component({
   selector: 'app-my-team',
