@@ -32,7 +32,7 @@ jobs:
       # 3. VALIDAZIONE: Esegue i test del backend
       - name: Run Backend Tests
         working-directory: ./hackhub_backend
-        run: mvn clean test
+        run: mvn clean test --no-transfer-progress
 
       # 4. Login su Azure
       - name: Azure Login
