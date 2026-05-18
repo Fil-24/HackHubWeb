@@ -90,7 +90,7 @@ The project is deployed on the cloud and is accessible at the following address 
 
 ### 💻 Local Development
 
-###Clona la repository
+### Clone the repository
 
 ```bash
 git clone https://github.com/Fil-24/HackHubWeb
@@ -108,7 +108,7 @@ cd hackhub_backend
 .\mvnw clean install
 
 # Run the application
-.\mvnw spring-boot:run
+.\mvnw spring-boot:run "-Dspring-boot.run.profiles=dev"
 ```
 
 The backend starts at: `http://localhost:8080`
