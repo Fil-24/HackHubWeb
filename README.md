@@ -3,7 +3,7 @@
 
 ## 📖 Project Overview
 
-**HackHub** is a web application designed to fully digitalize the management of hackathons — time-limited competitions where teams develop and deliver a project to achieve a common goal. The platform centralizes every phase of the event, from participant registration to winner proclamation.
+**HackHub** is a web application designed to fully digitalize the management of hackathons, time-limited competitions where teams develop and deliver a project to achieve a common goal. The platform centralizes every phase of the event, from participant registration to winner proclamation.
 
 Built with a **Java Spring Boot** backend and an **Angular 21** frontend, HackHub provides a role-based environment where organizers can create and manage events, teams can register and submit their projects, judges can evaluate submissions, and mentors can support participants throughout the competition.
 
