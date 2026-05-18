@@ -33,9 +33,9 @@ export class CreateHackathon implements OnInit {
 
   // Variabili per la ricerca e i risultati filtrati
   // per la ricerca dei giudici, mentori e regole
-  searchGiudice: string = '';
-  searchMentore: string = '';
-  searchRegola: string = '';
+  searchGiudice = '';
+  searchMentore = '';
+  searchRegola = '';
   // risultati filtrati
   giudiciFiltrati: Account[] = [];
   mentoriFiltrati: Account[] = [];

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, input, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, input, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Team } from '../../model/team.model';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { ConfirmDialogConfig } from '../../model/confirmDialogConfig';
   templateUrl: './my-team.component.html',
   styleUrls: ['./my-team.component.scss'] 
 })
-export class MyTeamComponent {
+export class MyTeamComponent implements OnInit {
   successMessage = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
 

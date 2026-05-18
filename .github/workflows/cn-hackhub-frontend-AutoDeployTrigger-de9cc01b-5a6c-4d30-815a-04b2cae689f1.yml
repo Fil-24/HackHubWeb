@@ -12,14 +12,14 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     permissions: 
-      id-token: write # Necessario per OIDC JWT Token
-      contents: read  # Necessario per accedere al repo
+      id-token: write 
+      contents: read  
 
     steps:
       - name: Checkout to the branch
-        uses: actions/checkout@v4 # Aggiornato alla v4
+        uses: actions/checkout@v4 
 
-      # --- FASE 1: VALIDAZIONE DEL CODICE (CI) ---
+      # VALIDAZIONE DEL CODICE (CI) 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -39,7 +39,7 @@ jobs:
         working-directory: ./hackhub_frontend
         run: npm run test -- --watch=false
 
-      # --- FASE 2: BUILD DOCKER E DEPLOY (CD) ---
+      # BUILD DOCKER E DEPLOY (CD)
       - name: Azure Login
         uses: azure/login@v2
         with:

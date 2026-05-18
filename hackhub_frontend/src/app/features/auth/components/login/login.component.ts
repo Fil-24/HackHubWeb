@@ -19,7 +19,7 @@ import { Router, RouterModule } from '@angular/router';
 export class LoginComponent {
   // Inizializziamo il form
   loginForm: FormGroup;
-  isPasswordVisible: boolean = false;
+  isPasswordVisible = false;
   
   errorMessage = signal<string | null>(null);
 

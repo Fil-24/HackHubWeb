@@ -20,8 +20,8 @@ export class RegisterComponent {
   registerForm: FormGroup;
   errorMessage = signal<string | null>(null);
 
-  isPasswordVisible: boolean = false;
-  isConfirmPasswordVisible: boolean = false;
+  isPasswordVisible = false;
+  isConfirmPasswordVisible = false;
 
   constructor(
     private authService: AuthService, 

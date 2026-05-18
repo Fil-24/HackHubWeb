@@ -41,9 +41,9 @@ export class ProfileComponent {
   
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);
-  isPasswordVisible: boolean = false;
-  isConfirmPasswordVisible: boolean = false;
-  isOldPasswordVisible: boolean = false;
+  isPasswordVisible = false;
+  isConfirmPasswordVisible = false;
+  isOldPasswordVisible = false;
   messageTimeout: any; // To keep track of the message clearing timer
 
   toggleOldPasswordVisibility(): void {

@@ -17,11 +17,11 @@ jobs:
       contents: read 
 
     steps:
-      # 1. Scarica il codice dal repository 
+      # Scarica il codice dal repository 
       - name: Checkout to the branch
         uses: actions/checkout@v4
 
-      # 2. VALIDAZIONE: Imposta l'ambiente Java 
+      # Imposta l'ambiente Java 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -29,12 +29,12 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # 3. VALIDAZIONE: Esegue i test del backend
+      # Esegue i test del backend
       - name: Run Backend Tests
         working-directory: ./hackhub_backend
         run: mvn clean test --no-transfer-progress
 
-      # 4. Login su Azure
+      # Login su Azure
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -42,7 +42,7 @@ jobs:
           tenant-id: ${{ secrets.CNHACKHUBBACKEND_AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.CNHACKHUBBACKEND_AZURE_SUBSCRIPTION_ID }}
 
-      # 5. Build e Deploy 
+      # Build e Deploy 
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v2
         with:
