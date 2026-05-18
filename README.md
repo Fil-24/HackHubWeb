@@ -64,6 +64,15 @@ Built with a **Java Spring Boot** backend and an **Angular 21** frontend, HackHu
 
 ## ⚙️ Architecture
 
+<img width="1725" height="952" alt="Architettura" src="https://github.com/user-attachments/assets/46baf624-f6d9-4b20-b2ef-1bdbc0ab0988" />
+
+### Design Choices
+
+* **Cloud Infrastructure:** Adopted **Microsoft Azure** via the *Azure for Students* program, which provided a $100 credit (without requiring a credit card) and access to services under cost-effective tiers.
+* **Containerization & Deployment:** Both Frontend and Backend are containerized using **Docker**, with images versioned on **Docker Hub**. Container deployment and execution are managed through **Azure Container Apps**.
+* **Database:** Utilized **Azure SQL Database** as the managed relational database solution for data persistence.
+* **Networking & Security:** Configured a **Virtual Network (VNet)** with dedicated subnets and implemented a **Private Endpoint** to secure resources, ensuring access is strictly restricted to authorized internal services.
+
 ---
 
 ## 🔄 CI/CD Pipeline
@@ -77,6 +86,29 @@ Two separate pipelines are configured in `.github/workflows/`:
 | Backend | `cn-hackhub-backend-AutoDeployTrigger-....yml` | Changes in `hackhub_backend/**` |
 | Frontend | `cn-hackhub-frontend-AutoDeployTrigger-....yml` | Changes in `hackhub_frontend/**` |
 
+### Workflow Phases
+
+Both workflows are divided into two sequential macro-phases: **Continuous Integration (CI)** for code validation and **Continuous Deployment (CD)** for production release.
+
+#### Backend Pipeline
+* **CI Phase (Validation):**
+  * **Environment Setup:** Configuration of **JDK 21** with Maven dependency caching.
+  * **Automated Testing:** Execution of tests to verify the correct behavior of CORS and the public base APIs accessible to any visitor.
+* **CD Phase (Deployment):**
+  * **Authentication:** Secure access to Microsoft Azure via OIDC protocol.
+  * **Build & Push:** Generation of the backend Docker image and upload to **Docker Hub** with a unique tag linked to the commit SHA.
+  * **Deploy:** Automatic release and update of the container on **Azure Container Apps**.
+
+#### Frontend Pipeline
+* **CI Phase (Validation):**
+  * **Environment Setup:** Configuration of **Node.js** and build time optimization via `npm` cache.
+  * **Code Quality:** Clean installation of dependencies (`npm ci`), formal code checking (*linting*), and execution of Angular tests.
+* **CD Phase (Deployment):**
+  * **Authentication:** Secure access to Azure via OIDC identity tokens.
+  * **Build & Push:** Creation of the frontend Docker image and upload to **Docker Hub**.
+  * **Deploy:** Immediate release of the new image on the **Azure Container Apps** instance.
+
+---
 
 ## 🚀 Getting Started
 
